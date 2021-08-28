@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import Sidebar from "./Components/Sidebar";
 import Header from "./Components/Header";
-import Profile from "./Components/Profile";
+import SidebarRight from "./Components/SidebarRight";
 import Home from "./Screens/Home";
 import Attendance from "./Screens/Attendance";
 import Assignment from "./Screens/Assignment";
@@ -27,6 +27,7 @@ import { VerifyUser, AthenticateUser } from "./Store/reducers/userReducer";
 import Error401 from "./Screens/Error401";
 import firebase from "firebase";
 import { ToastPortal } from "./Components/ToastPortal";
+import Students from "./Screens/Students";
 
 const Container = Styled.div`
    margin-left: 200px;
@@ -87,39 +88,44 @@ const App = () => {
 
         <Container>
           <Switch>
+            <Route path="/students">
+              <Header />
+              <SidebarRight />
+              <Students />
+            </Route>
             <Route path="/attendance">
               <Header />
-              <Profile />
+              <SidebarRight />
               <Attendance />
             </Route>
             <Route path="/assignment">
               <Header />
-              <Profile />
+              <SidebarRight />
               <Assignment />
             </Route>
             <Route path="/exams">
               <Header />
-              <Profile />
+              <SidebarRight />
               <Exams />
             </Route>
             <Route path="/holidays">
               <Header />
-              <Profile />
+              <SidebarRight />
               <Holidays />
             </Route>
             <Route path="/classes">
               <Header />
-              <Profile />
+              <SidebarRight />
               <Classes />
             </Route>
             <Route path="/billings">
               <Header />
-              <Profile />
+              <SidebarRight />
               <Billings />
             </Route>
             <Route path="/">
               <Header />
-              <Profile />
+              <SidebarRight />
               <Home />
             </Route>
           </Switch>

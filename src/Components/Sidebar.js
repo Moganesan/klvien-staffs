@@ -1,7 +1,7 @@
 import Styled from "styled-components";
 import {
   Logo,
-  Home,
+  Dashboard,
   Attendance,
   Assignment,
   Exams,
@@ -26,7 +26,7 @@ const Menu = Styled.ul`
    margin: 0;
 
    margin-top: 20px;
-   padding: 20px;
+   padding: 0;
    
    li{
     display: flex;
@@ -135,8 +135,10 @@ const Sidebar = () => {
             whileTap={{ scale: 0.9 }}
             style={path == "/" ? { background: ActiveBackground } : null}
           >
-            <Home color={path == "/" ? ActiveText : "white"} />
-            <span style={path == "/" ? { color: ActiveText } : null}>Home</span>
+            <Dashboard color={path == "/" ? ActiveText : "white"} />
+            <span style={path == "/" ? { color: ActiveText } : null}>
+              Dashboard
+            </span>
           </MenuItem>
         </Link>
         <Link to="/students">
@@ -242,7 +244,14 @@ const Sidebar = () => {
           <span>Feedback</span>
         </MenuItem>
       </Menu>
-      <span style={{ fontWeight: "bold", color: "#7F7C82", fontSize: 14 }}>
+      <span
+        style={{
+          fontWeight: "bold",
+          color: "#7F7C82",
+          fontSize: 14,
+          marginTop: 10,
+        }}
+      >
         &#169;Lionsoftindia
       </span>
       <SettingsBtn
