@@ -10,6 +10,7 @@ import {
   Billing,
   Feedback,
   Settings,
+  Users,
 } from "../Assets/icons";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -37,7 +38,7 @@ const Menu = Styled.ul`
     }
   
     margin-top: 5px;
-    padding: 10px;
+    padding: 8px;
 
     span{
       margin-left: 10px;
@@ -136,6 +137,20 @@ const Sidebar = () => {
           >
             <Home color={path == "/" ? ActiveText : "white"} />
             <span style={path == "/" ? { color: ActiveText } : null}>Home</span>
+          </MenuItem>
+        </Link>
+        <Link to="/students">
+          <MenuItem
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            style={
+              path == "/students" ? { background: ActiveBackground } : null
+            }
+          >
+            <Users color={path == "/students" ? ActiveText : "white"} />
+            <span style={path == "/students" ? { color: ActiveText } : null}>
+              Students
+            </span>
           </MenuItem>
         </Link>
         <Link to="/attendance">

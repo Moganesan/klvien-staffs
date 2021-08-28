@@ -94,8 +94,8 @@ const Form = Styled.div`
 
 const FeedBack = () => {
   const active = useSelector((state) => state.FeedbackModal);
-  const Name = useSelector((state) => state.SetUser.user[0].student.fname);
-  const Email = useSelector((state) => state.SetUser.user[0].student.email);
+  const Name = useSelector((state) => state.SetUser.user.staff.fname);
+  const Email = useSelector((state) => state.SetUser.user.staff.email);
 
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");

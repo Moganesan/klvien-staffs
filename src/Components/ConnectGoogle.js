@@ -95,9 +95,7 @@ const Form = Styled.div`
 
 function ConnectGoogleModal() {
   const [password, setPassword] = useState("");
-  const email = useSelector(
-    (state) => state.SetUser.user[0].logindetails.email
-  );
+  const email = useSelector((state) => state.SetUser.user.logindetails.email);
   const active = useSelector((state) => state.GoogleConnectModal);
   const dispatch = useDispatch();
 

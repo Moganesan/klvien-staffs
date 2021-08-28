@@ -72,7 +72,7 @@ const Department = Styled.span`
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const profile = useSelector((state) => state.SetUser.user[0].student);
+  const profile = useSelector((state) => state.SetUser.user.staff);
   return (
     <Container>
       <ProfileContainer>

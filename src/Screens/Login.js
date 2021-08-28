@@ -174,7 +174,7 @@ const Login = () => {
                   src={logoBlack}
                 />
               </LogoBlack>
-              <h1>Login</h1>
+              <h1>STAFF LOGIN</h1>
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

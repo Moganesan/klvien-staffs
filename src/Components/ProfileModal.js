@@ -133,7 +133,7 @@ const LogoutButton = Styled(motion.button)`
 
 const ProfileModal = () => {
   const active = useSelector((state) => state.ProfileModal);
-  const profile = useSelector((state) => state.SetUser.user[0].student);
+  const profile = useSelector((state) => state.SetUser.user.student);
   const dispatch = useDispatch();
   return (
     <>

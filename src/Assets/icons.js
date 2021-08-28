@@ -64,6 +64,45 @@ const Logo = ({ color }) => (
     />
   </svg>
 );
+
+const Users = ({ color }) => (
+  <svg
+    width="26"
+    height="26"
+    viewBox="0 0 31 23"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M25.0353 5.59756C24.8475 8.19454 22.9137 10.1951 20.8049 10.1951C18.6961 10.1951 16.7591 8.19518 16.5745 5.59756C16.3823 2.89585 18.2648 1 20.8049 1C23.3451 1 25.2276 2.94502 25.0353 5.59756Z"
+      stroke={color}
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M20.8048 14.439C16.6433 14.439 12.6414 16.4833 11.6389 20.4645C11.506 20.9912 11.84 21.5122 12.3873 21.5122H29.2231C29.7703 21.5122 30.1024 20.9912 29.9715 20.4645C28.9689 16.4195 24.967 14.439 20.8048 14.439Z"
+      stroke={color}
+      stroke-width="2"
+      stroke-miterlimit="10"
+    />
+    <path
+      d="M11.5998 7.00816C11.4597 9.1867 10.0001 10.9024 8.42676 10.9024C6.85343 10.9024 5.39146 9.18737 5.25376 7.00816C5.11068 4.74176 6.53134 3.12195 8.42676 3.12195C10.3222 3.12195 11.7428 4.78335 11.5998 7.00816Z"
+      stroke={color}
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M12.3171 14.456C11.1431 13.9329 9.85021 13.7317 8.47988 13.7317C5.09796 13.7317 1.83961 15.3669 1.0234 18.552C0.916088 18.9734 1.18794 19.3902 1.6328 19.3902H8.93514"
+      stroke={color}
+      stroke-width="2"
+      stroke-miterlimit="10"
+      stroke-linecap="round"
+    />
+  </svg>
+);
+
 const Home = ({ color }) => (
   <svg
     width="26"
@@ -325,6 +364,7 @@ const Close = () => (
 
 export {
   Logo,
+  Users,
   Home,
   Attendance,
   Assignment,

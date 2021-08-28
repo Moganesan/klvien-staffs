@@ -76,8 +76,8 @@ const Container = Styled.div`
 `;
 
 const Header = () => {
-  const name = useSelector((state) => state.SetUser.user[0].student.fname);
-  const profile = useSelector((state) => state.SetUser.user[0].student.profile);
+  const name = useSelector((state) => state.SetUser.user.staff.fname);
+  const profile = useSelector((state) => state.SetUser.user.staff.profile);
   const dispatch = useDispatch();
   return (
     <Container>

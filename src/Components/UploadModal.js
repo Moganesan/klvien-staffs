@@ -143,7 +143,7 @@ const Upload = () => {
   const { _id } = useSelector((state) => state.UploadModal.data);
 
   const { StudId, InId, SemId, DepId } = useSelector(
-    (state) => state.SetUser.user[0].logindetails
+    (state) => state.SetUser.user.logindetails
   );
   const dispatch = useDispatch();
   const [fileServer, setFileServer] = useState(false);

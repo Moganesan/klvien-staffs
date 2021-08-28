@@ -31,10 +31,10 @@ const database = {
 
 const get_attendance = () => async (dispatch, getstate) => {
   dispatch(SetLoadinTrue());
-  const StudId = getstate().SetUser.user[0].logindetails.StudId;
-  const InId = getstate().SetUser.user[0].logindetails.InId;
-  const SemId = getstate().SetUser.user[0].logindetails.SemId;
-  const DepId = getstate().SetUser.user[0].logindetails.DepId;
+  const StudId = getstate().SetUser.user.logindetails.StudId;
+  const InId = getstate().SetUser.user.logindetails.InId;
+  const SemId = getstate().SetUser.user.logindetails.SemId;
+  const DepId = getstate().SetUser.user.logindetails.DepId;
   if (StudId && InId && SemId && DepId) {
     await axios({
       method: "POST",
@@ -60,10 +60,10 @@ const get_attendance = () => async (dispatch, getstate) => {
 
 const getAssignment = () => async (dispatch, getstate) => {
   dispatch(SetLoadinTrue());
-  const StudId = getstate().SetUser.user[0].logindetails.StudId;
-  const InId = getstate().SetUser.user[0].logindetails.InId;
-  const SemId = getstate().SetUser.user[0].logindetails.SemId;
-  const DepId = getstate().SetUser.user[0].logindetails.DepId;
+  const StudId = getstate().SetUser.user.logindetails.StudId;
+  const InId = getstate().SetUser.user.logindetails.InId;
+  const SemId = getstate().SetUser.user.logindetails.SemId;
+  const DepId = getstate().SetUser.user.logindetails.DepId;
   if (StudId && InId && SemId && DepId) {
     await axios({
       method: "POST",
@@ -96,10 +96,10 @@ const getAssignment = () => async (dispatch, getstate) => {
 
 const getExams = () => async (dispatch, getstate) => {
   dispatch(SetLoadinTrue());
-  const StudId = getstate().SetUser.user[0].logindetails.StudId;
-  const InId = getstate().SetUser.user[0].logindetails.InId;
-  const SemId = getstate().SetUser.user[0].logindetails.SemId;
-  const DepId = getstate().SetUser.user[0].logindetails.DepId;
+  const StudId = getstate().SetUser.user.logindetails.StudId;
+  const InId = getstate().SetUser.user.logindetails.InId;
+  const SemId = getstate().SetUser.user.logindetails.SemId;
+  const DepId = getstate().SetUser.user.logindetails.DepId;
   if (StudId && InId && SemId && DepId) {
     await axios({
       method: "POST",
@@ -130,9 +130,9 @@ const getExams = () => async (dispatch, getstate) => {
 
 const getHolidays = () => async (dispatch, getstate) => {
   dispatch(SetLoadinTrue());
-  const InId = getstate().SetUser.user[0].logindetails.InId;
-  const SemId = getstate().SetUser.user[0].logindetails.SemId;
-  const DepId = getstate().SetUser.user[0].logindetails.DepId;
+  const InId = getstate().SetUser.user.logindetails.InId;
+  const SemId = getstate().SetUser.user.logindetails.SemId;
+  const DepId = getstate().SetUser.user.logindetails.DepId;
   if (InId && SemId && DepId) {
     await axios({
       method: "POST",
@@ -164,10 +164,10 @@ const getHolidays = () => async (dispatch, getstate) => {
 
 const getClasses = (date) => async (dispatch, getstate) => {
   dispatch(SetLoadinTrue());
-  const StudId = getstate().SetUser.user[0].logindetails.StudId;
-  const InId = getstate().SetUser.user[0].logindetails.InId;
-  const SemId = getstate().SetUser.user[0].logindetails.SemId;
-  const DepId = getstate().SetUser.user[0].logindetails.DepId;
+  const StudId = getstate().SetUser.user.logindetails.StudId;
+  const InId = getstate().SetUser.user.logindetails.InId;
+  const SemId = getstate().SetUser.user.logindetails.SemId;
+  const DepId = getstate().SetUser.user.logindetails.DepId;
   const ClsDate = date;
   if (StudId && InId && SemId && DepId && ClsDate) {
     await axios({
@@ -204,13 +204,13 @@ const getClasses = (date) => async (dispatch, getstate) => {
 
 const addAttendance = () => async (dispatch, getstate) => {
   dispatch(SetLoadinTrue());
-  const StudId = getstate().SetUser.user[0].logindetails.StudId;
-  const InId = getstate().SetUser.user[0].logindetails.InId;
-  const SemId = getstate().SetUser.user[0].logindetails.SemId;
-  const DepId = getstate().SetUser.user[0].logindetails.DepId;
-  const SubId = getstate().Server["classes"][0].subId;
-  const ClsId = getstate().Server["classes"][0]._id;
-  const meetingURL = getstate().Server["classes"][0].meeting.join_url;
+  const StudId = getstate().SetUser.user.logindetails.StudId;
+  const InId = getstate().SetUser.user.logindetails.InId;
+  const SemId = getstate().SetUser.user.logindetails.SemId;
+  const DepId = getstate().SetUser.user.logindetails.DepId;
+  const SubId = getstate().Server["classes"].subId;
+  const ClsId = getstate().Server["classes"]._id;
+  const meetingURL = getstate().Server["classes"].meeting.join_url;
   if (StudId && InId && SemId && DepId) {
     await axios({
       method: "POST",
@@ -246,10 +246,10 @@ const addAttendance = () => async (dispatch, getstate) => {
 
 const getBillings = () => async (dispatch, getstate) => {
   dispatch(SetLoadinTrue());
-  const StudId = getstate().SetUser.user[0].logindetails.StudId;
-  const InId = getstate().SetUser.user[0].logindetails.InId;
-  const SemId = getstate().SetUser.user[0].logindetails.SemId;
-  const DepId = getstate().SetUser.user[0].logindetails.DepId;
+  const StudId = getstate().SetUser.user.logindetails.StudId;
+  const InId = getstate().SetUser.user.logindetails.InId;
+  const SemId = getstate().SetUser.user.logindetails.SemId;
+  const DepId = getstate().SetUser.user.logindetails.DepId;
   if (StudId && InId && SemId && DepId) {
     await axios({
       method: "POST",
@@ -284,12 +284,12 @@ const getBillings = () => async (dispatch, getstate) => {
 
 const addFeedback = (message) => async (dispatch, getstate) => {
   dispatch(SetRocketLoadingTrue());
-  const StudId = getstate().SetUser.user[0].logindetails.StudId;
-  const InId = getstate().SetUser.user[0].logindetails.InId;
-  const SemId = getstate().SetUser.user[0].logindetails.SemId;
-  const DepId = getstate().SetUser.user[0].logindetails.DepId;
-  const Name = getstate().SetUser.user[0].student.fname;
-  const Email = getstate().SetUser.user[0].student.email;
+  const StudId = getstate().SetUser.user.logindetails.StudId;
+  const InId = getstate().SetUser.user.logindetails.InId;
+  const SemId = getstate().SetUser.user.logindetails.SemId;
+  const DepId = getstate().SetUser.user.logindetails.DepId;
+  const Name = getstate().SetUser.user.student.fname;
+  const Email = getstate().SetUser.user.student.email;
   const Message = message;
 
   if (StudId && InId && SemId && DepId && Name && Email && Message) {

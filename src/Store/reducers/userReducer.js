@@ -26,7 +26,7 @@ const AthenticateUser = (email, password) => async (dispatch, getstate) => {
       return user.getIdToken().then((idToken) => {
         axios({
           method: "POST",
-          url: `${API}/student/login`,
+          url: `${API}/staff/login`,
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
@@ -38,6 +38,7 @@ const AthenticateUser = (email, password) => async (dispatch, getstate) => {
           },
         })
           .then(async (res) => {
+            console.log(res.data);
             if (res.data.status === 403) {
               dispatch(SET_USER(res.data.data));
               dispatch(SetLoadingFalse());
@@ -154,7 +155,7 @@ const setUser = (state = initialstate, action) => {
 
 const VerifyUser = () => async (dispatch, getstate) => {
   await axios
-    .get(`${API}/student/verify`)
+    .get(`${API}/staff/verify`)
     .then((res) => {
       if (res.data.status === 401) {
         console.log(res.data);
