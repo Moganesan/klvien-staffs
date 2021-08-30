@@ -10,6 +10,7 @@ import {
   TaskVectorImage,
   OnlineClassVectorImage,
 } from "../Assets/vectorimages/source";
+import Breadcrumbs from "../Components/breadcrumbs";
 
 const Container = Styled.div`
    position: relative;
@@ -167,7 +168,7 @@ const Home = () => {
   return (
     <Container>
       <Content>
-        <h1>Dashboard</h1>
+        <Breadcrumbs pages={["Dashboard"]} />
         <Dashboard>
           <Info>
             <StudentVectorImage width={140} height={140} />

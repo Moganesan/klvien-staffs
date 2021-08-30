@@ -11,6 +11,7 @@ import {
   Schoolboy,
   OnlineClass,
 } from "../Assets/vectorimages/index";
+import Breadcrumbs from "../Components/breadcrumbs";
 
 const Container = Styled.div`
    position: relative;
@@ -98,7 +99,7 @@ const Students = () => {
   return (
     <Container>
       <Content>
-        <h1>Students</h1>
+        <Breadcrumbs pages={["Students"]} />
         <StudentsContainer>
           <Table>
             <thead>

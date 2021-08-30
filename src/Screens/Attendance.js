@@ -41,6 +41,7 @@ import {
   ComputerScienceVectorImage,
   SpaceScienceVectorImage,
 } from "../Assets/vectorimages/source";
+import Breadcrumbs from "../Components/breadcrumbs";
 
 const Container = Styled.div`
    position: relative;
@@ -131,6 +132,7 @@ const SubjectContainer = Styled.div`
 const Subject = Styled.div`
    display: flex;
    flex-direction: column;
+   color: black;
    img{
      width: 140px;
      height: 140px;
@@ -155,6 +157,16 @@ const Subject = Styled.div`
    } 
 `;
 
+const Classes = () => {
+  const { subject } = useParams();
+
+  return (
+    <>
+      <Breadcrumbs pages={["Attendance", subject]} />
+    </>
+  );
+};
+
 const Attendance = () => {
   const dispatch = useDispatch();
   useEffect(async () => {
@@ -168,47 +180,57 @@ const Attendance = () => {
       <Content>
         <Router>
           <Switch>
-            <Route path="/attendance/:subject">
-              <h1>Attendance/{subject}</h1>
-            </Route>
+            <Route path="/attendance/:subject" children={<Classes />} />
             <Route path="/attendance/">
-              <h1>Attendance</h1>
+              <Breadcrumbs pages={["Attendance"]} />
               <SubjectContainer>
+                <Link to="/attendance/Tamil">
+                  <Subject>
+                    <TamilPongalVectorImage width={150} height={150} />
+                    <h3>Tamil</h3>
+                  </Subject>
+                </Link>
                 <Subject>
-                  <TamilPongalVectorImage />
+                  <EnglishStatueofLibertyVectorImage width={150} height={150} />
+                  <h3>English</h3>
                 </Subject>
                 <Subject>
-                  <EnglishStatueofLibertyVectorImage />
+                  <MathemeticsVectorImage width={150} height={150} />
+                  <h3>Maths</h3>
                 </Subject>
                 <Subject>
-                  <MathemeticsVectorImage />
+                  <ScienceVectorImage width={150} height={150} />
+                  <h3>Science</h3>
                 </Subject>
                 <Subject>
-                  <ScienceVectorImage />
+                  <SocialScienceVectorImage width={150} height={150} />
+                  <h3>Social Science</h3>
                 </Subject>
                 <Subject>
-                  <SocialScienceVectorImage />
+                  <HistoryVectorImage width={150} height={150} />
+                  <h3>History</h3>
                 </Subject>
                 <Subject>
-                  <HistoryVectorImage />
+                  <BiologyVectorImage width={150} height={150} />
+                  <h3>Biology</h3>
                 </Subject>
                 <Subject>
-                  <BiologyVectorImage />
+                  <AccountancyVectorImage width={150} height={150} />
+                  <h3>Accountancy</h3>
                 </Subject>
                 <Subject>
-                  <AccountancyVectorImage />
+                  <StatisticsVectorImage width={150} height={150} />
+                  <h3>Statistics</h3>
                 </Subject>
                 <Subject>
-                  <StatisticsVectorImage />
+                  <ComputerScienceVectorImage width={150} height={150} />
+                  <h3>Computer Science</h3>
                 </Subject>
                 <Subject>
-                  <ComputerScienceVectorImage />
-                </Subject>
-                <Subject>
-                  <SpaceScienceVectorImage />
+                  <SpaceScienceVectorImage width={150} height={150} />
+                  <h3>Space Science</h3>
                 </Subject>
               </SubjectContainer>
-
               <StudentsContainer>
                 <Table>
                   <thead>

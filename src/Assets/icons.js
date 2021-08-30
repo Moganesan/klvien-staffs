@@ -395,6 +395,25 @@ const Close = () => (
   </svg>
 );
 
+const AarrowForward = (props) => (
+  <svg
+    width="64"
+    height="115"
+    viewBox="0 0 64 115"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
+    <path
+      d="M6 6L57.75 57.75L6 109.5"
+      stroke="black"
+      stroke-width="11"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
+
 export {
   Logo,
   Users,
@@ -410,4 +429,5 @@ export {
   Settings,
   LogoutIcon,
   Close,
+  AarrowForward,
 };

@@ -1383,7 +1383,7 @@ function OnlineClassVector(props) {
   );
 }
 
-function TamilPongalVector() {
+function TamilPongalVector(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -1391,6 +1391,7 @@ function TamilPongalVector() {
       height="293"
       fill="none"
       viewBox="0 0 239 293"
+      {...props}
     >
       <g clipPath="url(#clip0)">
         <path
@@ -2228,7 +2229,7 @@ function TamilPongalVector() {
   );
 }
 
-function EnglishStatueofLibertyVector() {
+function EnglishStatueofLibertyVector(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -2236,6 +2237,7 @@ function EnglishStatueofLibertyVector() {
       height="287"
       fill="none"
       viewBox="0 0 228 287"
+      {...props}
     >
       <g clipPath="url(#clip0)">
         <path
@@ -6194,7 +6196,7 @@ function EnglishStatueofLibertyVector() {
   );
 }
 
-function MathemeticsVector() {
+function MathemeticsVector(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6202,6 +6204,7 @@ function MathemeticsVector() {
       height="231"
       fill="none"
       viewBox="0 0 264 231"
+      {...props}
     >
       <g clipPath="url(#clip0)">
         <path
@@ -6557,7 +6560,7 @@ function MathemeticsVector() {
   );
 }
 
-function ScienceVector() {
+function ScienceVector(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6565,6 +6568,7 @@ function ScienceVector() {
       height="211"
       fill="none"
       viewBox="0 0 220 211"
+      {...props}
     >
       <path
         fill="#03C9A9"
@@ -8476,7 +8480,7 @@ function HistoryVector(props) {
   );
 }
 
-function BiologyVector() {
+function BiologyVector(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8484,6 +8488,7 @@ function BiologyVector() {
       height="303"
       fill="none"
       viewBox="0 0 282 303"
+      {...props}
     >
       <g clipPath="url(#clip0)">
         <path
