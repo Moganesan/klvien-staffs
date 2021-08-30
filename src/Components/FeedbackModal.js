@@ -112,7 +112,13 @@ const FeedBack = () => {
                 whileTap={{ scale: 0.9 }}
                 onClick={() => dispatch(CloseFeedbackModal())}
               >
-                <img style={{ width: 20 }} src={Close} />
+                <img
+                  width="20"
+                  height="20"
+                  alt="close"
+                  style={{ width: 20 }}
+                  src={Close}
+                />
               </motion.div>
             </Header>
             <Form>

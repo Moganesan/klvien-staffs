@@ -28,6 +28,7 @@ import Error401 from "./Screens/Error401";
 import firebase from "firebase";
 import { ToastPortal } from "./Components/ToastPortal";
 import Students from "./Screens/Students";
+import AttendanceDetails from "./Components/AttendanceDetails";
 
 const Container = Styled.div`
    margin-left: 200px;
@@ -83,6 +84,7 @@ const App = () => {
         <FeedbackModal />
         <UploadModal />
         <Sidebar />
+        <AttendanceDetails />
         <ConnectGoogleModal />
         <ToastPortal ref={toastRef} autoClose={true} />
 

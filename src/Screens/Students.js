@@ -89,31 +89,75 @@ const StudentsContainer = Styled.div`
    
 `;
 
-const data = [
-  {
-    id: "Overall Attendance",
-    label: "Precent",
-    value: 90,
-    color: "hsl(249, 70%, 50%)",
-  },
-  {
-    id: "Absent",
-    label: "Absent",
-    value: 10,
-    color: "hsl(102, 70%, 50%)",
-  },
-];
 const Students = () => {
   const dispatch = useDispatch();
-  const attendance = useSelector((state) => state.Server["attendance"]);
   useEffect(async () => {
     await dispatch(ClearServer());
-    // await dispatch(get_attendance());
   }, []);
 
   return (
     <Container>
-      <Content></Content>
+      <Content>
+        <h1>Students</h1>
+        <StudentsContainer>
+          <Table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Department</th>
+                <th>Mobile</th>
+                <th>Last login</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Aug 12 2021</td>
+                <td>Commerce</td>
+                <td>Pending</td>
+                <td>adsdno</td>
+              </tr>
+              <tr>
+                <td>Aug 12 2021</td>
+                <td>Commerce</td>
+                <td>Pending</td>
+                <td>adsdno</td>
+              </tr>
+              <tr>
+                <td>Aug 12 2021</td>
+                <td>Commerce</td>
+                <td>Pending</td>
+                <td>adsdno</td>
+              </tr>
+              <tr>
+                <td>Aug 12 2021</td>
+                <td>Commerce</td>
+                <td>Pending</td>
+                <td>adsdno</td>
+              </tr>
+
+              <tr>
+                <td>Aug 12 2021</td>
+                <td>Commerce</td>
+                <td>Pending</td>
+                <td>adsdno</td>
+              </tr>
+              <tr>
+                <td>Aug 12 2021</td>
+                <td>Commerce</td>
+                <td>Pending</td>
+                <td>adsdno</td>
+              </tr>
+
+              <tr>
+                <td>Aug 12 2021</td>
+                <td>Commerce</td>
+                <td>Pending</td>
+                <td>adsdno</td>
+              </tr>
+            </tbody>
+          </Table>
+        </StudentsContainer>
+      </Content>
     </Container>
   );
 };

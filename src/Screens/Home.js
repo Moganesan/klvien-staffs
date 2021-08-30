@@ -8,9 +8,8 @@ import {
   StudentVectorImage,
   ExamVectorImage,
   TaskVectorImage,
-  Schoolboy,
-  OnlineClass,
-} from "../Assets/vectorimages/index";
+  OnlineClassVectorImage,
+} from "../Assets/vectorimages/source";
 
 const Container = Styled.div`
    position: relative;
@@ -71,15 +70,12 @@ const Dashboard = Styled.div`
 const Info = Styled.div`
    display: flex;
    flex-direction: column;
-   img{
-     width: 140px;
-     height: 100px;
-   }
    width: 185px;
    height: 205px;
    background-color: rgba(77, 213, 153, 0.4);
    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
    border-radius: 20px;
+   border: 1px solid rgba(77, 213, 153, 0.4);
    align-items: center;
    cursor: pointer;
    transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s;
@@ -174,19 +170,19 @@ const Home = () => {
         <h1>Dashboard</h1>
         <Dashboard>
           <Info>
-            <img src={StudentVectorImage} />
+            <StudentVectorImage width={140} height={140} />
             <h3>15 Students</h3>
           </Info>
           <Info>
-            <img src={TaskVectorImage} />
+            <TaskVectorImage width={140} height={140} />
             <h3>19 Assignments</h3>
           </Info>
           <Info>
-            <img src={ExamVectorImage} />
+            <ExamVectorImage width={140} height={140} />
             <h3>12 Exams</h3>
           </Info>
           <Info>
-            <img src={OnlineClass} />
+            <OnlineClassVectorImage width={140} height={140} />
             <h3>17 Classes</h3>
           </Info>
         </Dashboard>
