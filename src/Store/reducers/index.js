@@ -10,6 +10,7 @@ import {
   LoadingReducer,
   RocketLoadingReducer,
   AlertMessageReducer,
+  GreenLoadingReducer,
 } from "./uiReducer";
 import {
   AthenticateUser,
@@ -29,6 +30,8 @@ import {
   addAttendance,
   getBillings,
   addFeedback,
+  get_subjects,
+  get_students,
 } from "../reducers/serverReducer";
 
 const reducers = combineReducers({
@@ -45,9 +48,12 @@ const reducers = combineReducers({
   SetUser: setUser,
   Loading: LoadingReducer,
   RocketLoading: RocketLoadingReducer,
+  GreenLoading: GreenLoadingReducer,
   Verify: VerifyUser,
   Logout: Logout,
   AlertMessage: AlertMessageReducer,
+  GetStudents: get_students,
+  GetSubjects: get_subjects,
   GetAttendance: get_attendance,
   GetAssignments: getAssignment,
   GetExams: getExams,

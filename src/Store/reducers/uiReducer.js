@@ -143,6 +143,17 @@ const RocketLoadingReducer = (state = false, action) => {
   }
 };
 
+const GreenLoadingReducer = (state = false, action) => {
+  switch (action.type) {
+    case UIActionTypes.SET_GREEN_LOADING_TRUE:
+      return (state = true);
+    case UIActionTypes.SET_GREEN_LOADING_FALSE:
+      return (state = false);
+    default:
+      return state;
+  }
+};
+
 const AlertMessageReducer = (
   state = { status: false, mode: "", code: "", message: "" },
   { type, payload }
@@ -195,6 +206,7 @@ export {
   AttendanceDetailsModalReducer,
   LoadingReducer,
   RocketLoadingReducer,
+  GreenLoadingReducer,
   AlertMessageReducer,
   UploadModalReducer,
 };

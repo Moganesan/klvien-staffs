@@ -9,6 +9,8 @@ import {
   GetClasses,
   ClearServer,
   GetBillings,
+  GetSubjects,
+  GetStudents,
 } from "../actions/serverActions";
 import {
   SetLoadingFalse,
@@ -21,6 +23,8 @@ import {
 } from "../actions/uiActions";
 
 const database = {
+  students: [],
+  subjects: [],
   attendance: [],
   assignments: [],
   exams: [],
@@ -29,8 +33,49 @@ const database = {
   billings: [],
 };
 
+const get_students = (DepId, SemId) => async (dispatch, getstate) => {
+  const InId = getstate().SetUser.user.logindetails.InId;
+  await axios({
+    method: "POST",
+    url: `${API}/staff/students`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: DepId,
+      SemId: SemId,
+    },
+  })
+    .then((res) => {
+      return dispatch(GetStudents(res.data.data));
+    })
+    .catch((err) => dispatch(SetErrorMessage(err)));
+};
+
+const get_subjects = (DepId, SemId) => async (dispatch, getstate) => {
+  const InId = getstate().SetUser.user.logindetails.InId;
+  await axios({
+    method: "POST",
+    url: `${API}/staff/subjects`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: DepId,
+      SemId: SemId,
+    },
+  })
+    .then((res) => {
+      return dispatch(GetSubjects(res.data.data));
+    })
+    .catch((err) => dispatch(SetErrorMessage(err)));
+};
+
 const get_attendance = () => async (dispatch, getstate) => {
-  dispatch(SetLoadinTrue());
   const StudId = getstate().SetUser.user.logindetails.StudId;
   const InId = getstate().SetUser.user.logindetails.InId;
   const SemId = getstate().SetUser.user.logindetails.SemId;
@@ -58,74 +103,65 @@ const get_attendance = () => async (dispatch, getstate) => {
   }
 };
 
-const getAssignment = () => async (dispatch, getstate) => {
-  dispatch(SetLoadinTrue());
-  const StudId = getstate().SetUser.user.logindetails.StudId;
+const getAssignment = (DepId, SemId) => async (dispatch, getstate) => {
   const InId = getstate().SetUser.user.logindetails.InId;
-  const SemId = getstate().SetUser.user.logindetails.SemId;
-  const DepId = getstate().SetUser.user.logindetails.DepId;
-  if (StudId && InId && SemId && DepId) {
-    await axios({
-      method: "POST",
-      url: `${API}/student/assignments`,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: {
-        InId: InId,
-        DepId: DepId,
-        SemId: SemId,
-        StudId: StudId,
-      },
-    })
-      .then((res) => {
-        if (res.data.status === 404) {
-          dispatch(ClearServer());
-          dispatch(
-            SetInfoMessage({ code: "404", message: "No assignments found!" })
-          );
-          return dispatch(SetLoadingFalse());
-        }
-        dispatch(GetAssignment(res.data.data));
+
+  await axios({
+    method: "POST",
+    url: `${API}/staff/assignments`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: DepId,
+      SemId: SemId,
+    },
+  })
+    .then((res) => {
+      if (res.data.status === 404) {
+        dispatch(ClearServer());
+        dispatch(
+          SetInfoMessage({ code: "404", message: "No assignments found!" })
+        );
         return dispatch(SetLoadingFalse());
-      })
-      .catch((err) => dispatch(SetErrorMessage(err)));
-  }
+      }
+      dispatch(GetAssignment(res.data.data));
+      return dispatch(SetLoadingFalse());
+    })
+    .catch((err) => {
+      dispatch(SetLoadingFalse());
+      dispatch(SetErrorMessage(err));
+    });
 };
 
-const getExams = () => async (dispatch, getstate) => {
-  dispatch(SetLoadinTrue());
-  const StudId = getstate().SetUser.user.logindetails.StudId;
+const getExams = (DepId, SemId) => async (dispatch, getstate) => {
   const InId = getstate().SetUser.user.logindetails.InId;
-  const SemId = getstate().SetUser.user.logindetails.SemId;
-  const DepId = getstate().SetUser.user.logindetails.DepId;
-  if (StudId && InId && SemId && DepId) {
-    await axios({
-      method: "POST",
-      url: `${API}/student/exams`,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: {
-        InId: InId,
-        DepId: DepId,
-        SemId: SemId,
-        StudId: StudId,
-      },
-    })
-      .then((res) => {
-        if (res.data.status === 404) {
-          dispatch(ClearServer());
-          dispatch(SetInfoMessage({ code: "404", message: "No exams found!" }));
-          return dispatch(SetLoadingFalse());
-        }
-        dispatch(GetExams(res.data.data));
+
+  await axios({
+    method: "POST",
+    url: `${API}/staff/exams`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: DepId,
+      SemId: SemId,
+    },
+  })
+    .then((res) => {
+      if (res.data.status === 404) {
+        dispatch(ClearServer());
+        dispatch(SetInfoMessage({ code: "404", message: "No exams found!" }));
         return dispatch(SetLoadingFalse());
-      })
-      .catch((err) => dispatch(SetErrorMessage(err)));
-  }
+      }
+      dispatch(GetExams(res.data.data));
+      return dispatch(SetLoadingFalse());
+    })
+    .catch((err) => dispatch(SetErrorMessage(err)));
 };
 
 const getHolidays = () => async (dispatch, getstate) => {
@@ -162,44 +198,34 @@ const getHolidays = () => async (dispatch, getstate) => {
   }
 };
 
-const getClasses = (date) => async (dispatch, getstate) => {
-  dispatch(SetLoadinTrue());
-  const StudId = getstate().SetUser.user.logindetails.StudId;
+const getClasses = (DepId, SemId) => async (dispatch, getstate) => {
   const InId = getstate().SetUser.user.logindetails.InId;
-  const SemId = getstate().SetUser.user.logindetails.SemId;
-  const DepId = getstate().SetUser.user.logindetails.DepId;
-  const ClsDate = date;
-  if (StudId && InId && SemId && DepId && ClsDate) {
-    await axios({
-      method: "POST",
-      url: `${API}/student/classes`,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: {
-        InId: InId,
-        DepId: DepId,
-        SemId: SemId,
-        StudId: StudId,
-        ClsDate: ClsDate,
-      },
-    })
-      .then((res) => {
-        if (res.data.status === 404) {
-          dispatch(ClearServer());
-          dispatch(
-            SetInfoMessage({ code: "404", message: "No classes found!" })
-          );
-          return dispatch(SetLoadingFalse());
-        }
-        dispatch(GetClasses(res.data.data));
+
+  await axios({
+    method: "POST",
+    url: `${API}/staff/classes`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: DepId,
+      SemId: SemId,
+    },
+  })
+    .then((res) => {
+      if (res.data.status === 404) {
+        dispatch(ClearServer());
+        dispatch(SetInfoMessage({ code: "404", message: "No classes found!" }));
         return dispatch(SetLoadingFalse());
-      })
-      .catch((err) => {
-        dispatch(SetErrorMessage(err));
-      });
-  }
+      }
+      dispatch(GetClasses(res.data.data));
+      return dispatch(SetLoadingFalse());
+    })
+    .catch((err) => {
+      dispatch(SetErrorMessage(err));
+    });
 };
 
 const addAttendance = () => async (dispatch, getstate) => {
@@ -331,6 +357,16 @@ const addFeedback = (message) => async (dispatch, getstate) => {
 
 const serverReducer = (state = database, { type, payload }) => {
   switch (type) {
+    case ServerActionTypes.GET_STUDENTS:
+      return {
+        ...state,
+        students: payload,
+      };
+    case ServerActionTypes.GET_SUBJECTS:
+      return {
+        ...state,
+        subjects: payload,
+      };
     case ServerActionTypes.GET_ATTENDANCE:
       return {
         ...state,
@@ -363,6 +399,8 @@ const serverReducer = (state = database, { type, payload }) => {
       };
     case ServerActionTypes.CLEAR_SERVER:
       return {
+        students: [],
+        subjects: [],
         attendance: [],
         assignments: [],
         exams: [],
@@ -378,6 +416,8 @@ const serverReducer = (state = database, { type, payload }) => {
 };
 
 export {
+  get_students,
+  get_subjects,
   get_attendance,
   getAssignment,
   getExams,

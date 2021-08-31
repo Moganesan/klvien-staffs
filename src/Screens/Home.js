@@ -1,8 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { get_attendance } from "../Store/reducers/serverReducer";
-import { ClearServer } from "../Store/actions/serverActions";
+import {
+  getAssignment,
+  getClasses,
+  getExams,
+  get_attendance,
+  get_students,
+  get_subjects,
+} from "../Store/reducers/serverReducer";
+import { ClearServer, GetSubjects } from "../Store/actions/serverActions";
 import Attendance from "../Components/AttendancePie";
 import {
   StudentVectorImage,
@@ -11,6 +18,7 @@ import {
   OnlineClassVectorImage,
 } from "../Assets/vectorimages/source";
 import Breadcrumbs from "../Components/breadcrumbs";
+import GreenLoading from "../Components/greenLoading";
 
 const Container = Styled.div`
    position: relative;
@@ -23,6 +31,19 @@ const Container = Styled.div`
     @media only screen and (max-width: 1024px) {
      width: 100vw;
     }
+`;
+
+const Header = Styled.div`
+   select{
+     border: none;
+     outline: none;
+     padding: 10px;
+     border-radius: 5px;
+     font-weight: bold;
+     color: white;
+     background-color: #0D7377;
+     margin-right: 10px;
+   }
 `;
 
 const Content = Styled.div` 
@@ -139,8 +160,30 @@ const Table = Styled.table`
    } */
 `;
 
+const ProfileContainer = Styled.div`
+   display: flex;
+   align-items: center;
+
+   span{
+     font-weight: 500;
+     margin-left: 10px;
+     font-size: 15px;
+   }
+`;
+
+const Profile = Styled.div`
+   width: 50px;
+   height: 50px;
+   border-radius: 50%;
+   overflow: hidden;
+   img{
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+   }
+`;
+
 const StudentsContainer = Styled.div`
-   
 `;
 
 const data = [
@@ -159,93 +202,160 @@ const data = [
 ];
 const Home = () => {
   const dispatch = useDispatch();
-  const attendance = useSelector((state) => state.Server["attendance"]);
+  const students = useSelector((state) => state.Server["students"]);
+  const subjects = useSelector((state) => state.Server["subjects"]);
+  const assignments = useSelector((state) => state.Server["assignments"]);
+  const exams = useSelector((state) => state.Server["exams"]);
+  const classes = useSelector((state) => state.Server["classes"]);
+  const departments = useSelector(
+    (state) => state.SetUser.user.logindetails.DepData
+  );
+  const semesters = useSelector(
+    (state) => state.SetUser.user.logindetails.SemData
+  );
+
+  const [currentSem, setCurrentSem] = useState();
+
+  const [currentDep, setcurrentDep] = useState();
+
   useEffect(async () => {
     await dispatch(ClearServer());
-    // await dispatch(get_attendance());
+    const currentSem = document.getElementById("SemFilt").value;
+    const currentDep = document.getElementById("DepFilt").value;
+
+    setcurrentDep(document.getElementById("DepFilt").value);
+    setCurrentSem(document.getElementById("SemFilt").value);
+
+    dispatch(get_subjects(currentDep, currentSem));
+    dispatch(get_students(currentDep, currentSem));
+    dispatch(getAssignment(currentDep, currentSem));
+    dispatch(getExams(currentDep, currentSem));
+    dispatch(getClasses(currentDep, currentSem));
   }, []);
 
   return (
     <Container>
       <Content>
-        <Breadcrumbs pages={["Dashboard"]} />
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Breadcrumbs pages={["Dashboard"]} />
+          <Header>
+            <select
+              id="DepFilt"
+              onChange={async (e) => {
+                // console.log(e.target.value);
+              }}
+            >
+              {departments.map((dep) => {
+                return <option value={dep._id}>{dep.name}</option>;
+              })}
+            </select>
+            <select
+              id="SemFilt"
+              onChange={async (e) => {
+                dispatch(ClearServer());
+                dispatch(get_subjects(currentDep, e.target.value));
+                dispatch(get_students(currentDep, e.target.value));
+                dispatch(getAssignment(currentDep, e.target.value));
+                dispatch(getExams(currentDep, e.target.value));
+                dispatch(getClasses(currentDep, e.target.value));
+              }}
+            >
+              {semesters.map((sem) => {
+                return <option value={sem._id}>{sem.name}</option>;
+              })}
+            </select>
+          </Header>
+        </div>
         <Dashboard>
-          <Info>
-            <StudentVectorImage width={140} height={140} />
-            <h3>15 Students</h3>
-          </Info>
-          <Info>
-            <TaskVectorImage width={140} height={140} />
-            <h3>19 Assignments</h3>
-          </Info>
-          <Info>
-            <ExamVectorImage width={140} height={140} />
-            <h3>12 Exams</h3>
-          </Info>
-          <Info>
-            <OnlineClassVectorImage width={140} height={140} />
-            <h3>17 Classes</h3>
-          </Info>
+          {students.length ? (
+            <Info>
+              <StudentVectorImage width={140} height={140} />
+              <h3>{students.length} Students</h3>
+            </Info>
+          ) : (
+            <Info>
+              <GreenLoading />
+            </Info>
+          )}
+          {assignments.length ? (
+            <Info>
+              <TaskVectorImage width={140} height={140} />
+              <h3>{assignments.length} Assignments</h3>
+            </Info>
+          ) : (
+            <Info>
+              <GreenLoading />
+            </Info>
+          )}
+          {exams.length ? (
+            <Info>
+              <ExamVectorImage width={140} height={140} />
+              <h3>{exams.length} Exams</h3>
+            </Info>
+          ) : (
+            <Info>
+              <GreenLoading />
+            </Info>
+          )}
+          {classes.length ? (
+            <Info>
+              <OnlineClassVectorImage width={140} height={140} />
+              <h3>{classes.length} Classes</h3>
+            </Info>
+          ) : (
+            <Info>
+              <GreenLoading />
+            </Info>
+          )}
         </Dashboard>
-        <h2>Students</h2>
-        <StudentsContainer>
-          <Table>
-            <thead>
-              <tr>
-                <th>Student</th>
-                <th>Department</th>
-                <th>Mobile</th>
-                <th>Last login</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-            </tbody>
-          </Table>
-        </StudentsContainer>
+        <h2>Students ({students.length})</h2>
+        {students.length ? (
+          <StudentsContainer>
+            <Table>
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Department</th>
+                  <th>Mobile</th>
+                  <th>Semester</th>
+                </tr>
+              </thead>
+              <tbody>
+                {students.map((data) => {
+                  return (
+                    <tr>
+                      <td>
+                        <ProfileContainer>
+                          <Profile>
+                            <img src={data.profile} />
+                          </Profile>
+                          <span>{data.name}</span>
+                        </ProfileContainer>
+                      </td>
+                      <td>{data.depName}</td>
+                      <td>{data.contMob}</td>
+                      <td>{data.semName}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </StudentsContainer>
+        ) : (
+          <StudentsContainer>
+            <Table>
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Department</th>
+                  <th>Mobile</th>
+                  <th>Last login</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </Table>
+          </StudentsContainer>
+        )}
       </Content>
     </Container>
   );

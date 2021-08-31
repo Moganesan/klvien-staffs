@@ -1,5 +1,15 @@
 import { ServerActionTypes } from "../constants/actionTypes";
 
+const GetStudents = (payload) => ({
+  type: ServerActionTypes.GET_STUDENTS,
+  payload: payload,
+});
+
+const GetSubjects = (payload) => ({
+  type: ServerActionTypes.GET_SUBJECTS,
+  payload: payload,
+});
+
 const GetAttendance = (payload) => ({
   type: ServerActionTypes.GET_ATTENDANCE,
   payload: payload,
@@ -35,6 +45,8 @@ const ClearServer = () => ({
 });
 
 export {
+  GetStudents,
+  GetSubjects,
   GetAttendance,
   GetAssignment,
   GetExams,

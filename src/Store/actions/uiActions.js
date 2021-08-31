@@ -67,6 +67,14 @@ const SetRocketLoadingFalse = () => ({
   type: UIActionTypes.SET_ROCKET_LOADING_FALSE,
 });
 
+const SetGreenLoadingTrue = () => ({
+  type: UIActionTypes.SET_GREEN_LOADING_TRUE,
+});
+
+const SetGreenLoadingFalse = () => ({
+  type: UIActionTypes.SET_GREEN_LOADING_FALSE,
+});
+
 const SetErrorMessage = (payload) => ({
   type: UIActionTypes.SET_ERROR_MESSAGE,
   payload: payload,
@@ -104,6 +112,8 @@ export {
   CloseAttendanceDetailsModal,
   SetLoadinTrue,
   SetLoadingFalse,
+  SetGreenLoadingTrue,
+  SetGreenLoadingFalse,
   SetRocketLoadingTrue,
   SetRocketLoadingFalse,
   SetErrorMessage,

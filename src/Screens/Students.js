@@ -92,8 +92,8 @@ const StudentsContainer = Styled.div`
 
 const Students = () => {
   const dispatch = useDispatch();
-  useEffect(async () => {
-    await dispatch(ClearServer());
+  useEffect(() => {
+    dispatch(ClearServer());
   }, []);
 
   return (

@@ -183,6 +183,9 @@ const Attendance = () => {
             <Route path="/attendance/:subject" children={<Classes />} />
             <Route path="/attendance/">
               <Breadcrumbs pages={["Attendance"]} />
+              <select>
+                <option>SEM 1</option>
+              </select>
               <SubjectContainer>
                 <Link to="/attendance/Tamil">
                   <Subject>
