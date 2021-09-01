@@ -1,5 +1,6 @@
 import Styled from "styled-components";
 import {
+  Dashboard,
   Close,
   Home,
   Attendance,
@@ -115,7 +116,7 @@ const Sidebar = () => {
                 whileTap={{ scale: 0.9 }}
                 style={path == "/" ? { background: ActiveBackground } : null}
               >
-                <Home color={path == "/" ? ActiveText : "white"} />
+                <Dashboard color={path == "/" ? ActiveText : "white"} />
               </MenuItem>
             </Link>
             <Link to="/attendance">

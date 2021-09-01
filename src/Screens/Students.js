@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { get_attendance } from "../Store/reducers/serverReducer";
+import { get_attendance, get_students } from "../Store/reducers/serverReducer";
 import { ClearServer } from "../Store/actions/serverActions";
 import Attendance from "../Components/AttendancePie";
 import {
@@ -24,6 +24,19 @@ const Container = Styled.div`
     @media only screen and (max-width: 1024px) {
      width: 100vw;
     }
+`;
+
+const Header = Styled.div`
+   select{
+     border: none;
+     outline: none;
+     padding: 10px;
+     border-radius: 5px;
+     font-weight: bold;
+     color: white;
+     background-color: #0D7377;
+     margin-right: 10px;
+   }
 `;
 
 const Content = Styled.div` 
@@ -86,78 +99,133 @@ const Table = Styled.table`
    } */
 `;
 
+const ProfileContainer = Styled.div`
+   display: flex;
+   align-items: center;
+
+   span{
+     font-weight: 500;
+     margin-left: 10px;
+     font-size: 15px;
+   }
+`;
+
+const Profile = Styled.div`
+   width: 50px;
+   height: 50px;
+   border-radius: 50%;
+   overflow: hidden;
+   img{
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+   }
+`;
+
 const StudentsContainer = Styled.div`
    
 `;
 
 const Students = () => {
+  const [currentSem, setCurrentSem] = useState();
+  const departments = useSelector(
+    (state) => state.SetUser.user.logindetails.DepData
+  );
+  const semesters = useSelector(
+    (state) => state.SetUser.user.logindetails.SemData
+  );
+  const students = useSelector((state) => state.Server["students"]);
+
+  const [currentDep, setcurrentDep] = useState();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(ClearServer());
+    const currentSem = document.getElementById("SemFilt").value;
+    const currentDep = document.getElementById("DepFilt").value;
+
+    setcurrentDep(document.getElementById("DepFilt").value);
+    setCurrentSem(document.getElementById("SemFilt").value);
+    dispatch(get_students(currentDep, currentSem));
   }, []);
 
   return (
     <Container>
       <Content>
-        <Breadcrumbs pages={["Students"]} />
-        <StudentsContainer>
-          <Table>
-            <thead>
-              <tr>
-                <th>Student</th>
-                <th>Department</th>
-                <th>Mobile</th>
-                <th>Last login</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-
-              <tr>
-                <td>Aug 12 2021</td>
-                <td>Commerce</td>
-                <td>Pending</td>
-                <td>adsdno</td>
-              </tr>
-            </tbody>
-          </Table>
-        </StudentsContainer>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Breadcrumbs pages={["Students"]} />
+          <Header>
+            <select
+              id="DepFilt"
+              onChange={async (e) => {
+                // console.log(e.target.value);
+              }}
+            >
+              {departments.map((dep) => {
+                return <option value={dep._id}>{dep.name}</option>;
+              })}
+            </select>
+            <select
+              id="SemFilt"
+              onChange={async (e) => {
+                dispatch(ClearServer());
+                dispatch(get_students(currentDep, e.target.value));
+              }}
+            >
+              {semesters.map((sem) => {
+                return <option value={sem._id}>{sem.name}</option>;
+              })}
+            </select>
+          </Header>
+        </div>
+        {students.length ? (
+          <StudentsContainer>
+            <Table>
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Department</th>
+                  <th>Mobile</th>
+                  <th>Semester</th>
+                </tr>
+              </thead>
+              <tbody>
+                {students.map((data) => {
+                  return (
+                    <tr>
+                      <td>
+                        <ProfileContainer>
+                          <Profile>
+                            <img src={data.profile} />
+                          </Profile>
+                          <span>{data.name}</span>
+                        </ProfileContainer>
+                      </td>
+                      <td>{data.depName}</td>
+                      <td>{data.contMob}</td>
+                      <td>{data.semName}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </StudentsContainer>
+        ) : (
+          <StudentsContainer>
+            <Table>
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Department</th>
+                  <th>Mobile</th>
+                  <th>Last login</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr></tr>
+              </tbody>
+            </Table>
+          </StudentsContainer>
+        )}
       </Content>
     </Container>
   );

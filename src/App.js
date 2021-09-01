@@ -48,6 +48,86 @@ const Container = Styled.div`
     }
 `;
 
+const routes = [
+  {
+    path: "/students",
+
+    main: () => (
+      <>
+        <Header />
+        <SidebarRight />
+        <Students />
+      </>
+    ),
+  },
+  {
+    path: "/attendance",
+
+    main: () => (
+      <>
+        <Header />
+        <SidebarRight />
+        <Attendance />
+      </>
+    ),
+  },
+  {
+    path: "/assignment",
+    main: () => (
+      <>
+        <Header />
+        <SidebarRight />
+        <Assignment />
+      </>
+    ),
+  },
+  {
+    path: "/exams",
+    main: () => (
+      <>
+        <Header />
+        <SidebarRight />
+        <Exams />
+      </>
+    ),
+  },
+  {
+    path: "/holidays",
+    main: () => <h2>Shoelaces</h2>,
+  },
+  {
+    path: "/classes",
+    main: () => (
+      <>
+        <Header />
+        <SidebarRight />
+        <Holidays />
+      </>
+    ),
+  },
+  {
+    path: "/billings",
+    main: () => (
+      <>
+        <Header />
+        <SidebarRight />
+        <Billings />
+      </>
+    ),
+  },
+  {
+    path: "/",
+    exact: true,
+    main: () => (
+      <>
+        <Header />
+        <SidebarRight />
+        <Home />
+      </>
+    ),
+  },
+];
+
 const App = () => {
   const auth = useSelector((state) => state.SetUser);
   const dispatch = useDispatch();
@@ -87,49 +167,16 @@ const App = () => {
         <AttendanceDetails />
         <ConnectGoogleModal />
         <ToastPortal ref={toastRef} autoClose={true} />
-
         <Container>
           <Switch>
-            <Route path="/students">
-              <Header />
-              <SidebarRight />
-              <Students />
-            </Route>
-            <Route path="/attendance">
-              <Header />
-              <SidebarRight />
-              <Attendance />
-            </Route>
-            <Route path="/assignment">
-              <Header />
-              <SidebarRight />
-              <Assignment />
-            </Route>
-            <Route path="/exams">
-              <Header />
-              <SidebarRight />
-              <Exams />
-            </Route>
-            <Route path="/holidays">
-              <Header />
-              <SidebarRight />
-              <Holidays />
-            </Route>
-            <Route path="/classes">
-              <Header />
-              <SidebarRight />
-              <Classes />
-            </Route>
-            <Route path="/billings">
-              <Header />
-              <SidebarRight />
-              <Billings />
-            </Route>
-            <Route path="/">
-              <Header />
-              <SidebarRight />
-              <Home />
-            </Route>
+            {routes.map((route, index) => (
+              <Route
+                key={index}
+                path={route.path}
+                exact={route.exact}
+                children={<route.main />}
+              />
+            ))}
           </Switch>
         </Container>
       </Router>
