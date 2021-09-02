@@ -219,7 +219,18 @@ const Students = () => {
                             <td>{data.contMob}</td>
                             <td>{data.semName}</td>
                             <td>
-                              <Link to={`${url}/${data.StudId}`}>
+                              {/* <Link to={`${url}/${data.StudId}`}>
+                                <ButtonPrimary text={"View"} />
+                              </Link> */}
+                              <Link
+                                to={{
+                                  pathname: `${url}/${data.StudId}`,
+                                  state: {
+                                    DepId: data.DepId,
+                                    SemId: data.SemId,
+                                  },
+                                }}
+                              >
                                 <ButtonPrimary text={"View"} />
                               </Link>
                             </td>
@@ -248,7 +259,7 @@ const Students = () => {
               )}
             </Route>
             <Route exact path={`${path}/:studId`}>
-              <StudentDetails />
+              {students.length ? <StudentDetails /> : null}
             </Route>
           </Switch>
         </Content>

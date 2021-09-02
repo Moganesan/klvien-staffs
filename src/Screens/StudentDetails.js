@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Styled from "styled-components";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Breadcrumbs from "../Components/breadcrumbs";
 import { ButtonPrimary } from "../Components/Button";
@@ -15,6 +15,7 @@ import {
   SetSuccessMessage,
 } from "../Store/actions/uiActions";
 import { ClearServer } from "../Store/actions/serverActions";
+import { GENDER, BLOOD_GROUP } from "../Store/constants/datatypes";
 import { get_students } from "../Store/reducers/serverReducer";
 
 const Header = Styled.div`
@@ -135,20 +136,24 @@ const FormGrid = Styled.div`
    display: grid;
    grid-gap: 5px;
    grid-template-columns: repeat(3, minmax(0,1fr));
+   select{
+    outline: none;
+     border: 1px solid #EFEFEF;
+     background: #EFEFEF;
+     border-radius: 8px;
+     height: 35px;
+     padding: 0 10px;
+   }
 `;
 
 const StudentDetails = () => {
   const dispatch = useDispatch();
 
-  const { studId } = useParams();
-  const history = useHistory();
+  const location = useLocation();
 
-  const departments = useSelector(
-    (state) => state.SetUser.user.logindetails.DepData
-  );
-  const semesters = useSelector(
-    (state) => state.SetUser.user.logindetails.SemData
-  );
+  const { DepId, SemId } = location.state;
+
+  const { studId } = useParams();
 
   const Student = useSelector((state) =>
     state.Server["students"].map((stud) => {
@@ -157,6 +162,8 @@ const StudentDetails = () => {
       }
     })
   );
+
+  const [edit, setEdit] = useState(false);
 
   const [fileServer, setFileServer] = useState(false);
   const [fileName, setFileName] = useState("");
@@ -186,7 +193,7 @@ const StudentDetails = () => {
       })
         .then((res) => {
           dispatch(ClearServer());
-          dispatch(get_students(departments[0]._id, semesters[0]._id));
+          dispatch(get_students(DepId, SemId));
           dispatch(SetLoadingFalse());
           dispatch(
             SetSuccessMessage({
@@ -196,170 +203,314 @@ const StudentDetails = () => {
         })
         .catch((err) => {
           dispatch(SetLoadingFalse());
+          console.log(err);
           dispatch(SetErrorMessage(err));
         });
     }
   };
 
-  useEffect(() => {
-    // if (!Student.length) {
-    //   window.location.replace("/students");
-    //   console.log("push");
-    // }
+  const [inputs, setInput] = useState([]);
+
+  useLayoutEffect(() => {
+    setInput([
+      {
+        title: "Name",
+        id: "name",
+        type: "text",
+        value: Student[0].name,
+      },
+      {
+        title: "Email",
+        id: "email",
+        type: "text",
+        value: Student[0].email,
+      },
+      {
+        title: "Gender",
+        id: "gender",
+        type: "select",
+        value: Student[0].sex,
+      },
+      {
+        title: "Blood Group",
+        id: "bloodgroup",
+        type: "select",
+        value: Student[0].bloodGroup,
+      },
+      {
+        title: "Mobile",
+        id: "contMob",
+        type: "text",
+        value: Student[0].contMob,
+      },
+      {
+        title: "Age",
+        id: "age",
+        type: "text",
+        value: Student[0].age,
+      },
+      {
+        title: "Qualification",
+        id: "qualification",
+        type: "text",
+        value: Student[0].qualification,
+      },
+      {
+        title: "DOB",
+        id: "dob",
+        type: "date",
+        value: Student[0].dob,
+      },
+      {
+        title: "Country",
+        id: "country",
+        type: "text",
+        value: Student[0].country,
+      },
+      {
+        title: "State",
+        id: "state",
+        type: "text",
+        value: Student[0].state,
+      },
+      {
+        title: "District",
+        id: "district",
+        type: "text",
+        value: Student[0].district,
+      },
+      {
+        title: "Pincode",
+        id: "pincode",
+        type: "text",
+        value: Student[0].pincode,
+      },
+      {
+        title: "Father Name",
+        id: "fathName",
+        type: "text",
+        value: Student[0].fathName,
+      },
+      {
+        title: "Father Occupation",
+        id: "fathOccu",
+        type: "text",
+        value: Student[0].fathOccu,
+      },
+      {
+        title: "Father Mobile",
+        id: "fathMob",
+        type: "text",
+        value: Student[0].fathMob,
+      },
+      {
+        title: "Mother Name",
+        id: "mothName",
+        type: "text",
+        value: Student[0].mothName,
+      },
+      {
+        title: "Mother Occupation",
+        id: "mothOccu",
+        type: "text",
+        value: Student[0].mothOccu,
+      },
+      {
+        title: "Mother Mobile",
+        id: "mothMob",
+        type: "text",
+        value: Student[0].mothMob,
+      },
+      {
+        title: "Addmission No",
+        id: "addmisNo",
+        type: "text",
+        value: Student[0].addmisNo,
+      },
+      {
+        title: "Department",
+        id: "depName",
+        type: "text",
+        value: Student[0].depName,
+      },
+      {
+        title: "Semester",
+        id: "semName",
+        type: "text",
+        value: Student[0].semName,
+      },
+    ]);
   }, []);
+
+  const updateStudentDetails = () => {
+    setEdit(false);
+    inputs.map((obj) => {
+      console.log(document.getElementById(obj.id).value);
+      document.getElementById(obj.id).setAttribute("disabled", "");
+    });
+  };
+
+  const enableEdit = () => {
+    setEdit(true);
+    inputs.map((obj) =>
+      document.getElementById(obj.id).removeAttribute("disabled")
+    );
+    document.getElementById(inputs[0].id).focus();
+  };
 
   return (
     <>
-      {Student.length ? (
-        <>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Breadcrumbs pages={["students", "studentsDetails"]} />
-            <Header></Header>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Breadcrumbs pages={["students", "studentsDetails"]} />
+        <Header></Header>
+      </div>
+
+      <StudentDetailsContainer>
+        <StudentProfileContainer>
+          <StudentProfile>
+            <img src={GET_PROFILE + Student[0].profile} />
+          </StudentProfile>
+
+          <CameraIcon whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+            <input
+              accept="image/png, image/jpeg"
+              id="file"
+              type="file"
+              onChange={(e) => {
+                Upload(e);
+              }}
+            />
+            <label for="file">
+              <Camera />
+            </label>
+          </CameraIcon>
+        </StudentProfileContainer>
+
+        <Form>
+          <div style={{ display: "flex" }}>
+            <h4>Student Details</h4>
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              style={{ marginLeft: 10, cursor: "pointer" }}
+              onClick={() => enableEdit()}
+            >
+              <Pencil width={20} height={20} />
+            </motion.div>
           </div>
 
-          <StudentDetailsContainer>
-            <StudentProfileContainer>
-              <StudentProfile>
-                <img src={GET_PROFILE + Student[0].profile} />
-              </StudentProfile>
-
-              <CameraIcon whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                <input
-                  accept="image/png, image/jpeg"
-                  id="file"
-                  type="file"
-                  onChange={(e) => {
-                    Upload(e);
+          <FormGrid>
+            {inputs.map((data, index) => {
+              return (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "stretch",
                   }}
-                />
-                <label for="file">
-                  <Camera />
-                </label>
-              </CameraIcon>
-            </StudentProfileContainer>
-
-            <Form>
-              <div style={{ display: "flex" }}>
-                <h4>Student Details</h4>
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  style={{ marginLeft: 10, cursor: "pointer" }}
-                  onClick={() => {}}
                 >
-                  <Pencil width={20} height={20} />
-                </motion.div>
-              </div>
-              <FormGrid>
-                <div>
-                  <label>Name</label>
-                  <input type="text" value={Student[0].name} disabled />
+                  <label>{data.title}</label>
+                  {data.type == "text" ? (
+                    <input
+                      id={data.id}
+                      type={data.type}
+                      value={data.value}
+                      disabled
+                      onChange={(e) => {
+                        setInput(
+                          inputs.map((item) =>
+                            item.id === data.id
+                              ? { ...item, value: e.target.value }
+                              : item
+                          )
+                        );
+                      }}
+                    />
+                  ) : data.type == "select" ? (
+                    <>
+                      {data.id == "gender" ? (
+                        <select
+                          id={data.id}
+                          type={data.type}
+                          value={data.value}
+                          disabled
+                          onChange={(e) => {
+                            setInput(
+                              inputs.map((item) =>
+                                item.id === data.id
+                                  ? { ...item, value: e.target.value }
+                                  : item
+                              )
+                            );
+                          }}
+                        >
+                          {GENDER.map((v) => {
+                            const curtv = data.value.toUpperCase();
+                            if (curtv === v) {
+                              return <option>{v.toLowerCase()}</option>;
+                            } else {
+                              return <option>{v.toLowerCase()}</option>;
+                            }
+                          })}
+                        </select>
+                      ) : data.id == "bloodgroup" ? (
+                        <select
+                          id={data.id}
+                          type={data.type}
+                          value={data.value}
+                          disabled
+                          onChange={(e) => {
+                            setInput(
+                              inputs.map((item) =>
+                                item.id === data.id
+                                  ? { ...item, value: e.target.value }
+                                  : item
+                              )
+                            );
+                          }}
+                        >
+                          {BLOOD_GROUP.map((v) => {
+                            const curtv = data.value.toUpperCase();
+                            if (curtv === v) {
+                              return <option>{v.toUpperCase()}</option>;
+                            } else {
+                              return <option>{v.toUpperCase()}</option>;
+                            }
+                          })}
+                        </select>
+                      ) : null}
+                    </>
+                  ) : data.type == "date" ? (
+                    <>
+                      <input
+                        id={data.id}
+                        type={data.type}
+                        value={data.value}
+                        disabled
+                        onChange={(e) => {
+                          setInput(
+                            inputs.map((item) =>
+                              item.id === data.id
+                                ? { ...item, value: e.target.value }
+                                : item
+                            )
+                          );
+                        }}
+                      />
+                    </>
+                  ) : null}
                 </div>
-                <div>
-                  <label>Email</label>
-                  <input type="text" value={Student[0].email} disabled />
-                </div>
-                <div>
-                  <label>Gender</label>
+              );
+            })}
+          </FormGrid>
 
-                  <input type="text" value={Student[0].sex} disabled />
-                </div>
-                <div>
-                  <label>Blood Group</label>
-                  <input type="text" value={Student[0].bloodGroup} disabled />
-                </div>
-                <div>
-                  <label>Mobile</label>
-
-                  <input type="text" value={Student[0].contMob} disabled />
-                </div>
-                <div>
-                  <label>Age</label>
-
-                  <input type="text" value={Student[0].age} disabled />
-                </div>
-                <div>
-                  <label>Title</label>
-
-                  <input type="text" value={Student[0].title} disabled />
-                </div>
-                <div>
-                  <label>Qualification</label>
-                  <input
-                    type="text"
-                    value={Student[0].qualification}
-                    disabled
-                  />
-                </div>
-                <div>
-                  <label>DOB</label>
-                  <input type="text" value={Student[0].dob} disabled />
-                </div>
-                <div>
-                  <label>Community</label>
-                  <input type="text" value={Student[0].community} disabled />
-                </div>
-                <div>
-                  <label>Country</label>
-                  <input type="text" value={Student[0].country} disabled />
-                </div>
-                <div>
-                  <label>State</label>
-
-                  <input type="text" value={Student[0].state} disabled />
-                </div>
-                <div>
-                  <label>District</label>
-
-                  <input type="text" value={Student[0].district} disabled />
-                </div>
-                <div>
-                  <label>Pincode</label>
-                  <input type="text" value={Student[0].pincode} disabled />
-                </div>
-                <div>
-                  <label>Father Name</label>
-
-                  <input type="text" value={Student[0].fathName} disabled />
-                </div>
-                <div>
-                  <label>Father Occupation</label>
-                  <input type="text" value={Student[0].fathOccu} disabled />
-                </div>
-                <div>
-                  <label>Father Mobile</label>
-
-                  <input type="text" value={Student[0].fathMob} disabled />
-                </div>
-                <div>
-                  <label>Mother Name</label>
-                  <input type="text" value={Student[0].mothName} disabled />
-                </div>
-                <div>
-                  <label>Mother Occupation</label>
-                  <input type="text" value={Student[0].mothOccu} disabled />
-                </div>
-                <div>
-                  <label>Mother Mobile</label>
-                  <input type="text" value={Student[0].mothMob} disabled />
-                </div>
-                <div>
-                  <label>Admission No</label>
-                  <input type="text" value={Student[0].addmisNo} disabled />
-                </div>
-                <div>
-                  <label>Department</label>
-                  <input type="text" value={Student[0].depName} disabled />
-                </div>
-                <div>
-                  <label>Semester</label>
-                  <input type="text" value={Student[0].semName} disabled />
-                </div>
-              </FormGrid>
-            </Form>
-          </StudentDetailsContainer>
-        </>
-      ) : null}
+          <ButtonPrimary
+            styled={{ marginTop: 20 }}
+            OnClick={edit ? () => updateStudentDetails() : () => enableEdit()}
+            text={edit ? "Save" : "Edit"}
+          />
+        </Form>
+      </StudentDetailsContainer>
     </>
   );
 };
