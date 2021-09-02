@@ -19,6 +19,7 @@ import {
 } from "../Assets/vectorimages/source";
 import Breadcrumbs from "../Components/breadcrumbs";
 import GreenLoading from "../Components/greenLoading";
+import { GET_PROFILE } from "../Store/constants/api";
 
 const Container = Styled.div`
    position: relative;
@@ -214,23 +215,13 @@ const Home = () => {
     (state) => state.SetUser.user.logindetails.SemData
   );
 
-  const [currentSem, setCurrentSem] = useState();
-
-  const [currentDep, setcurrentDep] = useState();
-
   useEffect(async () => {
-    await dispatch(ClearServer());
-    const currentSem = document.getElementById("SemFilt").value;
-    const currentDep = document.getElementById("DepFilt").value;
-
-    setcurrentDep(document.getElementById("DepFilt").value);
-    setCurrentSem(document.getElementById("SemFilt").value);
-
-    dispatch(get_subjects(currentDep, currentSem));
-    dispatch(get_students(currentDep, currentSem));
-    dispatch(getAssignment(currentDep, currentSem));
-    dispatch(getExams(currentDep, currentSem));
-    dispatch(getClasses(currentDep, currentSem));
+    dispatch(ClearServer());
+    dispatch(get_subjects(departments[0]._id, semesters[0]._id));
+    dispatch(get_students(departments[0]._id, semesters[0]._id));
+    dispatch(getAssignment(departments[0]._id, semesters[0]._id));
+    dispatch(getExams(departments[0]._id, semesters[0]._id));
+    dispatch(getClasses(departments[0]._id, semesters[0]._id));
   }, []);
 
   return (
@@ -242,7 +233,37 @@ const Home = () => {
             <select
               id="DepFilt"
               onChange={async (e) => {
-                // console.log(e.target.value);
+                dispatch(ClearServer());
+                dispatch(
+                  get_subjects(
+                    e.target.value,
+                    document.getElementById("SemFilt").value
+                  )
+                );
+                dispatch(
+                  get_students(
+                    e.target.value,
+                    document.getElementById("SemFilt").value
+                  )
+                );
+                dispatch(
+                  getAssignment(
+                    e.target.value,
+                    document.getElementById("SemFilt").value
+                  )
+                );
+                dispatch(
+                  getExams(
+                    e.target.value,
+                    document.getElementById("SemFilt").value
+                  )
+                );
+                dispatch(
+                  getClasses(
+                    e.target.value,
+                    document.getElementById("SemFilt").value
+                  )
+                );
               }}
             >
               {departments.map((dep) => {
@@ -253,11 +274,36 @@ const Home = () => {
               id="SemFilt"
               onChange={async (e) => {
                 dispatch(ClearServer());
-                dispatch(get_subjects(currentDep, e.target.value));
-                dispatch(get_students(currentDep, e.target.value));
-                dispatch(getAssignment(currentDep, e.target.value));
-                dispatch(getExams(currentDep, e.target.value));
-                dispatch(getClasses(currentDep, e.target.value));
+                dispatch(
+                  get_subjects(
+                    document.getElementById("DepFilt").value,
+                    e.target.value
+                  )
+                );
+                dispatch(
+                  get_students(
+                    document.getElementById("DepFilt").value,
+                    e.target.value
+                  )
+                );
+                dispatch(
+                  getAssignment(
+                    document.getElementById("DepFilt").value,
+                    e.target.value
+                  )
+                );
+                dispatch(
+                  getExams(
+                    document.getElementById("DepFilt").value,
+                    e.target.value
+                  )
+                );
+                dispatch(
+                  getClasses(
+                    document.getElementById("DepFilt").value,
+                    e.target.value
+                  )
+                );
               }}
             >
               {semesters.map((sem) => {
@@ -327,7 +373,7 @@ const Home = () => {
                       <td>
                         <ProfileContainer>
                           <Profile>
-                            <img src={data.profile} />
+                            <img src={GET_PROFILE + data.profile} />
                           </Profile>
                           <span>{data.name}</span>
                         </ProfileContainer>

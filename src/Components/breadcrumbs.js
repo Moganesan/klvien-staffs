@@ -10,7 +10,6 @@ const Container = Styled.div`
       margin: 0;
       padding: 0;
       color: #686D76;
-      cursor: pointer;
   }
 `;
 

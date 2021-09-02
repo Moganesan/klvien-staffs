@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { get_attendance, get_students } from "../Store/reducers/serverReducer";
 import { ClearServer } from "../Store/actions/serverActions";
-import Attendance from "../Components/AttendancePie";
-import {
-  StudentVectorImage,
-  ExamVectorImage,
-  TaskVectorImage,
-  Schoolboy,
-  OnlineClass,
-} from "../Assets/vectorimages/index";
 import Breadcrumbs from "../Components/breadcrumbs";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+  useRouteMatch,
+  useHistory,
+} from "react-router-dom";
+import StudentDetails from "./StudentDetails";
+import { ButtonPrimary } from "../Components/Button";
+import { GET_PROFILE } from "../Store/constants/api";
 
 const Container = Styled.div`
    position: relative;
@@ -127,107 +131,129 @@ const StudentsContainer = Styled.div`
 `;
 
 const Students = () => {
-  const [currentSem, setCurrentSem] = useState();
+  const { path, url } = useRouteMatch();
   const departments = useSelector(
     (state) => state.SetUser.user.logindetails.DepData
   );
   const semesters = useSelector(
     (state) => state.SetUser.user.logindetails.SemData
   );
+
+  const dispatch = useDispatch();
+
   const students = useSelector((state) => state.Server["students"]);
 
-  const [currentDep, setcurrentDep] = useState();
-  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(ClearServer());
-    const currentSem = document.getElementById("SemFilt").value;
-    const currentDep = document.getElementById("DepFilt").value;
-
-    setcurrentDep(document.getElementById("DepFilt").value);
-    setCurrentSem(document.getElementById("SemFilt").value);
-    dispatch(get_students(currentDep, currentSem));
+    dispatch(get_students(departments[0]._id, semesters[0]._id));
   }, []);
 
   return (
-    <Container>
-      <Content>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Breadcrumbs pages={["Students"]} />
-          <Header>
-            <select
-              id="DepFilt"
-              onChange={async (e) => {
-                // console.log(e.target.value);
-              }}
-            >
-              {departments.map((dep) => {
-                return <option value={dep._id}>{dep.name}</option>;
-              })}
-            </select>
-            <select
-              id="SemFilt"
-              onChange={async (e) => {
-                dispatch(ClearServer());
-                dispatch(get_students(currentDep, e.target.value));
-              }}
-            >
-              {semesters.map((sem) => {
-                return <option value={sem._id}>{sem.name}</option>;
-              })}
-            </select>
-          </Header>
-        </div>
-        {students.length ? (
-          <StudentsContainer>
-            <Table>
-              <thead>
-                <tr>
-                  <th>Student</th>
-                  <th>Department</th>
-                  <th>Mobile</th>
-                  <th>Semester</th>
-                </tr>
-              </thead>
-              <tbody>
-                {students.map((data) => {
-                  return (
-                    <tr>
-                      <td>
-                        <ProfileContainer>
-                          <Profile>
-                            <img src={data.profile} />
-                          </Profile>
-                          <span>{data.name}</span>
-                        </ProfileContainer>
-                      </td>
-                      <td>{data.depName}</td>
-                      <td>{data.contMob}</td>
-                      <td>{data.semName}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-          </StudentsContainer>
-        ) : (
-          <StudentsContainer>
-            <Table>
-              <thead>
-                <tr>
-                  <th>Student</th>
-                  <th>Department</th>
-                  <th>Mobile</th>
-                  <th>Last login</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr></tr>
-              </tbody>
-            </Table>
-          </StudentsContainer>
-        )}
-      </Content>
-    </Container>
+    <>
+      <Container>
+        <Content>
+          <Switch>
+            <Route exact path={path}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Breadcrumbs pages={["Students"]} />
+                <Header>
+                  <select
+                    id="DepFilt"
+                    onChange={async (e) => {
+                      dispatch(ClearServer());
+                      dispatch(
+                        get_students(
+                          e.target.value,
+                          document.getElementById("SemFilt").value
+                        )
+                      );
+                    }}
+                  >
+                    {departments.map((dep) => {
+                      return <option value={dep._id}>{dep.name}</option>;
+                    })}
+                  </select>
+                  <select
+                    id="SemFilt"
+                    onChange={async (e) => {
+                      dispatch(ClearServer());
+                      dispatch(
+                        get_students(
+                          document.getElementById("DepFilt").value,
+                          e.target.value
+                        )
+                      );
+                    }}
+                  >
+                    {semesters.map((sem) => {
+                      return <option value={sem._id}>{sem.name}</option>;
+                    })}
+                  </select>
+                </Header>
+              </div>
+              {students.length ? (
+                <StudentsContainer>
+                  <Table>
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Department</th>
+                        <th>Mobile</th>
+                        <th>Semester</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {students.map((data) => {
+                        return (
+                          <tr>
+                            <td>
+                              <ProfileContainer>
+                                <Profile>
+                                  <img src={GET_PROFILE + data.profile} />
+                                </Profile>
+                                <span>{data.name}</span>
+                              </ProfileContainer>
+                            </td>
+                            <td>{data.depName}</td>
+                            <td>{data.contMob}</td>
+                            <td>{data.semName}</td>
+                            <td>
+                              <Link to={`${url}/${data.StudId}`}>
+                                <ButtonPrimary text={"View"} />
+                              </Link>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </StudentsContainer>
+              ) : (
+                <StudentsContainer>
+                  <Table>
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Department</th>
+                        <th>Mobile</th>
+                        <th>Last login</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr></tr>
+                    </tbody>
+                  </Table>
+                </StudentsContainer>
+              )}
+            </Route>
+            <Route exact path={`${path}/:studId`}>
+              <StudentDetails />
+            </Route>
+          </Switch>
+        </Content>
+      </Container>
+    </>
   );
 };
 

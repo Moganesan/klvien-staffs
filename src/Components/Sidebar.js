@@ -146,11 +146,15 @@ const Sidebar = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             style={
-              path == "/students" ? { background: ActiveBackground } : null
+              path.includes("/students")
+                ? { background: ActiveBackground }
+                : null
             }
           >
-            <Users color={path == "/students" ? ActiveText : "white"} />
-            <span style={path == "/students" ? { color: ActiveText } : null}>
+            <Users color={path.includes("/students") ? ActiveText : "white"} />
+            <span
+              style={path.includes("/students") ? { color: ActiveText } : null}
+            >
               Students
             </span>
           </MenuItem>
@@ -160,11 +164,19 @@ const Sidebar = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             style={
-              path == "/attendance" ? { background: ActiveBackground } : null
+              path.includes("/attendance")
+                ? { background: ActiveBackground }
+                : null
             }
           >
-            <Attendance color={path == "/attendance" ? ActiveText : "white"} />
-            <span style={path == "/attendance" ? { color: ActiveText } : null}>
+            <Attendance
+              color={path.includes("/attendance") ? ActiveText : "white"}
+            />
+            <span
+              style={
+                path.includes("/attendance") ? { color: ActiveText } : null
+              }
+            >
               Attendance
             </span>
           </MenuItem>
@@ -174,11 +186,19 @@ const Sidebar = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             style={
-              path == "/assignment" ? { background: ActiveBackground } : null
+              path.includes("/assignment")
+                ? { background: ActiveBackground }
+                : null
             }
           >
-            <Assignment color={path == "/assignment" ? ActiveText : "white"} />
-            <span style={path == "/assignment" ? { color: ActiveText } : null}>
+            <Assignment
+              color={path.includes("/assignment") ? ActiveText : "white"}
+            />
+            <span
+              style={
+                path.includes("/assignment") ? { color: ActiveText } : null
+              }
+            >
               Assignment
             </span>
           </MenuItem>
@@ -187,10 +207,14 @@ const Sidebar = () => {
           <MenuItem
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            style={path == "/exams" ? { background: ActiveBackground } : null}
+            style={
+              path.includes("/exams") ? { background: ActiveBackground } : null
+            }
           >
-            <Exams color={path == "/exams" ? ActiveText : "white"} />
-            <span style={path == "/exams" ? { color: ActiveText } : null}>
+            <Exams color={path.includes("/exams") ? ActiveText : "white"} />
+            <span
+              style={path.includes("/exams") ? { color: ActiveText } : null}
+            >
               Exams
             </span>
           </MenuItem>
@@ -200,11 +224,17 @@ const Sidebar = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             style={
-              path == "/holidays" ? { background: ActiveBackground } : null
+              path.includes("/holidays")
+                ? { background: ActiveBackground }
+                : null
             }
           >
-            <Holidays color={path == "/holidays" ? ActiveText : "white"} />
-            <span style={path == "/holidays" ? { color: ActiveText } : null}>
+            <Holidays
+              color={path.includes("/holidays") ? ActiveText : "white"}
+            />
+            <span
+              style={path.includes("/holidays") ? { color: ActiveText } : null}
+            >
               Holidays
             </span>
           </MenuItem>
@@ -213,10 +243,16 @@ const Sidebar = () => {
           <MenuItem
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            style={path == "/classes" ? { background: ActiveBackground } : null}
+            style={
+              path.includes("/classes")
+                ? { background: ActiveBackground }
+                : null
+            }
           >
-            <Classes color={path == "/classes" ? ActiveText : "white"} />
-            <span style={path == "/classes" ? { color: ActiveText } : null}>
+            <Classes color={path.includes("/classes") ? ActiveText : "white"} />
+            <span
+              style={path.includes("/classes") ? { color: ActiveText } : null}
+            >
               Classes
             </span>
           </MenuItem>
@@ -226,11 +262,17 @@ const Sidebar = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             style={
-              path == "/billings" ? { background: ActiveBackground } : null
+              path.includes("/billings")
+                ? { background: ActiveBackground }
+                : null
             }
           >
-            <Billing color={path == "/billings" ? ActiveText : "white"} />
-            <span style={path == "/billings" ? { color: ActiveText } : null}>
+            <Billing
+              color={path.includes("/billings") ? ActiveText : "white"}
+            />
+            <span
+              style={path.includes("/billings") ? { color: ActiveText } : null}
+            >
               Billing
             </span>
           </MenuItem>

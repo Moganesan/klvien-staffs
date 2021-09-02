@@ -51,6 +51,14 @@ const CloseAttendanceDetailsModal = () => ({
   type: UIActionTypes.CLOSE_ATTENDANCE_DETAILS_MODAL,
 });
 
+const OpenStudentUpdateDetailsModal = () => ({
+  type: UIActionTypes.OPEN_UPDATE_STUDENT_DETAILS_MODAL,
+});
+
+const CloseStudentUpdateDetailsModal = () => ({
+  type: UIActionTypes.CLOSE_UPDATE_STUDENT_DETAILS_MODAL,
+});
+
 const SetLoadinTrue = () => ({
   type: UIActionTypes.SET_LOADING_TRUE,
 });
@@ -110,6 +118,8 @@ export {
   CloseGoogleConnectModal,
   OpendAttendanceDetailsModal,
   CloseAttendanceDetailsModal,
+  OpenStudentUpdateDetailsModal,
+  CloseStudentUpdateDetailsModal,
   SetLoadinTrue,
   SetLoadingFalse,
   SetGreenLoadingTrue,

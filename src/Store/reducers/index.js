@@ -11,6 +11,7 @@ import {
   RocketLoadingReducer,
   AlertMessageReducer,
   GreenLoadingReducer,
+  UpdateStudentDetailsReducer,
 } from "./uiReducer";
 import {
   AthenticateUser,
@@ -43,6 +44,7 @@ const reducers = combineReducers({
   Authentication: AthenticateUser,
   GoogleAuth: GoogleAuth,
   GoogleConnectModal: ConnectGoogleModalReducer,
+  UpdateStudentDetailsModal: UpdateStudentDetailsReducer,
   AttendanceDetailsModal: AttendanceDetailsModalReducer,
   ConnectGoogle: ConnectGoogle,
   SetUser: setUser,

@@ -29,6 +29,7 @@ import firebase from "firebase";
 import { ToastPortal } from "./Components/ToastPortal";
 import Students from "./Screens/Students";
 import AttendanceDetails from "./Components/AttendanceDetails";
+import UpdateStudentDetails from "./Components/UpdateStudentDetailsModal";
 
 const Container = Styled.div`
    margin-left: 200px;
@@ -164,6 +165,7 @@ const App = () => {
         <FeedbackModal />
         <UploadModal />
         <Sidebar />
+        <UpdateStudentDetails />
         <AttendanceDetails />
         <ConnectGoogleModal />
         <ToastPortal ref={toastRef} autoClose={true} />

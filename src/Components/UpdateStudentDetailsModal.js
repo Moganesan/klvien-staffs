@@ -2,7 +2,10 @@ import { useState } from "react";
 import Styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { UIActionTypes } from "../Store/constants/actionTypes";
-import { CloseFeedbackModal } from "../Store/actions/uiActions";
+import {
+  CloseFeedbackModal,
+  CloseStudentUpdateDetailsModal,
+} from "../Store/actions/uiActions";
 import Close from "../Assets/close.svg";
 import { motion } from "framer-motion";
 import { ButtonPrimary } from "../Components/Button";
@@ -91,8 +94,8 @@ const Form = Styled.div`
   }
 `;
 
-const FeedBack = () => {
-  const active = useSelector((state) => state.FeedbackModal);
+const UpdateStudentDetails = () => {
+  const active = useSelector((state) => state.UpdateStudentDetailsModal);
   const Name = useSelector((state) => state.SetUser.user.staff.fname);
   const Email = useSelector((state) => state.SetUser.user.staff.email);
 
@@ -101,15 +104,17 @@ const FeedBack = () => {
 
   return (
     <>
-      {active === UIActionTypes.OPEN_FEEDBACKMODAL ? (
+      {active === UIActionTypes.OPEN_UPDATE_STUDENT_DETAILS_MODAL ? (
         <Container>
-          <Background onClick={() => dispatch(CloseFeedbackModal())} />
+          <Background
+            onClick={() => dispatch(CloseStudentUpdateDetailsModal())}
+          />
           <Content>
             <Header>
               <motion.div
                 style={{ cursor: "pointer" }}
                 whileTap={{ scale: 0.9 }}
-                onClick={() => dispatch(CloseFeedbackModal())}
+                onClick={() => dispatch(CloseStudentUpdateDetailsModal())}
               >
                 <img
                   width="20"
@@ -123,11 +128,6 @@ const FeedBack = () => {
             <Form>
               <input type="name" placeholder={Name} disabled />
               <input type="email" placeholder={Email} disabled />
-              <textarea
-                onChange={(e) => setMessage(e.target.value)}
-                type="text"
-                placeholder="Message"
-              />
               <ButtonPrimary
                 OnClick={() => dispatch(addFeedback(message))}
                 text="Send"
@@ -140,4 +140,4 @@ const FeedBack = () => {
   );
 };
 
-export default FeedBack;
+export default UpdateStudentDetails;
