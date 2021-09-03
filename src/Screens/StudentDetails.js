@@ -15,8 +15,14 @@ import {
   SetSuccessMessage,
 } from "../Store/actions/uiActions";
 import { ClearServer } from "../Store/actions/serverActions";
-import { GENDER, BLOOD_GROUP } from "../Store/constants/datatypes";
-import { get_students } from "../Store/reducers/serverReducer";
+import {
+  GENDER,
+  BLOOD_GROUP,
+  COUNTRY,
+  STATE,
+  DISTRICT,
+} from "../Store/constants/datatypes";
+import { get_students, UpdateStudent } from "../Store/reducers/serverReducer";
 
 const Header = Styled.div`
    select{
@@ -163,6 +169,14 @@ const StudentDetails = () => {
     })
   );
 
+  const DepData = useSelector(
+    (state) => state.SetUser.user.logindetails.DepData
+  );
+
+  const SemData = useSelector(
+    (state) => state.SetUser.user.logindetails.SemData
+  );
+
   const [edit, setEdit] = useState(false);
 
   const [fileServer, setFileServer] = useState(false);
@@ -240,13 +254,13 @@ const StudentDetails = () => {
       {
         title: "Mobile",
         id: "contMob",
-        type: "text",
+        type: "number",
         value: Student[0].contMob,
       },
       {
         title: "Age",
         id: "age",
-        type: "text",
+        type: "number",
         value: Student[0].age,
       },
       {
@@ -264,25 +278,25 @@ const StudentDetails = () => {
       {
         title: "Country",
         id: "country",
-        type: "text",
+        type: "select",
         value: Student[0].country,
       },
       {
         title: "State",
         id: "state",
-        type: "text",
+        type: "select",
         value: Student[0].state,
       },
       {
         title: "District",
         id: "district",
-        type: "text",
+        type: "select",
         value: Student[0].district,
       },
       {
         title: "Pincode",
         id: "pincode",
-        type: "text",
+        type: "number",
         value: Student[0].pincode,
       },
       {
@@ -300,7 +314,7 @@ const StudentDetails = () => {
       {
         title: "Father Mobile",
         id: "fathMob",
-        type: "text",
+        type: "number",
         value: Student[0].fathMob,
       },
       {
@@ -318,7 +332,7 @@ const StudentDetails = () => {
       {
         title: "Mother Mobile",
         id: "mothMob",
-        type: "text",
+        type: "number",
         value: Student[0].mothMob,
       },
       {
@@ -327,22 +341,23 @@ const StudentDetails = () => {
         type: "text",
         value: Student[0].addmisNo,
       },
-      {
-        title: "Department",
-        id: "depName",
-        type: "text",
-        value: Student[0].depName,
-      },
-      {
-        title: "Semester",
-        id: "semName",
-        type: "text",
-        value: Student[0].semName,
-      },
+      // {
+      //   title: "Department",
+      //   id: "department",
+      //   type: "select",
+      //   value: Student[0].DepId,
+      // },
+      // {
+      //   title: "Semester",
+      //   id: "semester",
+      //   type: "select",
+      //   value: Student[0].SemId,
+      // },
     ]);
   }, []);
 
   const updateStudentDetails = () => {
+    dispatch(UpdateStudent(Student[0].StudId.trim()), inputs);
     setEdit(false);
     inputs.map((obj) => {
       console.log(document.getElementById(obj.id).value);
@@ -478,9 +493,395 @@ const StudentDetails = () => {
                             }
                           })}
                         </select>
+                      ) : data.id == "country" ? (
+                        <select
+                          id={data.id}
+                          type={data.type}
+                          value={data.value}
+                          disabled
+                          onChange={(e) => {
+                            setInput(
+                              inputs.map((item) =>
+                                item.id === data.id
+                                  ? { ...item, value: e.target.value }
+                                  : item
+                              )
+                            );
+                          }}
+                        >
+                          {COUNTRY.map((v) => {
+                            const curtv = data.value.toUpperCase();
+                            if (curtv === v.toUpperCase()) {
+                              return <option>{v}</option>;
+                            } else {
+                              return <option>{v}</option>;
+                            }
+                          })}
+                        </select>
+                      ) : data.id == "state" ? (
+                        <select
+                          id={data.id}
+                          type={data.type}
+                          value={data.value}
+                          disabled
+                          onChange={(e) => {
+                            setInput(
+                              inputs.map((item) =>
+                                item.id === data.id
+                                  ? { ...item, value: e.target.value }
+                                  : item
+                              )
+                            );
+                          }}
+                        >
+                          <>
+                            {STATE[0][
+                              inputs
+                                .map((i) =>
+                                  i.id == "country"
+                                    ? i.value.toLowerCase()
+                                    : null
+                                )
+                                .filter((c) => c != null)
+                                .toString()
+                            ]
+                              ? STATE[0][
+                                  inputs
+                                    .map((i) =>
+                                      i.id == "country"
+                                        ? i.value.toLowerCase()
+                                        : null
+                                    )
+                                    .filter((c) => c != null)
+                                    .toString()
+                                ].map((state) =>
+                                  data.value
+                                    .split(/\s/)
+                                    .join("")
+                                    .toLowerCase()
+                                    .trim() ===
+                                  state
+                                    .split(/\s/)
+                                    .join("")
+                                    .toLowerCase()
+                                    .trim() ? (
+                                    <option>{state}</option>
+                                  ) : null
+                                )
+                              : null}
+                            {STATE[0][
+                              inputs
+                                .map((i) =>
+                                  i.id == "country"
+                                    ? i.value.toLowerCase()
+                                    : null
+                                )
+                                .filter((c) => c != null)
+                                .toString()
+                            ]
+                              ? STATE[0][
+                                  inputs
+                                    .map((i) =>
+                                      i.id == "country"
+                                        ? i.value.toLowerCase()
+                                        : null
+                                    )
+                                    .filter((c) => c != null)
+                                    .toString()
+                                ].map((state) =>
+                                  data.value
+                                    .split(/\s/)
+                                    .join("")
+                                    .toLowerCase()
+                                    .trim() !=
+                                  state
+                                    .split(/\s/)
+                                    .join("")
+                                    .toLowerCase()
+                                    .trim() ? (
+                                    <option>{state}</option>
+                                  ) : null
+                                )
+                              : null}
+                          </>
+                          ;
+                        </select>
+                      ) : data.id == "district" ? (
+                        <select
+                          id={data.id}
+                          type={data.type}
+                          value={data.value}
+                          disabled
+                          onChange={(e) => {
+                            setInput(
+                              inputs.map((item) =>
+                                item.id === data.id
+                                  ? { ...item, value: e.target.value }
+                                  : item
+                              )
+                            );
+                          }}
+                        >
+                          <>
+                            {STATE[0][
+                              inputs
+                                .map((i) =>
+                                  i.id == "country"
+                                    ? i.value.toLowerCase()
+                                    : null
+                                )
+                                .filter((c) => c != null)
+                                .toString()
+                            ]
+                              ? STATE[0][
+                                  inputs
+                                    .map((i) =>
+                                      i.id == "country"
+                                        ? i.value.toLowerCase()
+                                        : null
+                                    )
+                                    .filter((c) => c != null)
+                                    .toString()
+                                ].map((state) =>
+                                  inputs
+                                    .map((i) =>
+                                      i.id == "state"
+                                        ? i.value
+                                            .toLowerCase()
+                                            .split(/\s/)
+                                            .join("")
+                                            .trim()
+                                        : null
+                                    )
+                                    .filter((c) => c != null)
+                                    .toString() ===
+                                  state
+                                    .split(/\s/)
+                                    .join("")
+                                    .toLowerCase()
+                                    .trim() ? (
+                                    <>
+                                      {DISTRICT[0][
+                                        inputs
+                                          .map((i) =>
+                                            i.id == "state"
+                                              ? i.value
+                                                  .toLowerCase()
+                                                  .toLowerCase()
+                                                  .split(/\s/)
+                                                  .join("")
+                                                  .trim()
+                                              : null
+                                          )
+                                          .filter((c) => c != null)
+                                          .toString()
+                                      ]
+                                        ? DISTRICT[0][
+                                            inputs
+                                              .map((i) =>
+                                                i.id == "state"
+                                                  ? i.value
+                                                      .toLowerCase()
+                                                      .toLowerCase()
+                                                      .split(/\s/)
+                                                      .join("")
+                                                      .trim()
+                                                  : null
+                                              )
+                                              .filter((c) => c != null)
+                                              .toString()
+                                          ].map((district) =>
+                                            district
+                                              .split(/\s/)
+                                              .join("")
+                                              .toLowerCase()
+                                              .trim() ===
+                                            data.value
+                                              .split(/\s/)
+                                              .join("")
+                                              .toLowerCase()
+                                              .trim() ? (
+                                              <option>{district}</option>
+                                            ) : null
+                                          )
+                                        : null}
+                                    </>
+                                  ) : null
+                                )
+                              : null}
+                            {STATE[0][
+                              inputs
+                                .map((i) =>
+                                  i.id == "country"
+                                    ? i.value.toLowerCase()
+                                    : null
+                                )
+                                .filter((c) => c != null)
+                                .toString()
+                            ]
+                              ? STATE[0][
+                                  inputs
+                                    .map((i) =>
+                                      i.id == "country"
+                                        ? i.value.toLowerCase()
+                                        : null
+                                    )
+                                    .filter((c) => c != null)
+                                    .toString()
+                                ].map((state) =>
+                                  inputs
+                                    .map((i) =>
+                                      i.id == "state"
+                                        ? i.value
+                                            .toLowerCase()
+                                            .toLowerCase()
+                                            .split(/\s/)
+                                            .join("")
+                                            .trim()
+                                        : null
+                                    )
+                                    .filter((c) => c != null)
+                                    .toString() ===
+                                  state
+                                    .split(/\s/)
+                                    .join("")
+                                    .toLowerCase()
+                                    .trim() ? (
+                                    <>
+                                      {DISTRICT[0][
+                                        inputs
+                                          .map((i) =>
+                                            i.id == "state"
+                                              ? i.value
+                                                  .toLowerCase()
+                                                  .toLowerCase()
+                                                  .split(/\s/)
+                                                  .join("")
+                                                  .trim()
+                                              : null
+                                          )
+                                          .filter((c) => c != null)
+                                          .toString()
+                                      ]
+                                        ? DISTRICT[0][
+                                            inputs
+                                              .map((i) =>
+                                                i.id == "state"
+                                                  ? i.value
+                                                      .toLowerCase()
+                                                      .toLowerCase()
+                                                      .split(/\s/)
+                                                      .join("")
+                                                      .trim()
+                                                  : null
+                                              )
+                                              .filter((c) => c != null)
+                                              .toString()
+                                          ].map((district) =>
+                                            district
+                                              .split(/\s/)
+                                              .join("")
+                                              .toLowerCase()
+                                              .trim() !==
+                                            data.value
+                                              .split(/\s/)
+                                              .join("")
+                                              .toLowerCase()
+                                              .trim() ? (
+                                              <option>{district}</option>
+                                            ) : null
+                                          )
+                                        : null}
+                                    </>
+                                  ) : null
+                                )
+                              : null}
+                          </>
+                          ;
+                        </select>
+                      ) : data.id == "department" ? (
+                        <select
+                          id={data.id}
+                          type={data.type}
+                          value={data.value.name}
+                          disabled
+                          onChange={(e) => {
+                            setInput(
+                              inputs.map((item) =>
+                                item.id === data.id
+                                  ? {
+                                      ...item,
+                                      _id: e.target.value,
+                                    }
+                                  : item
+                              )
+                            );
+                          }}
+                        >
+                          {DepData.map((v) => {
+                            if (data.value._id == v._id) {
+                              return (
+                                <option value={v._id.trim()}>{v.name}</option>
+                              );
+                            } else {
+                              return (
+                                <option value={v._id.trim()}>{v.name}</option>
+                              );
+                            }
+                          })}
+                        </select>
+                      ) : data.id == "semester" ? (
+                        <select
+                          id={data.id}
+                          type={data.type}
+                          value={data.value._id}
+                          disabled
+                          onChange={(e) => {
+                            setInput(
+                              inputs.map((item) =>
+                                item.id === data.id
+                                  ? {
+                                      ...item,
+                                      value: e.target.value,
+                                    }
+                                  : item
+                              )
+                            );
+                          }}
+                        >
+                          {SemData.map((v) => {
+                            if (data.value._id === v._id) {
+                              return (
+                                <option value={v._id.trim()}>{v.name}</option>
+                              );
+                            } else {
+                              return (
+                                <option value={v._id.trim()}>{v.name}</option>
+                              );
+                            }
+                          })}
+                        </select>
                       ) : null}
                     </>
                   ) : data.type == "date" ? (
+                    <>
+                      <input
+                        id={data.id}
+                        type={data.type}
+                        value={data.value}
+                        disabled
+                        onChange={(e) => {
+                          setInput(
+                            inputs.map((item) =>
+                              item.id === data.id
+                                ? { ...item, value: e.target.value }
+                                : item
+                            )
+                          );
+                        }}
+                      />
+                    </>
+                  ) : data.type == "number" ? (
                     <>
                       <input
                         id={data.id}
@@ -503,7 +904,6 @@ const StudentDetails = () => {
               );
             })}
           </FormGrid>
-
           <ButtonPrimary
             styled={{ marginTop: 20 }}
             OnClick={edit ? () => updateStudentDetails() : () => enableEdit()}
