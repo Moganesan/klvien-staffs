@@ -16,6 +16,8 @@ import {
 import StudentDetails from "./StudentDetails";
 import { ButtonPrimary } from "../Components/Button";
 import { GET_PROFILE } from "../Store/constants/api";
+import Pagination from "../Components/Pagination";
+import AddNewStudent from "../Components/AddNewStudent";
 
 const Container = Styled.div`
    position: relative;
@@ -143,6 +145,17 @@ const Students = () => {
 
   const students = useSelector((state) => state.Server["students"]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [dataPerPage] = useState(5);
+
+  // Get current data
+  const indexOfLastPost = currentPage * dataPerPage;
+  const indexOfFirstPost = indexOfLastPost - dataPerPage;
+  const currentData = students.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   useEffect(() => {
     dispatch(ClearServer());
     dispatch(get_students(departments[0]._id, semesters[0]._id));
@@ -204,7 +217,7 @@ const Students = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {students.map((data) => {
+                      {currentData.map((data) => {
                         return (
                           <tr>
                             <td>
@@ -239,6 +252,12 @@ const Students = () => {
                       })}
                     </tbody>
                   </Table>
+                  <Pagination
+                    dataPerPage={dataPerPage}
+                    totalData={students.length}
+                    paginate={paginate}
+                    currentPage={currentPage}
+                  />
                 </StudentsContainer>
               ) : (
                 <StudentsContainer>

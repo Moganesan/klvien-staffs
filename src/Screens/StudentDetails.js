@@ -357,10 +357,10 @@ const StudentDetails = () => {
   }, []);
 
   const updateStudentDetails = () => {
-    dispatch(UpdateStudent(Student[0].StudId.trim()), inputs);
+    dispatch(UpdateStudent(Student[0].StudId.trim(), inputs));
     setEdit(false);
     inputs.map((obj) => {
-      console.log(document.getElementById(obj.id).value);
+      // console.log(document.getElementById(obj.id).value);
       document.getElementById(obj.id).setAttribute("disabled", "");
     });
   };
@@ -402,7 +402,7 @@ const StudentDetails = () => {
         </StudentProfileContainer>
 
         <Form>
-          <div style={{ display: "flex" }}>
+          {/* <div style={{ display: "flex" }}>
             <h4>Student Details</h4>
             <motion.div
               whileHover={{ scale: 1.1 }}
@@ -412,7 +412,7 @@ const StudentDetails = () => {
             >
               <Pencil width={20} height={20} />
             </motion.div>
-          </div>
+          </div> */}
 
           <FormGrid>
             {inputs.map((data, index) => {

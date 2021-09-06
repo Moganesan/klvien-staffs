@@ -2,7 +2,6 @@ import Styled from "styled-components";
 import { motion } from "framer-motion";
 
 const PrimaryButton = Styled(motion.button)`
-   
    padding: 10px 30px;
    background-color: #171717;
    outline: none;

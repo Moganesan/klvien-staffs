@@ -228,6 +228,43 @@ const getClasses = (DepId, SemId) => async (dispatch, getstate) => {
     });
 };
 
+const UpdateStudent = (StudId, Data) => async (dispatch, getstate) => {
+  dispatch(SetRocketLoadingTrue());
+  const Student = getstate().Server["students"].map((stud) =>
+    stud.StudId === StudId ? stud : null
+  );
+
+  if (StudId && Data.length && Student.length) {
+    await axios({
+      method: "POST",
+      url: `${API}/staff/student/update`,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: {
+        InId: Student[0].InId,
+        DepId: Student[0].DepId,
+        SemId: Student[0].SemId,
+        StudId: Student[0].StudId,
+        Data: Data,
+      },
+    })
+      .then(async (res) => {
+        dispatch(SetRocketLoadingFalse());
+        dispatch(ClearServer());
+        dispatch(get_students(Student[0].DepId, Student[0].SemId));
+        await dispatch(
+          SetSuccessMessage({ code: 200, message: "Student Details Updated!" })
+        );
+      })
+      .catch((err) => {
+        dispatch(SetRocketLoadingFalse());
+        dispatch(SetErrorMessage(err));
+      });
+  }
+};
+
 const addAttendance = () => async (dispatch, getstate) => {
   dispatch(SetLoadinTrue());
   const StudId = getstate().SetUser.user.logindetails.StudId;
@@ -417,6 +454,7 @@ const serverReducer = (state = database, { type, payload }) => {
 
 export {
   get_students,
+  UpdateStudent,
   get_subjects,
   get_attendance,
   getAssignment,
