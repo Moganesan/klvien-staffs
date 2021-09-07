@@ -38,27 +38,31 @@ const Pagination = ({ dataPerPage, totalData, paginate, currentPage }) => {
     pageNumbers.push(i);
   }
 
-  return (
-    <Container>
-      <ul>
-        {pageNumbers.map((number) => (
-          <li key={number}>
-            <Button
-              whileTap={{ scale: 0.9 }}
-              style={
-                number === currentPage
-                  ? { borderWidth: 1, borderColor: "#171717" }
-                  : null
-              }
-              onClick={() => paginate(number)}
-            >
-              <span>{number}</span>
-            </Button>
-          </li>
-        ))}
-      </ul>
-    </Container>
-  );
+  if (pageNumbers.length > 1) {
+    return (
+      <Container>
+        <ul>
+          {pageNumbers.map((number) => (
+            <li key={number}>
+              <Button
+                whileTap={{ scale: 0.9 }}
+                style={
+                  number === currentPage
+                    ? { borderWidth: 1, borderColor: "#171717" }
+                    : null
+                }
+                onClick={() => paginate(number)}
+              >
+                <span>{number}</span>
+              </Button>
+            </li>
+          ))}
+        </ul>
+      </Container>
+    );
+  } else {
+    return null;
+  }
 };
 
 export default Pagination;

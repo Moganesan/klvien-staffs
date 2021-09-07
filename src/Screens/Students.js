@@ -128,8 +128,7 @@ const Profile = Styled.div`
    }
 `;
 
-const StudentsContainer = Styled.div`
-   
+const StudentsContainer = Styled.div` 
 `;
 
 const Students = () => {
@@ -276,6 +275,7 @@ const Students = () => {
                   </Table>
                 </StudentsContainer>
               )}
+              <AddNewStudent DepData={departments} SemData={semesters} />
             </Route>
             <Route exact path={`${path}/:studId`}>
               {students.length ? <StudentDetails /> : null}

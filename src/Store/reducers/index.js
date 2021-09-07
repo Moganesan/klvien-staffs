@@ -34,6 +34,7 @@ import {
   get_subjects,
   get_students,
   UpdateStudent,
+  CreateStudent,
 } from "../reducers/serverReducer";
 
 const reducers = combineReducers({
@@ -56,6 +57,7 @@ const reducers = combineReducers({
   Logout: Logout,
   AlertMessage: AlertMessageReducer,
   GetStudents: get_students,
+  CreateStudent: CreateStudent,
   UpdateStudent: UpdateStudent,
   GetSubjects: get_subjects,
   GetAttendance: get_attendance,

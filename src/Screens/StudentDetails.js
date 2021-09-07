@@ -196,7 +196,7 @@ const StudentDetails = () => {
       formData.append("StudId", Student[0].StudId);
       formData.append("InId", Student[0].InId);
       axios({
-        url: `${API}/staff/student/uplodprofile`,
+        url: `${API}/staff/student/uploadprofile`,
         method: "post",
         onUploadProgress: (progressEvent) => {
           const { loaded, total } = progressEvent;
@@ -247,7 +247,7 @@ const StudentDetails = () => {
       },
       {
         title: "Blood Group",
-        id: "bloodgroup",
+        id: "bloodGroup",
         type: "select",
         value: Student[0].bloodGroup,
       },
@@ -468,7 +468,7 @@ const StudentDetails = () => {
                             }
                           })}
                         </select>
-                      ) : data.id == "bloodgroup" ? (
+                      ) : data.id == "bloodGroup" ? (
                         <select
                           id={data.id}
                           type={data.type}

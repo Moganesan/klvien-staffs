@@ -265,6 +265,28 @@ const UpdateStudent = (StudId, Data) => async (dispatch, getstate) => {
   }
 };
 
+const CreateStudent = (formdata) => async (dispatch, getstate) => {
+  dispatch(SetRocketLoadingTrue());
+  await axios({
+    method: "POST",
+    url: `${API}/staff/student/create`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: formdata,
+  })
+    .then((res) => {
+      dispatch(SetRocketLoadingFalse());
+      console.log(res);
+    })
+    .catch((err) => {
+      dispatch(SetRocketLoadingFalse());
+
+      console.log(err);
+    });
+};
+
 const addAttendance = () => async (dispatch, getstate) => {
   dispatch(SetLoadinTrue());
   const StudId = getstate().SetUser.user.logindetails.StudId;
@@ -454,6 +476,7 @@ const serverReducer = (state = database, { type, payload }) => {
 
 export {
   get_students,
+  CreateStudent,
   UpdateStudent,
   get_subjects,
   get_attendance,

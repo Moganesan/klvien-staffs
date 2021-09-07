@@ -2,7 +2,11 @@ const GENDER = ["MALE", "FEMALE"];
 
 const BLOOD_GROUP = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
 
-const COUNTRY = ["India", "usa"];
+const COUNTRY = ["India"];
+
+const RELIGION = ["Hindu", "Christian", "Muslim"];
+
+const TITLE = ["Mr", "Mrs", "Ms"];
 
 const STATE = [
   {
@@ -84,4 +88,4 @@ const DISTRICT = [
   },
 ];
 
-export { GENDER, BLOOD_GROUP, COUNTRY, STATE, DISTRICT };
+export { GENDER, BLOOD_GROUP, COUNTRY, RELIGION, STATE, DISTRICT, TITLE };
