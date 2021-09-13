@@ -224,7 +224,7 @@ const Students = () => {
                                 <Profile>
                                   <img src={GET_PROFILE + data.profile} />
                                 </Profile>
-                                <span>{data.name}</span>
+                                <span>{data.firstName}</span>
                               </ProfileContainer>
                             </td>
                             <td>{data.depName}</td>
@@ -243,7 +243,10 @@ const Students = () => {
                                   },
                                 }}
                               >
-                                <ButtonPrimary text={"View"} />
+                                <ButtonPrimary
+                                  whileHover={true}
+                                  text={"View"}
+                                />
                               </Link>
                             </td>
                           </tr>
@@ -266,11 +269,16 @@ const Students = () => {
                         <th>Student</th>
                         <th>Department</th>
                         <th>Mobile</th>
-                        <th>Last login</th>
+                        <th>Semester</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr></tr>
+                      <tr>
+                        <td>Loading...</td>
+                        <td>Loading...</td>
+                        <td>Loading...</td>
+                        <td>Loading...</td>
+                      </tr>
                     </tbody>
                   </Table>
                 </StudentsContainer>

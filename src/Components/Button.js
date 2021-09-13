@@ -25,12 +25,12 @@ const SecondaryButton = Styled(motion.button)`
    cursor: pointer;
 `;
 
-const ButtonPrimary = ({ text, OnClick, styled, textStyle }) => {
+const ButtonPrimary = ({ text, OnClick, styled, textStyle, whileHover }) => {
   return (
     <PrimaryButton
       style={styled}
       onClick={OnClick}
-      whileHover={{ scale: 1.1 }}
+      whileHover={whileHover ? { scale: 1.1 } : false}
       whileTap={{ scale: 0.9 }}
     >
       <span style={textStyle}>{text}</span>

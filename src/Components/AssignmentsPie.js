@@ -17,21 +17,27 @@ const Container = Styled.div`
    }
 `;
 
-const AttendancePie = ({ data }) => {
+const AssignmentsPie = ({ data }) => {
   return (
     <Container>
       <ResponsivePie
         data={[
           {
-            id: "Overall Attendance",
-            label: "Precent",
-            value: data.overAllPercentage,
+            id: "Assignment Completed",
+            label: "Completed",
+            value: data.assignmentCompletedPercentage,
             color: "hsl(249, 70%, 50%)",
           },
           {
-            id: "Absent",
-            label: "Absent",
-            value: 100 - data.overAllPercentage,
+            id: "Assignment Checking",
+            label: "Checking",
+            value: data.assignmentCheckingPercentage,
+            color: "hsl(102, 70%, 50%)",
+          },
+          {
+            id: "Assignment Pending",
+            label: "Pending",
+            value: data.assignmentPendingPercentage,
             color: "hsl(102, 70%, 50%)",
           },
         ]}
@@ -148,4 +154,4 @@ const AttendancePie = ({ data }) => {
   );
 };
 
-export default AttendancePie;
+export default AssignmentsPie;

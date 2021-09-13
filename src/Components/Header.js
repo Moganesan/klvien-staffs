@@ -9,6 +9,7 @@ import {
   OpenProfileModal,
 } from "../Store/actions/uiActions";
 import { motion } from "framer-motion";
+import { GET_PROFILE } from "../Store/constants/api";
 
 const MenuBtn = Styled(motion.img)`
    display: none;
@@ -105,7 +106,7 @@ const Header = () => {
         onClick={() => dispatch(OpenProfileModal())}
         whileTap={{ scale: 0.9 }}
       >
-        <img src={profile} />
+        <img src={GET_PROFILE + profile} />
       </Profile>
     </Container>
   );

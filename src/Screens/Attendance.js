@@ -1,7 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { get_attendance } from "../Store/reducers/serverReducer";
+import { get_attendance, get_students } from "../Store/reducers/serverReducer";
+import { ButtonPrimary } from "../Components/Button";
+import { GET_PROFILE } from "../Store/constants/api";
+import Pagination from "../Components/Pagination";
 import { ClearServer } from "../Store/actions/serverActions";
 import {
   BrowserRouter as Router,
@@ -9,6 +12,7 @@ import {
   Route,
   Link,
   useParams,
+  useRouteMatch,
 } from "react-router-dom";
 import {
   StudentVectorImage,
@@ -42,6 +46,44 @@ import {
   SpaceScienceVectorImage,
 } from "../Assets/vectorimages/source";
 import Breadcrumbs from "../Components/breadcrumbs";
+import StudentDetails from "./StudentDetails";
+import StudentAttendanceDetails from "./AttendanceDetails";
+
+const Header = Styled.div`
+   select{
+     border: none;
+     outline: none;
+     padding: 10px;
+     border-radius: 5px;
+     font-weight: bold;
+     color: white;
+     background-color: #0D7377;
+     margin-right: 10px;
+   }
+`;
+
+const ProfileContainer = Styled.div`
+   display: flex;
+   align-items: center;
+
+   span{
+     font-weight: 500;
+     margin-left: 10px;
+     font-size: 15px;
+   }
+`;
+
+const Profile = Styled.div`
+   width: 50px;
+   height: 50px;
+   border-radius: 50%;
+   overflow: hidden;
+   img{
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+   }
+`;
 
 const Container = Styled.div`
    position: relative;
@@ -168,72 +210,80 @@ const Classes = () => {
 };
 
 const Attendance = () => {
+  const { path, url } = useRouteMatch();
+
   const dispatch = useDispatch();
   useEffect(async () => {
     await dispatch(ClearServer());
   }, []);
+  const departments = useSelector(
+    (state) => state.SetUser.user.logindetails.DepData
+  );
+  const semesters = useSelector(
+    (state) => state.SetUser.user.logindetails.SemData
+  );
 
-  const { subject } = useParams();
+  const students = useSelector((state) => state.Server["attendance"]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [dataPerPage] = useState(5);
+
+  // Get current data
+  const indexOfLastPost = currentPage * dataPerPage;
+  const indexOfFirstPost = indexOfLastPost - dataPerPage;
+  const currentData = students.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  useEffect(() => {
+    dispatch(ClearServer());
+    dispatch(get_attendance(departments[0]._id, semesters[0]._id));
+  }, []);
 
   return (
     <Container>
       <Content>
-        <Router>
-          <Switch>
-            <Route path="/attendance/:subject" children={<Classes />} />
-            <Route path="/attendance/">
-              <Breadcrumbs pages={["Attendance"]} />
-              <select>
-                <option>SEM 1</option>
-              </select>
-              <SubjectContainer>
-                <Link to="/attendance/Tamil">
-                  <Subject>
-                    <TamilPongalVectorImage width={150} height={150} />
-                    <h3>Tamil</h3>
-                  </Subject>
-                </Link>
-                <Subject>
-                  <EnglishStatueofLibertyVectorImage width={150} height={150} />
-                  <h3>English</h3>
-                </Subject>
-                <Subject>
-                  <MathemeticsVectorImage width={150} height={150} />
-                  <h3>Maths</h3>
-                </Subject>
-                <Subject>
-                  <ScienceVectorImage width={150} height={150} />
-                  <h3>Science</h3>
-                </Subject>
-                <Subject>
-                  <SocialScienceVectorImage width={150} height={150} />
-                  <h3>Social Science</h3>
-                </Subject>
-                <Subject>
-                  <HistoryVectorImage width={150} height={150} />
-                  <h3>History</h3>
-                </Subject>
-                <Subject>
-                  <BiologyVectorImage width={150} height={150} />
-                  <h3>Biology</h3>
-                </Subject>
-                <Subject>
-                  <AccountancyVectorImage width={150} height={150} />
-                  <h3>Accountancy</h3>
-                </Subject>
-                <Subject>
-                  <StatisticsVectorImage width={150} height={150} />
-                  <h3>Statistics</h3>
-                </Subject>
-                <Subject>
-                  <ComputerScienceVectorImage width={150} height={150} />
-                  <h3>Computer Science</h3>
-                </Subject>
-                <Subject>
-                  <SpaceScienceVectorImage width={150} height={150} />
-                  <h3>Space Science</h3>
-                </Subject>
-              </SubjectContainer>
+        <Switch>
+          <Route exact path={path}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <Breadcrumbs pages={["Students"]} />
+              <Header>
+                <select
+                  id="DepFilt"
+                  onChange={async (e) => {
+                    dispatch(ClearServer());
+                    dispatch(
+                      get_students(
+                        e.target.value,
+                        document.getElementById("SemFilt").value
+                      )
+                    );
+                  }}
+                >
+                  {departments.map((dep) => {
+                    return <option value={dep._id}>{dep.name}</option>;
+                  })}
+                </select>
+                <select
+                  id="SemFilt"
+                  onChange={async (e) => {
+                    dispatch(ClearServer());
+                    dispatch(
+                      get_students(
+                        document.getElementById("DepFilt").value,
+                        e.target.value
+                      )
+                    );
+                  }}
+                >
+                  {semesters.map((sem) => {
+                    return <option value={sem._id}>{sem.name}</option>;
+                  })}
+                </select>
+              </Header>
+            </div>
+            {students.length ? (
               <StudentsContainer>
                 <Table>
                   <thead>
@@ -241,84 +291,80 @@ const Attendance = () => {
                       <th>Student</th>
                       <th>Department</th>
                       <th>Mobile</th>
-                      <th>OverAll Period</th>
-                      <th>OverAll Precent</th>
-                      <th>OverAll Absent</th>
+                      <th>Semester</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
+                    {currentData.map((data) => {
+                      return (
+                        <tr>
+                          <td>
+                            <ProfileContainer>
+                              <Profile>
+                                <img src={GET_PROFILE + data.profile} />
+                              </Profile>
+                              <span>{data.firstName}</span>
+                            </ProfileContainer>
+                          </td>
+                          <td>{data.depName}</td>
+                          <td>{data.contMob}</td>
+                          <td>{data.semName}</td>
+                          <td>
+                            {/* <Link to={`${url}/${data.StudId}`}>
+                                <ButtonPrimary text={"View"} />
+                              </Link> */}
+                            <Link
+                              to={{
+                                pathname: `${url}/${data.StudId}`,
+                                state: {
+                                  DepId: data.DepId,
+                                  SemId: data.SemId,
+                                },
+                              }}
+                            >
+                              <ButtonPrimary whileHover={true} text={"View"} />
+                            </Link>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+                <Pagination
+                  dataPerPage={dataPerPage}
+                  totalData={students.length}
+                  paginate={paginate}
+                  currentPage={currentPage}
+                />
+              </StudentsContainer>
+            ) : (
+              <StudentsContainer>
+                <Table>
+                  <thead>
                     <tr>
-                      <td>Moganesan</td>
-                      <td>Commerce</td>
-                      <td>Pending</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
+                      <th>Student</th>
+                      <th>Department</th>
+                      <th>Mobile</th>
+                      <th>Semester</th>
                     </tr>
+                  </thead>
+                  <tbody>
                     <tr>
-                      <td>Moganesan</td>
-                      <td>Commerce</td>
-                      <td>Pending</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                    </tr>
-                    <tr>
-                      <td>Moganesan</td>
-                      <td>Commerce</td>
-                      <td>Pending</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                    </tr>
-                    <tr>
-                      <td>Moganesan</td>
-                      <td>Commerce</td>
-                      <td>Pending</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                    </tr>
-
-                    <tr>
-                      <td>Moganesan</td>
-                      <td>Commerce</td>
-                      <td>Pending</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                    </tr>
-                    <tr>
-                      <td>Moganesan</td>
-                      <td>Commerce</td>
-                      <td>Pending</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                    </tr>
-
-                    <tr>
-                      <td>Moganesan</td>
-                      <td>Commerce</td>
-                      <td>Pending</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
-                      <td>adsdno</td>
+                      <td>Loading...</td>
+                      <td>Loading...</td>
+                      <td>Loading...</td>
+                      <td>Loading...</td>
                     </tr>
                   </tbody>
                 </Table>
               </StudentsContainer>
-            </Route>
-          </Switch>
-        </Router>
+            )}
+          </Route>
+          <Route exact path={`${path}/:studId`}>
+            {students.length ? <StudentAttendanceDetails /> : null}
+          </Route>
+        </Switch>
       </Content>
     </Container>
   );

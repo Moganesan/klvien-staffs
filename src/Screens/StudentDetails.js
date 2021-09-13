@@ -162,10 +162,8 @@ const StudentDetails = () => {
   const { studId } = useParams();
 
   const Student = useSelector((state) =>
-    state.Server["students"].map((stud) => {
-      if (stud.StudId === studId) {
-        return stud;
-      }
+    state.Server["students"].find((stud) => {
+      if (stud.StudId === studId) return stud;
     })
   );
 
@@ -193,8 +191,8 @@ const StudentDetails = () => {
       const formData = new FormData();
       formData.append("name", fileName);
       formData.append("file", file);
-      formData.append("StudId", Student[0].StudId);
-      formData.append("InId", Student[0].InId);
+      formData.append("StudId", Student.StudId);
+      formData.append("InId", Student.InId);
       axios({
         url: `${API}/staff/student/uploadprofile`,
         method: "post",
@@ -228,118 +226,118 @@ const StudentDetails = () => {
   useLayoutEffect(() => {
     setInput([
       {
-        title: "Name",
-        id: "name",
+        title: "First Name",
+        id: "firstName",
         type: "text",
-        value: Student[0].name,
+        value: Student.firstName,
       },
       {
-        title: "Email",
-        id: "email",
+        title: "Last Name",
+        id: "lastName",
         type: "text",
-        value: Student[0].email,
+        value: Student.lastName,
       },
       {
         title: "Gender",
         id: "gender",
         type: "select",
-        value: Student[0].sex,
+        value: Student.gender,
       },
       {
         title: "Blood Group",
         id: "bloodGroup",
         type: "select",
-        value: Student[0].bloodGroup,
+        value: Student.bloodGroup,
       },
       {
         title: "Mobile",
         id: "contMob",
         type: "number",
-        value: Student[0].contMob,
+        value: Student.contMob,
       },
       {
         title: "Age",
         id: "age",
         type: "number",
-        value: Student[0].age,
+        value: Student.age,
       },
       {
         title: "Qualification",
         id: "qualification",
         type: "text",
-        value: Student[0].qualification,
+        value: Student.qualification,
       },
       {
         title: "DOB",
         id: "dob",
         type: "date",
-        value: Student[0].dob,
+        value: Student.dob,
       },
       {
         title: "Country",
         id: "country",
         type: "select",
-        value: Student[0].country,
+        value: Student.country,
       },
       {
         title: "State",
         id: "state",
         type: "select",
-        value: Student[0].state,
+        value: Student.state,
       },
       {
         title: "District",
         id: "district",
         type: "select",
-        value: Student[0].district,
+        value: Student.district,
       },
       {
         title: "Pincode",
         id: "pincode",
         type: "number",
-        value: Student[0].pincode,
+        value: Student.pincode,
       },
       {
         title: "Father Name",
         id: "fathName",
         type: "text",
-        value: Student[0].fathName,
+        value: Student.fathName,
       },
       {
         title: "Father Occupation",
         id: "fathOccu",
         type: "text",
-        value: Student[0].fathOccu,
+        value: Student.fathOccu,
       },
       {
         title: "Father Mobile",
         id: "fathMob",
         type: "number",
-        value: Student[0].fathMob,
+        value: Student.fathMob,
       },
       {
         title: "Mother Name",
         id: "mothName",
         type: "text",
-        value: Student[0].mothName,
+        value: Student.mothName,
       },
       {
         title: "Mother Occupation",
         id: "mothOccu",
         type: "text",
-        value: Student[0].mothOccu,
+        value: Student.mothOccu,
       },
       {
         title: "Mother Mobile",
         id: "mothMob",
         type: "number",
-        value: Student[0].mothMob,
+        value: Student.mothMob,
       },
       {
         title: "Addmission No",
         id: "addmisNo",
         type: "text",
-        value: Student[0].addmisNo,
+        value: Student.addmisNo,
       },
       // {
       //   title: "Department",
@@ -357,7 +355,15 @@ const StudentDetails = () => {
   }, []);
 
   const updateStudentDetails = () => {
-    dispatch(UpdateStudent(Student[0].StudId.trim(), inputs));
+    dispatch(
+      UpdateStudent(
+        Student.InId.trim(),
+        Student.DepId.trim(),
+        Student.SemId.trim(),
+        Student.StudId.trim(),
+        inputs
+      )
+    );
     setEdit(false);
     inputs.map((obj) => {
       // console.log(document.getElementById(obj.id).value);
@@ -383,7 +389,8 @@ const StudentDetails = () => {
       <StudentDetailsContainer>
         <StudentProfileContainer>
           <StudentProfile>
-            <img src={GET_PROFILE + Student[0].profile} />
+            {console.log(GET_PROFILE + Student.profile)}
+            <img src={GET_PROFILE + Student.profile} />
           </StudentProfile>
 
           <CameraIcon whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>

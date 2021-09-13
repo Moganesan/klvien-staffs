@@ -75,15 +75,12 @@ const get_subjects = (DepId, SemId) => async (dispatch, getstate) => {
     .catch((err) => dispatch(SetErrorMessage(err)));
 };
 
-const get_attendance = () => async (dispatch, getstate) => {
-  const StudId = getstate().SetUser.user.logindetails.StudId;
+const get_attendance = (DepId, SemId) => async (dispatch, getstate) => {
   const InId = getstate().SetUser.user.logindetails.InId;
-  const SemId = getstate().SetUser.user.logindetails.SemId;
-  const DepId = getstate().SetUser.user.logindetails.DepId;
-  if (StudId && InId && SemId && DepId) {
+  if (InId && SemId && DepId) {
     await axios({
       method: "POST",
-      url: `${API}/student/attendance`,
+      url: `${API}/staff/students/attendance`,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -92,10 +89,10 @@ const get_attendance = () => async (dispatch, getstate) => {
         InId: InId,
         DepId: DepId,
         SemId: SemId,
-        StudId: StudId,
       },
     })
       .then((res) => {
+        console.log(res.data);
         dispatch(GetAttendance(res.data.data));
         return dispatch(SetLoadingFalse());
       })
@@ -108,7 +105,7 @@ const getAssignment = (DepId, SemId) => async (dispatch, getstate) => {
 
   await axios({
     method: "POST",
-    url: `${API}/staff/assignments`,
+    url: `${API}/staff/students/assignments`,
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -228,42 +225,46 @@ const getClasses = (DepId, SemId) => async (dispatch, getstate) => {
     });
 };
 
-const UpdateStudent = (StudId, Data) => async (dispatch, getstate) => {
-  dispatch(SetRocketLoadingTrue());
-  const Student = getstate().Server["students"].map((stud) =>
-    stud.StudId === StudId ? stud : null
-  );
+const UpdateStudent =
+  (InId, DepId, SemId, StudId, Data) => async (dispatch, getstate) => {
+    dispatch(SetRocketLoadingTrue());
+    const Student = getstate().Server["students"].map((stud) =>
+      stud.StudId === StudId ? stud : null
+    );
 
-  if (StudId && Data.length && Student.length) {
-    await axios({
-      method: "POST",
-      url: `${API}/staff/student/update`,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: {
-        InId: Student[0].InId,
-        DepId: Student[0].DepId,
-        SemId: Student[0].SemId,
-        StudId: Student[0].StudId,
-        Data: Data,
-      },
-    })
-      .then(async (res) => {
-        dispatch(SetRocketLoadingFalse());
-        dispatch(ClearServer());
-        dispatch(get_students(Student[0].DepId, Student[0].SemId));
-        await dispatch(
-          SetSuccessMessage({ code: 200, message: "Student Details Updated!" })
-        );
+    if (StudId && Data.length && Student.length) {
+      await axios({
+        method: "POST",
+        url: `${API}/staff/student/update`,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        data: {
+          InId: InId,
+          DepId: DepId,
+          SemId: SemId,
+          StudId: StudId,
+          Data: Data,
+        },
       })
-      .catch((err) => {
-        dispatch(SetRocketLoadingFalse());
-        dispatch(SetErrorMessage(err));
-      });
-  }
-};
+        .then(async (res) => {
+          dispatch(SetRocketLoadingFalse());
+          dispatch(ClearServer());
+          dispatch(get_students(Student[0].DepId, Student[0].SemId));
+          await dispatch(
+            SetSuccessMessage({
+              code: 200,
+              message: "Student Details Updated!",
+            })
+          );
+        })
+        .catch((err) => {
+          dispatch(SetRocketLoadingFalse());
+          dispatch(SetErrorMessage(err));
+        });
+    }
+  };
 
 const CreateStudent = (formdata) => async (dispatch, getstate) => {
   dispatch(SetRocketLoadingTrue());
@@ -278,12 +279,11 @@ const CreateStudent = (formdata) => async (dispatch, getstate) => {
   })
     .then((res) => {
       dispatch(SetRocketLoadingFalse());
-      console.log(res);
+      dispatch(SetSuccessMessage(res.data));
     })
     .catch((err) => {
       dispatch(SetRocketLoadingFalse());
-
-      console.log(err);
+      dispatch(SetErrorMessage(err));
     });
 };
 

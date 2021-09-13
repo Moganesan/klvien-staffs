@@ -142,8 +142,14 @@ const NewStudent = ({ DepData, SemData }) => {
   useEffect(() => {
     setInput([
       {
-        title: "Name",
-        id: "name",
+        title: "First Name",
+        id: "firstName",
+        type: "text",
+        value: "",
+      },
+      {
+        title: "Last Name",
+        id: "lastName",
         type: "text",
         value: "",
       },
