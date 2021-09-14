@@ -332,38 +332,25 @@ const NewStudent = ({ DepData, SemData }) => {
   const InId = useSelector((state) => state.SetUser.user.logindetails.InId);
 
   const create = () => {
-    profile != undefined ? (
-      <>
-        {(() => {
-          for (let i = 0; i < inputs.length; i++) {
-            if (inputs[i].value == "") {
-              dispatch(
-                SetInfoMessage({
-                  code: 200,
-                  message: `Enter a valid information to create student. ${inputs[i].title} field required`,
-                })
-              );
-              break;
-            }
-            if (inputs[i].value != "") {
-              const formData = new FormData();
-              formData.append("profile", profile);
-              formData.append("InId", InId);
-              formData.append("data", JSON.stringify(inputs));
-              dispatch(CreateStudent(formData));
-            }
-            break;
-          }
-        })()}
-      </>
-    ) : (
-      dispatch(
-        SetWarningMessage({
-          code: 400,
-          message: "Please upload profile picture before create a student.",
-        })
-      )
-    );
+    const formData = new FormData();
+    formData.append("profile", profile);
+    formData.append("InId", InId);
+    formData.append("data", JSON.stringify(inputs));
+    profile != undefined
+      ? inputs.every((input) => input.value)
+        ? dispatch(CreateStudent(formData))
+        : dispatch(
+            SetInfoMessage({
+              code: 200,
+              message: `Enter a valid information to create student.`,
+            })
+          )
+      : dispatch(
+          SetWarningMessage({
+            code: 400,
+            message: "Please upload profile picture before create a student.",
+          })
+        );
   };
 
   return (

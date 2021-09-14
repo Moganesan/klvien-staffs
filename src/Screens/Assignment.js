@@ -5,6 +5,7 @@ import {
   getAssignment,
   get_attendance,
   get_students,
+  get_subjects,
 } from "../Store/reducers/serverReducer";
 import { ButtonPrimary } from "../Components/Button";
 import { GET_PROFILE } from "../Store/constants/api";
@@ -50,6 +51,7 @@ import {
   SpaceScienceVectorImage,
 } from "../Assets/vectorimages/source";
 import Breadcrumbs from "../Components/breadcrumbs";
+import AddNewAssignment from "../Components/AddNewAssignment";
 import StudentDetails from "./StudentDetails";
 import StudentAttendanceDetails from "./AttendanceDetails";
 import StudentAssignmentDetails from "./StudentAssignmentDetails";
@@ -230,6 +232,8 @@ const Assignment = () => {
 
   const students = useSelector((state) => state.Server["assignments"]);
 
+  const subjects = useSelector((state) => state.Server["subjects"]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [dataPerPage] = useState(5);
 
@@ -244,6 +248,7 @@ const Assignment = () => {
   useEffect(() => {
     dispatch(ClearServer());
     dispatch(getAssignment(departments[0]._id, semesters[0]._id));
+    dispatch(get_subjects(departments[0]._id, semesters[0]._id));
   }, []);
 
   return (
@@ -289,60 +294,66 @@ const Assignment = () => {
               </Header>
             </div>
             {students.length ? (
-              <StudentsContainer>
-                <Table>
-                  <thead>
-                    <tr>
-                      <th>Student</th>
-                      <th>Department</th>
-                      <th>Mobile</th>
-                      <th>Semester</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {currentData.map((data) => {
-                      return (
-                        <tr>
-                          <td>
-                            <ProfileContainer>
-                              <Profile>
-                                <img src={GET_PROFILE + data.profile} />
-                              </Profile>
-                              <span>{data.firstName}</span>
-                            </ProfileContainer>
-                          </td>
-                          <td>{data.depName}</td>
-                          <td>{data.contMob}</td>
-                          <td>{data.semName}</td>
-                          <td>
-                            {/* <Link to={`${url}/${data.StudId}`}>
+              <>
+                <StudentsContainer>
+                  <Table>
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Department</th>
+                        <th>Mobile</th>
+                        <th>Semester</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentData.map((data) => {
+                        return (
+                          <tr>
+                            <td>
+                              <ProfileContainer>
+                                <Profile>
+                                  <img src={GET_PROFILE + data.profile} />
+                                </Profile>
+                                <span>{data.firstName}</span>
+                              </ProfileContainer>
+                            </td>
+                            <td>{data.depName}</td>
+                            <td>{data.contMob}</td>
+                            <td>{data.semName}</td>
+                            <td>
+                              {/* <Link to={`${url}/${data.StudId}`}>
                                 <ButtonPrimary text={"View"} />
                               </Link> */}
-                            <Link
-                              to={{
-                                pathname: `${url}/${data.StudId}`,
-                                state: {
-                                  DepId: data.DepId,
-                                  SemId: data.SemId,
-                                },
-                              }}
-                            >
-                              <ButtonPrimary whileHover={true} text={"View"} />
-                            </Link>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </Table>
-                <Pagination
-                  dataPerPage={dataPerPage}
-                  totalData={students.length}
-                  paginate={paginate}
-                  currentPage={currentPage}
-                />
-              </StudentsContainer>
+                              <Link
+                                to={{
+                                  pathname: `${url}/${data.StudId}`,
+                                  state: {
+                                    DepId: data.DepId,
+                                    SemId: data.SemId,
+                                  },
+                                }}
+                              >
+                                <ButtonPrimary
+                                  whileHover={true}
+                                  text={"View"}
+                                />
+                              </Link>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                  <Pagination
+                    dataPerPage={dataPerPage}
+                    totalData={students.length}
+                    paginate={paginate}
+                    currentPage={currentPage}
+                  />
+                </StudentsContainer>
+                <AddNewAssignment DepData={departments} SemData={semesters} />
+              </>
             ) : (
               <StudentsContainer>
                 <Table>

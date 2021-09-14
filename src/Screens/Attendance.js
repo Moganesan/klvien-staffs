@@ -247,7 +247,7 @@ const Attendance = () => {
         <Switch>
           <Route exact path={path}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <Breadcrumbs pages={["Students"]} />
+              <Breadcrumbs pages={["Attendance"]} />
               <Header>
                 <select
                   id="DepFilt"

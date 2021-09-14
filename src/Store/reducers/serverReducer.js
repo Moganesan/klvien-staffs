@@ -287,6 +287,34 @@ const CreateStudent = (formdata) => async (dispatch, getstate) => {
     });
 };
 
+const CreateAssignment =
+  (InId, DepId, SemId, StaffId, Data) => async (dispatch, getstate) => {
+    dispatch(SetRocketLoadingTrue());
+    await axios({
+      method: "POST",
+      url: `${API}/staff/students/assignment/create`,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: {
+        InId: InId,
+        DepId: DepId,
+        SemId: SemId,
+        StaffId: StaffId,
+        Data: Data,
+      },
+    })
+      .then((res) => {
+        dispatch(SetRocketLoadingFalse());
+        dispatch(SetSuccessMessage(res.data));
+      })
+      .catch((err) => {
+        dispatch(SetRocketLoadingFalse());
+        dispatch(SetErrorMessage(err));
+      });
+  };
+
 const addAttendance = () => async (dispatch, getstate) => {
   dispatch(SetLoadinTrue());
   const StudId = getstate().SetUser.user.logindetails.StudId;
@@ -481,6 +509,7 @@ export {
   get_subjects,
   get_attendance,
   getAssignment,
+  CreateAssignment,
   getExams,
   getHolidays,
   getClasses,
