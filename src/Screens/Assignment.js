@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAssignment,
-  get_attendance,
-  get_students,
-  get_subjects,
-} from "../Store/reducers/serverReducer";
+import { getAssignment, get_subjects } from "../Store/reducers/serverReducer";
 import { ButtonPrimary } from "../Components/Button";
 import { GET_PROFILE } from "../Store/constants/api";
 import Pagination from "../Components/Pagination";
@@ -264,7 +259,13 @@ const Assignment = () => {
                   onChange={async (e) => {
                     dispatch(ClearServer());
                     dispatch(
-                      get_students(
+                      get_subjects(
+                        e.target.value,
+                        document.getElementById("SemFilt").value
+                      )
+                    );
+                    dispatch(
+                      getAssignment(
                         e.target.value,
                         document.getElementById("SemFilt").value
                       )
@@ -280,7 +281,13 @@ const Assignment = () => {
                   onChange={async (e) => {
                     dispatch(ClearServer());
                     dispatch(
-                      get_students(
+                      get_subjects(
+                        document.getElementById("DepFilt").value,
+                        e.target.value
+                      )
+                    );
+                    dispatch(
+                      getAssignment(
                         document.getElementById("DepFilt").value,
                         e.target.value
                       )

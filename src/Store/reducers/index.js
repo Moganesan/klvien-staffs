@@ -36,6 +36,7 @@ import {
   UpdateStudent,
   CreateStudent,
   CreateAssignment,
+  CreateExam,
 } from "../reducers/serverReducer";
 
 const reducers = combineReducers({
@@ -65,6 +66,7 @@ const reducers = combineReducers({
   GetAssignments: getAssignment,
   CreateAssignment: CreateAssignment,
   GetExams: getExams,
+  CreateExam: CreateExam,
   GetHolidays: getHolidays,
   GetBillings: getBillings,
   GetClasses: getClasses,

@@ -138,7 +138,7 @@ const getExams = (DepId, SemId) => async (dispatch, getstate) => {
 
   await axios({
     method: "POST",
-    url: `${API}/staff/exams`,
+    url: `${API}/staff/students/exams`,
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -160,6 +160,34 @@ const getExams = (DepId, SemId) => async (dispatch, getstate) => {
     })
     .catch((err) => dispatch(SetErrorMessage(err)));
 };
+
+const CreateExam =
+  (InId, DepId, SemId, StaffId, Data) => async (dispatch, getstate) => {
+    dispatch(SetRocketLoadingTrue());
+    await axios({
+      method: "POST",
+      url: `${API}/staff/students/exams/create`,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: {
+        InId: InId,
+        DepId: DepId,
+        SemId: SemId,
+        StaffId: StaffId,
+        Data: Data,
+      },
+    })
+      .then((res) => {
+        dispatch(SetRocketLoadingFalse());
+        dispatch(SetSuccessMessage(res.data));
+      })
+      .catch((err) => {
+        dispatch(SetRocketLoadingFalse());
+        dispatch(SetErrorMessage(err));
+      });
+  };
 
 const getHolidays = () => async (dispatch, getstate) => {
   dispatch(SetLoadinTrue());
@@ -511,6 +539,7 @@ export {
   getAssignment,
   CreateAssignment,
   getExams,
+  CreateExam,
   getHolidays,
   getClasses,
   getBillings,
