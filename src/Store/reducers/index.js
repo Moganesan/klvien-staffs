@@ -28,7 +28,6 @@ import {
   serverReducer,
   getHolidays,
   getClasses,
-  addAttendance,
   getBillings,
   addFeedback,
   get_subjects,
@@ -37,6 +36,9 @@ import {
   CreateStudent,
   CreateAssignment,
   CreateExam,
+  CreateClass,
+  UpdateClass,
+  AddAttendance,
 } from "../reducers/serverReducer";
 
 const reducers = combineReducers({
@@ -67,10 +69,12 @@ const reducers = combineReducers({
   CreateAssignment: CreateAssignment,
   GetExams: getExams,
   CreateExam: CreateExam,
+  CreateClass: CreateClass,
+  UpdateClass: UpdateClass,
   GetHolidays: getHolidays,
   GetBillings: getBillings,
   GetClasses: getClasses,
-  AddAttendance: addAttendance,
+  AddAttendance: AddAttendance,
   AddFeedBack: addFeedback,
   Server: serverReducer,
 });

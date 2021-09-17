@@ -12,33 +12,48 @@ const Container = Styled(motion.div)`
     }
 `;
 
-const Success = ({ text, whileTap }) => {
+const Success = ({ text, whileTap, onClick }) => {
   return (
     <Container
+      onClick={onClick}
       whileTap={whileTap ? { scale: 0.9 } : false}
-      style={{ backgroundColor: " rgba(113, 239, 163, 0.3)" }}
+      style={
+        whileTap
+          ? { cursor: "pointer", backgroundColor: " rgba(113, 239, 163, 0.3)" }
+          : { backgroundColor: " rgba(113, 239, 163, 0.3)" }
+      }
     >
       <span style={{ color: "#71EFA3" }}>{text}</span>
     </Container>
   );
 };
 
-const Warning = ({ text, whileTap }) => {
+const Warning = ({ text, whileTap, onClick }) => {
   return (
     <Container
+      onClick={onClick}
       whileTap={whileTap ? { scale: 0.9 } : false}
-      style={{ backgroundColor: "rgba(255, 229, 0, 0.3)" }}
+      style={
+        whileTap
+          ? { cursor: "pointer", backgroundColor: "rgba(255, 229, 0, 0.3)" }
+          : { backgroundColor: "rgba(255, 229, 0, 0.3)" }
+      }
     >
       <span style={{ color: "#FFE500" }}>{text}</span>
     </Container>
   );
 };
 
-const Error = ({ text, whileTap }) => {
+const Error = ({ text, whileTap, onClick }) => {
   return (
     <Container
+      onClick={onClick}
       whileTap={whileTap ? { scale: 0.9 } : false}
-      style={{ backgroundColor: "rgba(255, 70, 70, 0.3)" }}
+      style={
+        whileTap
+          ? { backgroundColor: "rgba(255, 70, 70, 0.3)", cursor: "pointer" }
+          : { backgroundColor: "rgba(255, 70, 70, 0.3)" }
+      }
     >
       <span style={{ color: "#FF4646" }}>{text}</span>
     </Container>

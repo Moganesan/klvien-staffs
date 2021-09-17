@@ -94,7 +94,13 @@ const routes = [
   },
   {
     path: "/holidays",
-    main: () => <h2>Shoelaces</h2>,
+    main: () => (
+      <>
+        <Header />
+        <SidebarRight />
+        <Holidays />
+      </>
+    ),
   },
   {
     path: "/classes",
@@ -102,7 +108,7 @@ const routes = [
       <>
         <Header />
         <SidebarRight />
-        <Holidays />
+        <Classes />
       </>
     ),
   },

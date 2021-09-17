@@ -269,6 +269,7 @@ const StudentAssignmentDetails = () => {
               <th>Subject</th>
               <th>Project</th>
               <th>Date</th>
+              <td>Due Date</td>
               <th>Teacher</th>
               <th>Status</th>
               <th></th>
@@ -280,9 +281,8 @@ const StudentAssignmentDetails = () => {
                 <tr>
                   <td>{data.subject}</td>
                   <td>{data.project}</td>
-                  <td>
-                    {data.start} to {data.end}
-                  </td>
+                  <td>{data.date}</td>
+                  <td>{data.dueDate}</td>
                   <td>{data.staffName}</td>
                   <td>
                     {data.status === "PENDING" ? (

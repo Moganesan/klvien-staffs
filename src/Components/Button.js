@@ -38,13 +38,20 @@ const ButtonPrimary = ({ text, OnClick, styled, textStyle, whileHover }) => {
   );
 };
 
-const ButtonScondary = ({ text, OnClick, Icon, style, textStyle }) => {
+const ButtonScondary = ({
+  text,
+  OnClick,
+  Icon,
+  styled,
+  textStyle,
+  whileHover,
+}) => {
   return (
     <SecondaryButton
+      style={styled}
       onClick={OnClick}
-      whileHover={{ scale: 1.1 }}
+      whileHover={whileHover ? { scale: 1.1 } : false}
       whileTap={{ scale: 0.9 }}
-      style={style}
     >
       {Icon ? <Icon /> : null}
       <span style={textStyle}>{text}</span>

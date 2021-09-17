@@ -20,7 +20,7 @@ import {
   SetSuccessMessage,
   SetWarningMessage,
 } from "../Store/actions/uiActions";
-import { CreateAssignment, CreateExam } from "../Store/reducers/serverReducer";
+import { CreateHoliday } from "../Store/reducers/serverReducer";
 
 const Title = Styled.span`
    font-weight: bold;
@@ -135,74 +135,35 @@ const FormGrid = Styled.div`
    }
 `;
 
-const NewExam = ({ DepData, SemData }) => {
+const NewHoliday = ({ DepData, SemData }) => {
   const [inputs, setInput] = useState([]);
   const dispatch = useDispatch();
-
-  const subjects = useSelector((state) => state.Server["subjects"]);
 
   useEffect(() => {
     setInput([
       {
-        title: "Title",
-        id: "title",
+        title: "Event",
+        id: "event",
         type: "text",
         value: "",
       },
       {
-        title: "Exam Code",
-        id: "examCode",
+        title: "Message",
+        id: "message",
         type: "text",
         value: "",
       },
       {
-        title: "Description",
-        id: "description",
-        type: "text",
-        value: "",
-      },
-      {
-        title: "Subject",
-        id: "subject",
-        type: "select",
-        value: {
-          name: subjects[0].subName,
-          _id: subjects[0]._id,
-        },
-      },
-      {
-        title: "Date",
-        id: "date",
+        title: "Starting Date",
+        id: "startingDate",
         type: "date",
         value: new Date().toLocaleDateString("sv"),
       },
       {
-        title: "Starting Time",
-        id: "startingTime",
-        type: "time",
-        value: new Date()
-          .toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          })
-          .replace("AM", "")
-          .replace("PM", "")
-          .trim(),
-      },
-      {
-        title: "Ending Time",
-        id: "endingTime",
-        type: "time",
-        value: new Date()
-          .toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          })
-          .replace("AM", "")
-          .replace("PM", "")
-          .trim(),
+        title: "Ending Date",
+        id: "endingDate",
+        type: "date",
+        value: new Date().toLocaleDateString("sv"),
       },
       {
         title: "Department",
@@ -239,7 +200,7 @@ const NewExam = ({ DepData, SemData }) => {
     const SemId = inputs.find((input) => input.id == "semester")["value"]._id;
 
     inputs.every((input) => input.value)
-      ? dispatch(CreateExam(InId, DepId, SemId, StaffId, inputs))
+      ? dispatch(CreateHoliday(InId, DepId, SemId, StaffId, inputs))
       : dispatch(
           SetInfoMessage({
             code: 200,
@@ -250,7 +211,7 @@ const NewExam = ({ DepData, SemData }) => {
 
   return (
     <>
-      <Title>Add New Exam</Title>
+      <Title>Add New Holiday</Title>
       <StudentDetailsContainer>
         <Form>
           <FormGrid>
@@ -318,46 +279,6 @@ const NewExam = ({ DepData, SemData }) => {
                             data.value._id.trim() != v._id.trim() ? (
                               <option value={[v._id.trim(), v.name.trim()]}>
                                 {v.name.trim()}
-                              </option>
-                            ) : null
-                          )}
-                        </select>
-                      ) : data.id == "subject" ? (
-                        <select
-                          id={data.id}
-                          type={data.type}
-                          value={[
-                            data.value._id.trim(),
-                            data.value.name.trim(),
-                          ]}
-                          onChange={(e) => {
-                            const values = e.target.value.split(",");
-                            setInput(
-                              inputs.map((item) =>
-                                item.id === data.id
-                                  ? {
-                                      ...item,
-                                      value: {
-                                        name: values[1],
-                                        _id: values[0],
-                                      },
-                                    }
-                                  : item
-                              )
-                            );
-                          }}
-                        >
-                          {subjects.map((v) =>
-                            data.value._id.trim() == v._id.trim() ? (
-                              <option value={[v._id.trim(), v.subName.trim()]}>
-                                {v.subName}
-                              </option>
-                            ) : null
-                          )}
-                          {subjects.map((v) =>
-                            data.value._id.trim() != v._id.trim() ? (
-                              <option value={[v._id.trim(), v.subName.trim()]}>
-                                {v.subName}
                               </option>
                             ) : null
                           )}
@@ -484,4 +405,4 @@ const NewExam = ({ DepData, SemData }) => {
   );
 };
 
-export default NewExam;
+export default NewHoliday;

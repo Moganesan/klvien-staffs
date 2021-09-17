@@ -145,7 +145,6 @@ const NewAssignment = ({ DepData, SemData }) => {
   const subjects = useSelector((state) => state.Server["subjects"]);
 
   useEffect(() => {
-    console.log("Subjects:", subjects);
     setInput([
       {
         title: "Project",
@@ -169,14 +168,14 @@ const NewAssignment = ({ DepData, SemData }) => {
         },
       },
       {
-        title: "Starting Date",
-        id: "startingDate",
+        title: "Date",
+        id: "date",
         type: "date",
         value: new Date().toLocaleDateString("sv"),
       },
       {
-        title: "Ending Date",
-        id: "endingDate",
+        title: "Due Date",
+        id: "dueDate",
         type: "date",
         value: new Date().toLocaleDateString("sv"),
       },

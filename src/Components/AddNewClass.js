@@ -20,7 +20,7 @@ import {
   SetSuccessMessage,
   SetWarningMessage,
 } from "../Store/actions/uiActions";
-import { CreateAssignment, CreateExam } from "../Store/reducers/serverReducer";
+import { CreateClass } from "../Store/reducers/serverReducer";
 
 const Title = Styled.span`
    font-weight: bold;
@@ -135,7 +135,7 @@ const FormGrid = Styled.div`
    }
 `;
 
-const NewExam = ({ DepData, SemData }) => {
+const NewClass = ({ DepData, SemData }) => {
   const [inputs, setInput] = useState([]);
   const dispatch = useDispatch();
 
@@ -144,20 +144,14 @@ const NewExam = ({ DepData, SemData }) => {
   useEffect(() => {
     setInput([
       {
-        title: "Title",
-        id: "title",
+        title: "Meeting URL",
+        id: "meetingUrl",
         type: "text",
         value: "",
       },
       {
-        title: "Exam Code",
-        id: "examCode",
-        type: "text",
-        value: "",
-      },
-      {
-        title: "Description",
-        id: "description",
+        title: "Chapter",
+        id: "chapter",
         type: "text",
         value: "",
       },
@@ -227,8 +221,6 @@ const NewExam = ({ DepData, SemData }) => {
 
   const [profile, setProfile] = useState();
 
-  const InId = useSelector((state) => state.SetUser.user.logindetails.InId);
-
   const StaffId = useSelector(
     (state) => state.SetUser.user.logindetails.StafId
   );
@@ -239,7 +231,19 @@ const NewExam = ({ DepData, SemData }) => {
     const SemId = inputs.find((input) => input.id == "semester")["value"]._id;
 
     inputs.every((input) => input.value)
-      ? dispatch(CreateExam(InId, DepId, SemId, StaffId, inputs))
+      ? inputs
+          .find((input) => input.id == "meetingUrl")
+          .value.includes("https://") ||
+        inputs
+          .find((input) => input.id == "meetingUrl")
+          .value.includes("http://")
+        ? dispatch(CreateClass(DepId, SemId, inputs))
+        : dispatch(
+            SetInfoMessage({
+              code: 200,
+              message: `Invalid Meeting URL`,
+            })
+          )
       : dispatch(
           SetInfoMessage({
             code: 200,
@@ -250,7 +254,7 @@ const NewExam = ({ DepData, SemData }) => {
 
   return (
     <>
-      <Title>Add New Exam</Title>
+      <Title>Add New Class</Title>
       <StudentDetailsContainer>
         <Form>
           <FormGrid>
@@ -282,47 +286,7 @@ const NewExam = ({ DepData, SemData }) => {
                     />
                   ) : data.type == "select" ? (
                     <>
-                      {data.id == "department" ? (
-                        <select
-                          id={data.id}
-                          type={data.type}
-                          value={[
-                            data.value._id.trim(),
-                            data.value.name.trim(),
-                          ]}
-                          onChange={(e) => {
-                            const values = e.target.value.split(",");
-                            setInput(
-                              inputs.map((item) =>
-                                item.id === data.id
-                                  ? {
-                                      ...item,
-                                      value: {
-                                        name: values[1],
-                                        _id: values[0],
-                                      },
-                                    }
-                                  : item
-                              )
-                            );
-                          }}
-                        >
-                          {DepData.map((v) =>
-                            data.value._id.trim() === v._id.trim() ? (
-                              <option value={[v._id.trim(), v.name.trim()]}>
-                                {v.name.trim()}
-                              </option>
-                            ) : null
-                          )}
-                          {DepData.map((v) =>
-                            data.value._id.trim() != v._id.trim() ? (
-                              <option value={[v._id.trim(), v.name.trim()]}>
-                                {v.name.trim()}
-                              </option>
-                            ) : null
-                          )}
-                        </select>
-                      ) : data.id == "subject" ? (
+                      {data.id == "subject" ? (
                         <select
                           id={data.id}
                           type={data.type}
@@ -358,6 +322,46 @@ const NewExam = ({ DepData, SemData }) => {
                             data.value._id.trim() != v._id.trim() ? (
                               <option value={[v._id.trim(), v.subName.trim()]}>
                                 {v.subName}
+                              </option>
+                            ) : null
+                          )}
+                        </select>
+                      ) : data.id == "department" ? (
+                        <select
+                          id={data.id}
+                          type={data.type}
+                          value={[
+                            data.value._id.trim(),
+                            data.value.name.trim(),
+                          ]}
+                          onChange={(e) => {
+                            const values = e.target.value.split(",");
+                            setInput(
+                              inputs.map((item) =>
+                                item.id === data.id
+                                  ? {
+                                      ...item,
+                                      value: {
+                                        name: values[1],
+                                        _id: values[0],
+                                      },
+                                    }
+                                  : item
+                              )
+                            );
+                          }}
+                        >
+                          {DepData.map((v) =>
+                            data.value._id.trim() === v._id.trim() ? (
+                              <option value={[v._id.trim(), v.name.trim()]}>
+                                {v.name.trim()}
+                              </option>
+                            ) : null
+                          )}
+                          {DepData.map((v) =>
+                            data.value._id.trim() != v._id.trim() ? (
+                              <option value={[v._id.trim(), v.name.trim()]}>
+                                {v.name.trim()}
                               </option>
                             ) : null
                           )}
@@ -428,19 +432,7 @@ const NewExam = ({ DepData, SemData }) => {
                         type={data.type}
                         value={data.value}
                         onChange={(e) => {
-                          console.log(
-                            new Date(
-                              "1970-01-01T" + e.target.value + "Z"
-                            ).toLocaleTimeString(
-                              {},
-                              {
-                                timeZone: "UTC",
-                                hour12: true,
-                                hour: "numeric",
-                                minute: "numeric",
-                              }
-                            )
-                          );
+                          console.log(e.target.value);
                           setInput(
                             inputs.map((item) =>
                               item.id === data.id
@@ -484,4 +476,4 @@ const NewExam = ({ DepData, SemData }) => {
   );
 };
 
-export default NewExam;
+export default NewClass;

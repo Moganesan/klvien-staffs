@@ -359,7 +359,6 @@ const Assignment = () => {
                     currentPage={currentPage}
                   />
                 </StudentsContainer>
-                <AddNewAssignment DepData={departments} SemData={semesters} />
               </>
             ) : (
               <StudentsContainer>
@@ -383,6 +382,9 @@ const Assignment = () => {
                 </Table>
               </StudentsContainer>
             )}
+            {subjects.length ? (
+              <AddNewAssignment DepData={departments} SemData={semesters} />
+            ) : null}
           </Route>
           <Route exact path={`${path}/:studId`}>
             {students.length ? <StudentAssignmentDetails /> : null}

@@ -74,35 +74,6 @@ const Table = Styled.table`
 `;
 
 const Billings = () => {
-  const billings = useSelector((state) => state.Server.billings);
-  const dispatch = useDispatch();
-  useEffect(async () => {
-    await dispatch(ClearServer());
-    await dispatch(getBillings());
-  }, []);
-
-  if (!billings.length) {
-    return (
-      <Container>
-        <Content>
-          <Table>
-            <thead>
-              <tr>
-                <th>Bill No</th>
-                <th>Bill Item</th>
-                <th>Amount</th>
-                <th>Outstanding</th>
-                <th>Status</th>
-                <th>Method</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </Table>
-        </Content>
-      </Container>
-    );
-  }
-
   return (
     <Container>
       <Content>
@@ -117,26 +88,7 @@ const Billings = () => {
               <th>Method</th>
             </tr>
           </thead>
-          <tbody>
-            {billings.map((data) => {
-              return (
-                <tr>
-                  <td>{data.billNo}</td>
-                  <td>{data.billItem}</td>
-                  <td>&#8377;{data.amount}</td>
-                  <td>&#8377;{data.pendingAmount}</td>
-                  <td>
-                    {data.paymentStatus === "COMPLETED" ? (
-                      <Success text={data.paymentStatus} />
-                    ) : (
-                      <Warning text={data.paymentStatus} />
-                    )}
-                  </td>
-                  <td>{data.method}</td>
-                </tr>
-              );
-            })}
-          </tbody>
+          <tbody></tbody>
         </Table>
       </Content>
     </Container>

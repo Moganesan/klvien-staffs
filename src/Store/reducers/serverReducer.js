@@ -164,6 +164,7 @@ const getExams = (DepId, SemId) => async (dispatch, getstate) => {
 const CreateExam =
   (InId, DepId, SemId, StaffId, Data) => async (dispatch, getstate) => {
     dispatch(SetRocketLoadingTrue());
+
     await axios({
       method: "POST",
       url: `${API}/staff/students/exams/create`,
@@ -189,15 +190,43 @@ const CreateExam =
       });
   };
 
-const getHolidays = () => async (dispatch, getstate) => {
-  dispatch(SetLoadinTrue());
+const getHolidays = (DepId, SemId) => async (dispatch, getstate) => {
   const InId = getstate().SetUser.user.logindetails.InId;
-  const SemId = getstate().SetUser.user.logindetails.SemId;
-  const DepId = getstate().SetUser.user.logindetails.DepId;
-  if (InId && SemId && DepId) {
+  await axios({
+    method: "POST",
+    url: `${API}/staff/students/holidays`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: DepId,
+      SemId: SemId,
+    },
+  })
+    .then((res) => {
+      console.log(res.data);
+      if (res.data.status === 404) {
+        dispatch(ClearServer());
+        dispatch(
+          SetInfoMessage({ code: "404", message: "No holidays found!" })
+        );
+        return dispatch(SetLoadingFalse());
+      }
+      dispatch(GetHolidays(res.data.data));
+    })
+    .catch((err) => {
+      dispatch(SetErrorMessage(err));
+    });
+};
+
+const CreateHoliday =
+  (InId, DepId, SemId, StaffId, Data) => async (dispatch, getstate) => {
+    dispatch(SetRocketLoadingTrue());
     await axios({
       method: "POST",
-      url: `${API}/student/holidays`,
+      url: `${API}/staff/students/holidays/create`,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -206,29 +235,26 @@ const getHolidays = () => async (dispatch, getstate) => {
         InId: InId,
         DepId: DepId,
         SemId: SemId,
+        StaffId: StaffId,
+        Data: Data,
       },
     })
       .then((res) => {
-        if (res.data.status === 404) {
-          dispatch(ClearServer());
-          dispatch(
-            SetInfoMessage({ code: "404", message: "No holidays found!" })
-          );
-          return dispatch(SetLoadingFalse());
-        }
-        dispatch(GetHolidays(res.data.data));
-        return dispatch(SetLoadingFalse());
+        dispatch(SetRocketLoadingFalse());
+        dispatch(SetSuccessMessage(res.data));
       })
-      .catch((err) => dispatch(SetErrorMessage(err)));
-  }
-};
+      .catch((err) => {
+        dispatch(SetRocketLoadingFalse());
+        dispatch(SetErrorMessage(err));
+      });
+  };
 
 const getClasses = (DepId, SemId) => async (dispatch, getstate) => {
   const InId = getstate().SetUser.user.logindetails.InId;
 
   await axios({
     method: "POST",
-    url: `${API}/staff/classes`,
+    url: `${API}/staff/students/classes`,
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -252,6 +278,74 @@ const getClasses = (DepId, SemId) => async (dispatch, getstate) => {
       dispatch(SetErrorMessage(err));
     });
 };
+
+const CreateClass = (DepId, SemId, Data) => async (dispatch, getstate) => {
+  const InId = getstate().SetUser.user.logindetails.InId;
+  const StaffId = getstate().SetUser.user.logindetails.StafId;
+
+  dispatch(SetRocketLoadingTrue());
+  await axios({
+    method: "POST",
+    url: `${API}/staff/students/classes/create`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: DepId,
+      SemId: SemId,
+      StaffId: StaffId,
+      Data: Data,
+    },
+  })
+    .then((res) => {
+      dispatch(SetRocketLoadingFalse());
+      dispatch(SetSuccessMessage(res.data));
+    })
+    .catch((err) => {
+      dispatch(SetRocketLoadingFalse());
+      dispatch(SetErrorMessage(err));
+    });
+};
+
+const UpdateClass =
+  (DepId, SemId, ClsId, Data) => async (dispatch, getstate) => {
+    const InId = getstate().SetUser.user.logindetails.InId;
+
+    dispatch(SetRocketLoadingTrue());
+
+    await axios({
+      method: "POST",
+      url: `${API}/staff/students/classes/update`,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: {
+        InId: InId,
+        DepId: DepId,
+        SemId: SemId,
+        ClsId: ClsId,
+        Data: Data,
+      },
+    })
+      .then(async (res) => {
+        dispatch(SetRocketLoadingFalse());
+        dispatch(ClearServer());
+        dispatch(getClasses(DepId, SemId));
+        await dispatch(
+          SetSuccessMessage({
+            code: 200,
+            message: "Class Details Updated!",
+          })
+        );
+      })
+      .catch((err) => {
+        dispatch(SetRocketLoadingFalse());
+        dispatch(SetErrorMessage(err));
+      });
+  };
 
 const UpdateStudent =
   (InId, DepId, SemId, StudId, Data) => async (dispatch, getstate) => {
@@ -343,46 +437,39 @@ const CreateAssignment =
       });
   };
 
-const addAttendance = () => async (dispatch, getstate) => {
+const AddAttendance = (data) => async (dispatch, getstate) => {
   dispatch(SetLoadinTrue());
-  const StudId = getstate().SetUser.user.logindetails.StudId;
   const InId = getstate().SetUser.user.logindetails.InId;
-  const SemId = getstate().SetUser.user.logindetails.SemId;
-  const DepId = getstate().SetUser.user.logindetails.DepId;
-  const SubId = getstate().Server["classes"].subId;
-  const ClsId = getstate().Server["classes"]._id;
-  const meetingURL = getstate().Server["classes"].meeting.join_url;
-  if (StudId && InId && SemId && DepId) {
-    await axios({
-      method: "POST",
-      url: `${API}/student/attendance/add`,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: {
-        InId: InId,
-        DepId: DepId,
-        SemId: SemId,
-        StudId: StudId,
-        SubId: SubId,
-        ClsId: ClsId,
-      },
+
+  await axios({
+    method: "POST",
+    url: `${API}/staff/students/classes/addattendance`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: data.DepId,
+      SemId: data.SemId,
+      StudId: data.StudId,
+      SubId: data.SubId,
+      ClsId: data.ClsId,
+      Status: data.Status,
+    },
+  })
+    .then((res) => {
+      dispatch(SetLoadingFalse());
+      dispatch(
+        SetSuccessMessage({ code: 200, message: "Attendance Recorded" })
+      );
+      dispatch(ClearServer());
+      dispatch(getClasses(data.DepId, data.SemId));
     })
-      .then(async (res) => {
-        dispatch(SetLoadingFalse());
-        await dispatch(
-          SetSuccessMessage({ code: 200, message: "Attendance Recorded" })
-        );
-        setTimeout(() => {
-          window.open(meetingURL.toString().trim(), "_blank").focus();
-        }, 500);
-      })
-      .catch((err) => {
-        dispatch(SetLoadingFalse());
-        dispatch(SetErrorMessage(err));
-      });
-  }
+    .catch((err) => {
+      dispatch(SetLoadingFalse());
+      dispatch(SetErrorMessage(err));
+    });
 };
 
 const getBillings = () => async (dispatch, getstate) => {
@@ -540,10 +627,13 @@ export {
   CreateAssignment,
   getExams,
   CreateExam,
+  CreateHoliday,
   getHolidays,
   getClasses,
+  CreateClass,
+  UpdateClass,
   getBillings,
-  addAttendance,
+  AddAttendance,
   addFeedback,
   serverReducer,
 };

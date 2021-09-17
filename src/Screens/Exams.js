@@ -208,16 +208,6 @@ const Subject = Styled.div`
    } 
 `;
 
-const Classes = () => {
-  const { subject } = useParams();
-
-  return (
-    <>
-      <Breadcrumbs pages={["Attendance", subject]} />
-    </>
-  );
-};
-
 const Exams = () => {
   const { path, url } = useRouteMatch();
 
@@ -366,7 +356,6 @@ const Exams = () => {
                     currentPage={currentPage}
                   />
                 </StudentsContainer>
-                <AddNewExam DepData={departments} SemData={semesters} />
               </>
             ) : (
               <StudentsContainer>
@@ -390,6 +379,9 @@ const Exams = () => {
                 </Table>
               </StudentsContainer>
             )}
+            {subjects.length ? (
+              <AddNewExam DepData={departments} SemData={semesters} />
+            ) : null}
           </Route>
           <Route exact path={`${path}/:studId`}>
             {students.length ? <StudentExamDetails /> : null}
