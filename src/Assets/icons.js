@@ -210,6 +210,30 @@ const Assignment = ({ color }) => (
   </svg>
 );
 
+const Subjects = ({ color }) => (
+  <svg
+    width="26"
+    height="26"
+    viewBox="0 0 94 82"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M2 27.7143L47 2L92 27.7143L47 53.4286L2 27.7143Z"
+      stroke={color}
+      stroke-width="6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M46.9999 53.4286V79.1429M18.0713 37.3572V63.0715L46.9999 79.1429L75.9284 63.0715V37.3572H18.0713ZM91.9999 63.0715V27.7144V63.0715Z"
+      stroke={color}
+      stroke-width="6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
 const Exams = ({ color }) => (
   <svg
     width="26"
@@ -469,6 +493,7 @@ export {
   Dashboard,
   Attendance,
   Assignment,
+  Subjects,
   Exams,
   Holidays,
   Classes,

@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getExams,
-  get_students,
-  getAssignment,
-  get_subjects,
-} from "../Store/reducers/serverReducer";
+import { getAssignment, get_subjects } from "../Store/reducers/serverReducer";
 import { ButtonPrimary } from "../Components/Button";
 import { GET_PROFILE } from "../Store/constants/api";
 import Pagination from "../Components/Pagination";
@@ -55,8 +50,7 @@ import AddNewAssignment from "../Components/AddNewAssignment";
 import StudentDetails from "./StudentDetails";
 import StudentAttendanceDetails from "./AttendanceDetails";
 import StudentAssignmentDetails from "./StudentAssignmentDetails";
-import StudentExamDetails from "./StudentExamDetails";
-import AddNewExam from "../Components/AddNewExam";
+import NewSubject from "../Components/AddNewSubject";
 
 const Header = Styled.div`
    select{
@@ -212,7 +206,17 @@ const Subject = Styled.div`
    } 
 `;
 
-const Exams = () => {
+const Classes = () => {
+  const { subject } = useParams();
+
+  return (
+    <>
+      <Breadcrumbs pages={["Attendance", subject]} />
+    </>
+  );
+};
+
+const Subjects = () => {
   const { path, url } = useRouteMatch();
 
   const dispatch = useDispatch();
@@ -226,7 +230,7 @@ const Exams = () => {
     (state) => state.SetUser.user.logindetails.SemData
   );
 
-  const students = useSelector((state) => state.Server["exams"]);
+  const students = useSelector((state) => state.Server["assignments"]);
 
   const subjects = useSelector((state) => state.Server["subjects"]);
 
@@ -236,7 +240,7 @@ const Exams = () => {
   // Get current data
   const indexOfLastPost = currentPage * dataPerPage;
   const indexOfFirstPost = indexOfLastPost - dataPerPage;
-  const currentData = students.slice(indexOfFirstPost, indexOfLastPost);
+  const currentData = subjects.slice(indexOfFirstPost, indexOfLastPost);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -244,7 +248,6 @@ const Exams = () => {
   useEffect(() => {
     dispatch(ClearServer());
     dispatch(get_subjects(departments[0]._id, semesters[0]._id));
-    dispatch(getExams(departments[0]._id, semesters[0]._id));
   }, []);
 
   return (
@@ -253,18 +256,12 @@ const Exams = () => {
         <Switch>
           <Route exact path={path}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <Breadcrumbs pages={["Exams"]} />
+              <Breadcrumbs pages={["Subjects"]} />
               <Header>
                 <select
                   id="DepFilt"
                   onChange={async (e) => {
                     dispatch(ClearServer());
-                    dispatch(
-                      getExams(
-                        e.target.value,
-                        document.getElementById("SemFilt").value
-                      )
-                    );
                     dispatch(
                       get_subjects(
                         e.target.value,
@@ -282,12 +279,6 @@ const Exams = () => {
                   onChange={async (e) => {
                     dispatch(ClearServer());
                     dispatch(
-                      getExams(
-                        document.getElementById("DepFilt").value,
-                        e.target.value
-                      )
-                    );
-                    dispatch(
                       get_subjects(
                         document.getElementById("DepFilt").value,
                         e.target.value
@@ -301,53 +292,22 @@ const Exams = () => {
                 </select>
               </Header>
             </div>
-            {students.length ? (
+            {subjects.length ? (
               <>
                 <StudentsContainer>
                   <Table>
                     <thead>
                       <tr>
-                        <th>Student</th>
-                        <th>Department</th>
-                        <th>Mobile</th>
-                        <th>Semester</th>
-                        <th></th>
+                        <th>Subject</th>
+                        <th>Created At</th>
                       </tr>
                     </thead>
                     <tbody>
                       {currentData.map((data) => {
                         return (
                           <tr>
-                            <td>
-                              <ProfileContainer>
-                                <Profile>
-                                  <img src={GET_PROFILE + data.profile} />
-                                </Profile>
-                                <span>{data.firstName}</span>
-                              </ProfileContainer>
-                            </td>
-                            <td>{data.depName}</td>
-                            <td>{data.contMob}</td>
-                            <td>{data.semName}</td>
-                            <td>
-                              {/* <Link to={`${url}/${data.StudId}`}>
-                                <ButtonPrimary text={"View"} />
-                              </Link> */}
-                              <Link
-                                to={{
-                                  pathname: `${url}/${data.StudId}`,
-                                  state: {
-                                    DepId: data.DepId,
-                                    SemId: data.SemId,
-                                  },
-                                }}
-                              >
-                                <ButtonPrimary
-                                  whileHover={true}
-                                  text={"View"}
-                                />
-                              </Link>
-                            </td>
+                            <td>{data.subName}</td>
+                            <td>{data.crAt}</td>
                           </tr>
                         );
                       })}
@@ -366,16 +326,12 @@ const Exams = () => {
                 <Table>
                   <thead>
                     <tr>
-                      <th>Student</th>
-                      <th>Department</th>
-                      <th>Mobile</th>
-                      <th>Semester</th>
+                      <th>Subject</th>
+                      <th>Created At</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>Loading...</td>
-                      <td>Loading...</td>
                       <td>Loading...</td>
                       <td>Loading...</td>
                     </tr>
@@ -384,11 +340,11 @@ const Exams = () => {
               </StudentsContainer>
             )}
             {subjects.length ? (
-              <AddNewExam DepData={departments} SemData={semesters} />
+              <NewSubject DepData={departments} SemData={semesters} />
             ) : null}
           </Route>
           <Route exact path={`${path}/:studId`}>
-            {students.length ? <StudentExamDetails /> : null}
+            {students.length ? <StudentAssignmentDetails /> : null}
           </Route>
         </Switch>
       </Content>
@@ -396,4 +352,4 @@ const Exams = () => {
   );
 };
 
-export default Exams;
+export default Subjects;

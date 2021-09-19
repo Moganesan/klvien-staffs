@@ -3,6 +3,7 @@ import firebase from "../config/db";
 import { userActionTypes } from "../constants/actionTypes";
 import { SET_USER, UnauthorizeUser } from "../actions/userActions";
 import { API } from "../constants/api";
+import { GetLatestLogins } from "../reducers/serverReducer";
 import {
   SetLoadinTrue,
   SetLoadingFalse,
@@ -160,7 +161,8 @@ const VerifyUser = () => async (dispatch, getstate) => {
       if (res.data.status === 401) {
         console.log(res.data);
       }
-      return dispatch(SET_USER(res.data.data));
+      dispatch(SET_USER(res.data.data));
+      dispatch(GetLatestLogins());
     })
     .catch((err) => {
       return dispatch(UnauthorizeUser());

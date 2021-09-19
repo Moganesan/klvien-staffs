@@ -44,6 +44,7 @@ const Profile = Styled(motion.div)`
    height: 50px;
    overflow: hidden;
    border-radius: 50%;
+   cursor: pointer;
    img{
      width: 100%;
      height: 100%;

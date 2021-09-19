@@ -55,6 +55,10 @@ const Header = Styled.div`
      outline: none;
      padding: 10px;
      border-radius: 5px;
+     @media only screen and (max-width: 425px){
+       padding: 5px;
+       margin-right: 0;
+     }
      font-weight: bold;
      color: white;
      background-color: #0D7377;
@@ -254,7 +258,7 @@ const Attendance = () => {
                   onChange={async (e) => {
                     dispatch(ClearServer());
                     dispatch(
-                      get_students(
+                      get_attendance(
                         e.target.value,
                         document.getElementById("SemFilt").value
                       )
@@ -270,7 +274,7 @@ const Attendance = () => {
                   onChange={async (e) => {
                     dispatch(ClearServer());
                     dispatch(
-                      get_students(
+                      get_attendance(
                         document.getElementById("DepFilt").value,
                         e.target.value
                       )

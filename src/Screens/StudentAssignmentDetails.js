@@ -10,7 +10,7 @@ import AttendancePie from "../Components/AttendancePie";
 import { motion } from "framer-motion";
 import { Success, Warning, Error } from "../Components/StatusCard";
 import axios from "axios";
-import { API, GET_PROFILE } from "../Store/constants/api";
+import { API, GET_ASSIGNMENT, GET_PROFILE } from "../Store/constants/api";
 import {
   SetErrorMessage,
   SetLoadingFalse,
@@ -25,7 +25,11 @@ import {
   STATE,
   DISTRICT,
 } from "../Store/constants/datatypes";
-import { get_students, UpdateStudent } from "../Store/reducers/serverReducer";
+import {
+  get_students,
+  UpdateAssignmentStatus,
+  UpdateStudent,
+} from "../Store/reducers/serverReducer";
 import Pagination from "../Components/Pagination";
 import AssignmentsPie from "../Components/AssignmentsPie";
 import AssignmentsChart from "../Components/AssignmentsChart";
@@ -44,14 +48,17 @@ const Header = Styled.div`
 `;
 
 const AttendanceDetailsContainer = Styled.div`
-   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
-   padding: 20px 20px;
-   border-radius: 30px;
-   margin-top: 20px;
+    margin-top: 20px;
 `;
 
 const AttendanceContainer = Styled.div`
    display: flex;
+   @media only screen and (max-width: 768px){
+     flex-direction: column;
+     div{
+       margin-bottom: 20px;
+     }
+   }
    align-items: center;
    justify-content: space-between;
 `;
@@ -246,6 +253,18 @@ const StudentAssignmentDetails = () => {
     (state) => state.SetUser.user.logindetails.SemData
   );
 
+  const UpdateStatus = (AssgId, Status) => {
+    const data = {
+      DepId: DepId,
+      SemId: SemId,
+      StudId: assignments.StudId,
+      AssgId: AssgId,
+      Status: Status,
+    };
+
+    dispatch(UpdateAssignmentStatus(data));
+  };
+
   return (
     <>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -286,34 +305,42 @@ const StudentAssignmentDetails = () => {
                   <td>{data.staffName}</td>
                   <td>
                     {data.status === "PENDING" ? (
-                      <motion.div whileTap={{ scale: 0.9 }}>
-                        <Error text={data.status} />
-                      </motion.div>
+                      <Error text={data.status} />
                     ) : data.status === "CHECKING" ? (
-                      <motion.div whileTap={{ scale: 0.9 }}>
-                        <Warning text={data.status} />
-                      </motion.div>
+                      <Warning
+                        onClick={() => UpdateStatus(data.AssgId, "COMPLETED")}
+                        whileTap={true}
+                        text={data.status}
+                      />
                     ) : data.status === "COMPLETED" ? (
-                      <motion.div whileTap={{ scale: 0.9 }}>
-                        <Success text={data.status} />
-                      </motion.div>
+                      <Success
+                        onClick={() => UpdateStatus(data.AssgId, "CHECKING")}
+                        whileTap={true}
+                        text={data.status}
+                      />
                     ) : (
-                      <motion.div whileTap={{ scale: 0.9 }}>
-                        <Warning text={data.status} />
-                      </motion.div>
+                      <Warning text={data.status} />
                     )}
                   </td>
                   <td>
                     {data.status === "PENDING" ? (
                       <ButtonPrimary text="Notify" />
                     ) : data.status === "CHECKING" ? (
-                      <ButtonPrimary text="View" />
+                      <ButtonPrimary
+                        OnClick={() => {
+                          window.open(GET_ASSIGNMENT + data.file, "_blank");
+                        }}
+                        text="View"
+                      />
                     ) : data.status === "COMPLETED" ? (
-                      <ButtonPrimary text="View" />
+                      <ButtonPrimary
+                        OnClick={() => {
+                          window.open(GET_ASSIGNMENT + data.file, "_blank");
+                        }}
+                        text="View"
+                      />
                     ) : (
-                      <motion.div whileTap={{ scale: 0.9 }}>
-                        <ButtonPrimary text="View" />
-                      </motion.div>
+                      <ButtonPrimary text="View" />
                     )}
                   </td>
                 </tr>

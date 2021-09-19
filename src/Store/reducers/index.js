@@ -5,7 +5,6 @@ import {
   ProfileModalReducer,
   FeedbackModalReducer,
   UploadModalReducer,
-  AttendanceDetailsModalReducer,
   ConnectGoogleModalReducer,
   LoadingReducer,
   RocketLoadingReducer,
@@ -39,6 +38,10 @@ import {
   CreateClass,
   UpdateClass,
   AddAttendance,
+  CreateSubject,
+  UpdateAssignmentStatus,
+  UpdateExamStatus,
+  GetLatestLogins,
 } from "../reducers/serverReducer";
 
 const reducers = combineReducers({
@@ -51,7 +54,6 @@ const reducers = combineReducers({
   GoogleAuth: GoogleAuth,
   GoogleConnectModal: ConnectGoogleModalReducer,
   UpdateStudentDetailsModal: UpdateStudentDetailsReducer,
-  AttendanceDetailsModal: AttendanceDetailsModalReducer,
   ConnectGoogle: ConnectGoogle,
   SetUser: setUser,
   Loading: LoadingReducer,
@@ -70,7 +72,11 @@ const reducers = combineReducers({
   GetExams: getExams,
   CreateExam: CreateExam,
   CreateClass: CreateClass,
+  CreateSubject: CreateSubject,
+  UpdateAssignmentStatus: UpdateAssignmentStatus,
+  UpdateExamStatus: UpdateExamStatus,
   UpdateClass: UpdateClass,
+  GetLatestLogins: GetLatestLogins,
   GetHolidays: getHolidays,
   GetBillings: getBillings,
   GetClasses: getClasses,

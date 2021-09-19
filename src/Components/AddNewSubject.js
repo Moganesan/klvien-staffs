@@ -20,7 +20,11 @@ import {
   SetSuccessMessage,
   SetWarningMessage,
 } from "../Store/actions/uiActions";
-import { CreateAssignment, CreateExam } from "../Store/reducers/serverReducer";
+import {
+  CreateAssignment,
+  CreateStudent,
+  CreateSubject,
+} from "../Store/reducers/serverReducer";
 
 const Title = Styled.span`
    font-weight: bold;
@@ -142,7 +146,7 @@ const FormGrid = Styled.div`
    }
 `;
 
-const NewExam = ({ DepData, SemData }) => {
+const NewSubject = ({ DepData, SemData }) => {
   const [inputs, setInput] = useState([]);
   const dispatch = useDispatch();
 
@@ -151,65 +155,16 @@ const NewExam = ({ DepData, SemData }) => {
   useEffect(() => {
     setInput([
       {
-        title: "Title",
-        id: "title",
+        title: "Subject Name",
+        id: "subName",
         type: "text",
         value: "",
       },
       {
-        title: "Exam Code",
-        id: "examCode",
+        title: "Subject Code",
+        id: "subCode",
         type: "text",
         value: "",
-      },
-      {
-        title: "Description",
-        id: "description",
-        type: "text",
-        value: "",
-      },
-      {
-        title: "Subject",
-        id: "subject",
-        type: "select",
-        value: {
-          name: subjects[0].subName,
-          _id: subjects[0]._id,
-        },
-      },
-      {
-        title: "Date",
-        id: "date",
-        type: "date",
-        value: new Date().toLocaleDateString("sv"),
-      },
-      {
-        title: "Starting Time",
-        id: "startingTime",
-        type: "time",
-        value: new Date()
-          .toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          })
-          .replace("AM", "")
-          .replace("PM", "")
-          .trim(),
-      },
-      {
-        title: "Ending Time",
-        id: "endingTime",
-        type: "time",
-        value: new Date()
-          .toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          })
-          .replace("AM", "")
-          .replace("PM", "")
-          .trim(),
       },
       {
         title: "Department",
@@ -232,8 +187,6 @@ const NewExam = ({ DepData, SemData }) => {
     ]);
   }, []);
 
-  const [profile, setProfile] = useState();
-
   const InId = useSelector((state) => state.SetUser.user.logindetails.InId);
 
   const StaffId = useSelector(
@@ -246,18 +199,18 @@ const NewExam = ({ DepData, SemData }) => {
     const SemId = inputs.find((input) => input.id == "semester")["value"]._id;
 
     inputs.every((input) => input.value)
-      ? dispatch(CreateExam(InId, DepId, SemId, StaffId, inputs))
+      ? dispatch(CreateSubject(InId, DepId, SemId, StaffId, inputs))
       : dispatch(
           SetInfoMessage({
             code: 200,
-            message: `Enter a valid information to create assignment.`,
+            message: `Enter a valid information to create Subject.`,
           })
         );
   };
 
   return (
     <>
-      <Title>Add New Exam</Title>
+      <Title>Add New Subject</Title>
       <StudentDetailsContainer>
         <Form>
           <FormGrid>
@@ -428,36 +381,6 @@ const NewExam = ({ DepData, SemData }) => {
                         }}
                       />
                     </>
-                  ) : data.type == "time" ? (
-                    <>
-                      <input
-                        id={data.id}
-                        type={data.type}
-                        value={data.value}
-                        onChange={(e) => {
-                          console.log(
-                            new Date(
-                              "1970-01-01T" + e.target.value + "Z"
-                            ).toLocaleTimeString(
-                              {},
-                              {
-                                timeZone: "UTC",
-                                hour12: true,
-                                hour: "numeric",
-                                minute: "numeric",
-                              }
-                            )
-                          );
-                          setInput(
-                            inputs.map((item) =>
-                              item.id === data.id
-                                ? { ...item, value: e.target.value }
-                                : item
-                            )
-                          );
-                        }}
-                      />
-                    </>
                   ) : data.type == "number" ? (
                     <>
                       <input
@@ -491,4 +414,4 @@ const NewExam = ({ DepData, SemData }) => {
   );
 };
 
-export default NewExam;
+export default NewSubject;

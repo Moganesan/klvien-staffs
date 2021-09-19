@@ -28,6 +28,9 @@ const Title = Styled.span`
 
 const StudentDetailsContainer = Styled.div`
    display: flex;
+   @media only screen and (max-width: 450px){
+    flex-direction: column;
+   }
    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
    justify-content: space-between;
    align-items: center;
@@ -48,6 +51,9 @@ const StudentProfileContainer = Styled.div`
    width: 200px;
    display: flex;
    align-items: center;
+   @media only screen and (max-width: 450px){
+    margin-top: 30PX;
+   }
    justify-content: center;
    overflow: hidden;
    &:hover{
@@ -74,6 +80,7 @@ const StudentProfile = Styled.div`
 const Form = Styled.div`
    display: flex;   
    flex-direction: column;
+  
    justify-content: space-evenly;
    padding: 20px 0;
    width: 90%;
@@ -125,6 +132,16 @@ const FormGrid = Styled.div`
    display: grid;
    grid-gap: 5px;
    grid-template-columns: repeat(3, minmax(0,1fr));
+
+   @media only screen and (max-width: 600px){
+    grid-template-columns: repeat(2, minmax(0,1fr));
+   }
+
+   @media only screen and (max-width: 450px){
+    grid-template-columns: repeat(1, minmax(0,1fr));
+   }
+
+
    select{
     outline: none;
      border: 1px solid #EFEFEF;

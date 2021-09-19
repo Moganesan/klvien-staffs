@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { OpenProfileModal } from "../Store/actions/uiActions";
 import { motion } from "framer-motion";
 import { Logout } from "../Store/reducers/userReducer";
+import { GET_PROFILE } from "../Store/constants/api";
 
 const Container = Styled.div`
    position: fixed;
@@ -31,6 +32,10 @@ const User = Styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;  
+  span{
+    font-size: 13px;
+    coloe: #6D8299;
+  }
 `;
 
 const Profile = Styled.div`
@@ -45,21 +50,22 @@ const Profile = Styled.div`
 
 const Sidebar = () => {
   const dispatch = useDispatch();
-  const profile = useSelector((state) => state.SetUser.user.staff);
+  const students = useSelector((state) => state.Server.latestLogins);
   return (
     <Container>
       <h2>Recent Logins</h2>
-      <User>
-        <Profile>
-          <img
-            src={
-              "https://cdn.iconscout.com/icon/free/png-512/avatar-370-456322.png"
-            }
-          />
-        </Profile>
-        <h4>Moganesan</h4>
-        <span>10 min ago</span>
-      </User>
+
+      {students
+        ? students.map((student) => (
+            <User>
+              <Profile>
+                <img src={GET_PROFILE + student.profile} />
+              </Profile>
+              <h4>{student.firstName}</h4>
+              <span>{student.lastLogin}</span>
+            </User>
+          ))
+        : null}
     </Container>
   );
 };

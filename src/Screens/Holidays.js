@@ -65,6 +65,10 @@ const Header = Styled.div`
      border: none;
      outline: none;
      padding: 10px;
+     @media only screen and (max-width: 425px){
+       padding: 5px;
+       margin-right: 0;
+     }
      border-radius: 5px;
      font-weight: bold;
      color: white;

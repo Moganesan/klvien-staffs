@@ -42,15 +42,18 @@ const Header = Styled.div`
 `;
 
 const AttendanceDetailsContainer = Styled.div`
-   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
-   padding: 20px 20px;
-   border-radius: 30px;
    margin-top: 20px;
 `;
 
 const AttendanceContainer = Styled.div`
    display: flex;
    align-items: center;
+   @media only screen and (max-width: 768px){
+     flex-direction: column;
+     div{
+       margin-bottom: 20px;
+     }
+   }
    justify-content: space-between;
 `;
 
@@ -74,12 +77,7 @@ const Table = Styled.table`
    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
    border-top-right-radius: 30px;
    overflow: hidden;
-   @media only screen and (max-width: 768px){
-     width: 600px;
-   }
-   @media only screen and (max-width: 425px){
-     width: 200px;
-   }
+
 
    thead tr{
      background-color: #171717;

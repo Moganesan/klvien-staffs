@@ -11,6 +11,7 @@ import {
   Feedback,
   Settings,
   Users,
+  Subjects,
 } from "../Assets/icons";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -38,7 +39,7 @@ const Menu = Styled.ul`
     }
   
     margin-top: 5px;
-    padding: 8px;
+    padding: 6px;
 
     span{
       margin-left: 10px;
@@ -203,6 +204,26 @@ const Sidebar = () => {
             </span>
           </MenuItem>
         </Link>
+        <Link to="/subjects">
+          <MenuItem
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            style={
+              path.includes("/subjects")
+                ? { background: ActiveBackground }
+                : null
+            }
+          >
+            <Subjects
+              color={path.includes("/subjects") ? ActiveText : "white"}
+            />
+            <span
+              style={path.includes("/subjects") ? { color: ActiveText } : null}
+            >
+              Subjects
+            </span>
+          </MenuItem>
+        </Link>
         <Link to="/exams">
           <MenuItem
             whileHover={{ scale: 1.1 }}
@@ -296,14 +317,14 @@ const Sidebar = () => {
       >
         &#169;Lionsoftindia
       </span>
-      <SettingsBtn
+      {/* <SettingsBtn
         onClick={() => Dispatch(OpenProfileModal())}
         whileHover={{ rotate: -50, x: -20 }}
         whileTap={{ scale: 0.9 }}
         style={{ cursor: "pointer", marginTop: 30 }}
       >
         <Settings />
-      </SettingsBtn>
+      </SettingsBtn> */}
     </Container>
   );
 };

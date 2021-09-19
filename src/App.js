@@ -28,7 +28,7 @@ import Error401 from "./Screens/Error401";
 import firebase from "firebase";
 import { ToastPortal } from "./Components/ToastPortal";
 import Students from "./Screens/Students";
-import AttendanceDetails from "./Components/AttendanceDetails";
+import Subjects from "./Screens/Subjects";
 import UpdateStudentDetails from "./Components/UpdateStudentDetailsModal";
 
 const Container = Styled.div`
@@ -79,6 +79,16 @@ const routes = [
         <Header />
         <SidebarRight />
         <Assignment />
+      </>
+    ),
+  },
+  {
+    path: "/subjects",
+    main: () => (
+      <>
+        <Header />
+        <SidebarRight />
+        <Subjects />
       </>
     ),
   },
@@ -172,7 +182,6 @@ const App = () => {
         <UploadModal />
         <Sidebar />
         <UpdateStudentDetails />
-        <AttendanceDetails />
         <ConnectGoogleModal />
         <ToastPortal ref={toastRef} autoClose={true} />
         <Container>

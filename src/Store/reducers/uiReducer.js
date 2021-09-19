@@ -55,7 +55,7 @@ const FeedbackModalReducer = (
 };
 
 const UpdateStudentDetailsReducer = (
-  state = UIActionTypes.OPEN_UPDATE_STUDENT_DETAILS_MODAL,
+  state = UIActionTypes.CLOSE_UPDATE_STUDENT_DETAILS_MODAL,
   action
 ) => {
   switch (action.type) {
@@ -93,29 +93,6 @@ const UploadModalReducer = (
 
     case UIActionTypes.CLOSE_UPLOAD_MODAL:
       return { status: UIActionTypes.CLOSE_UPLOAD_MODAL, data: [] };
-    default:
-      return state;
-  }
-};
-
-const AttendanceDetailsModalReducer = (
-  state = {
-    status: UIActionTypes.CLOSE_ATTENDANCE_DETAILS_MODAL,
-    data: [],
-  },
-  action
-) => {
-  switch (action.type) {
-    case UIActionTypes.OPEN_GOOGLE_MODAL:
-      return {
-        status: UIActionTypes.OPEN_ATTENDANCE_DETAILS_MODAL,
-        data: action.payload,
-      };
-    case UIActionTypes.CLOSE_ATTENDANCE_DETAILS_MODAL:
-      return {
-        status: UIActionTypes.CLOSE_ATTENDANCE_DETAILS_MODAL,
-        data: action.payload,
-      };
     default:
       return state;
   }
@@ -217,7 +194,6 @@ export {
   ConnectGoogleModalReducer,
   ProfileModalReducer,
   FeedbackModalReducer,
-  AttendanceDetailsModalReducer,
   LoadingReducer,
   RocketLoadingReducer,
   GreenLoadingReducer,

@@ -11,6 +11,8 @@ import {
   Billing,
   Feedback,
   Settings,
+  Users,
+  Subjects,
 } from "../Assets/icons";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -23,7 +25,7 @@ const Menu = Styled.ul`
    margin: 0;
 
    margin-top: 0px;
-   padding: 20px;
+   padding: 8px;
    
    li{
     display: flex;
@@ -35,7 +37,7 @@ const Menu = Styled.ul`
     }
   
     margin-top: 5px;
-    padding: 10px;
+    padding: 8px;
 
     span{
       margin-left: 10px;
@@ -72,7 +74,7 @@ const Container = Styled.aside`
    *{
      color: white;
    }
-   width: 100px;
+   width: 90px;
    height: 100%;
    background: #171717;
    position: fixed;
@@ -119,18 +121,33 @@ const Sidebar = () => {
                 <Dashboard color={path == "/" ? ActiveText : "white"} />
               </MenuItem>
             </Link>
+            <Link to="/students">
+              <MenuItem
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                style={
+                  path.includes("/students")
+                    ? { background: ActiveBackground }
+                    : null
+                }
+              >
+                <Users
+                  color={path.includes("/students") ? ActiveText : "white"}
+                />
+              </MenuItem>
+            </Link>
             <Link to="/attendance">
               <MenuItem
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 style={
-                  path == "/attendance"
+                  path.includes("/attendance")
                     ? { background: ActiveBackground }
                     : null
                 }
               >
                 <Attendance
-                  color={path == "/attendance" ? ActiveText : "white"}
+                  color={path.includes("/attendance") ? ActiveText : "white"}
                 />
               </MenuItem>
             </Link>
@@ -139,13 +156,28 @@ const Sidebar = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 style={
-                  path == "/assignment"
+                  path.includes("/assignment")
                     ? { background: ActiveBackground }
                     : null
                 }
               >
                 <Assignment
-                  color={path == "/assignment" ? ActiveText : "white"}
+                  color={path.includes("/assignment") ? ActiveText : "white"}
+                />
+              </MenuItem>
+            </Link>
+            <Link to="/subjects">
+              <MenuItem
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                style={
+                  path.includes("/subjects")
+                    ? { background: ActiveBackground }
+                    : null
+                }
+              >
+                <Subjects
+                  color={path.includes("/subjects") ? ActiveText : "white"}
                 />
               </MenuItem>
             </Link>
@@ -154,10 +186,12 @@ const Sidebar = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 style={
-                  path == "/exams" ? { background: ActiveBackground } : null
+                  path.includes("/exams")
+                    ? { background: ActiveBackground }
+                    : null
                 }
               >
-                <Exams color={path == "/exams" ? ActiveText : "white"} />
+                <Exams color={path.includes("/exams") ? ActiveText : "white"} />
               </MenuItem>
             </Link>
             <Link to="/holidays">
@@ -165,10 +199,14 @@ const Sidebar = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 style={
-                  path == "/holidays" ? { background: ActiveBackground } : null
+                  path.includes("/holidays")
+                    ? { background: ActiveBackground }
+                    : null
                 }
               >
-                <Holidays color={path == "/holidays" ? ActiveText : "white"} />
+                <Holidays
+                  color={path.includes("/holidays") ? ActiveText : "white"}
+                />
               </MenuItem>
             </Link>
             <Link to="/classes">
@@ -176,10 +214,14 @@ const Sidebar = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 style={
-                  path == "/classes" ? { background: ActiveBackground } : null
+                  path.includes("/classes")
+                    ? { background: ActiveBackground }
+                    : null
                 }
               >
-                <Classes color={path == "/classes" ? ActiveText : "white"} />
+                <Classes
+                  color={path.includes("/classes") ? ActiveText : "white"}
+                />
               </MenuItem>
             </Link>
             <Link to="/billings">
@@ -187,10 +229,14 @@ const Sidebar = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 style={
-                  path == "/billings" ? { background: ActiveBackground } : null
+                  path.includes("/billings")
+                    ? { background: ActiveBackground }
+                    : null
                 }
               >
-                <Billing color={path == "/billings" ? ActiveText : "white"} />
+                <Billing
+                  color={path.includes("/billings") ? ActiveText : "white"}
+                />
               </MenuItem>
             </Link>
             <MenuItem
@@ -201,13 +247,13 @@ const Sidebar = () => {
               <Feedback color={"white"} />
             </MenuItem>
           </Menu>
-          <SettingsBtn
+          {/* <SettingsBtn
             whileHover={{ rotate: -50, x: -20 }}
             whileTap={{ scale: 0.9 }}
             style={{ cursor: "pointer", marginTop: 0 }}
           >
             <Settings />
-          </SettingsBtn>
+          </SettingsBtn> */}
         </Container>
       ) : null}
     </>

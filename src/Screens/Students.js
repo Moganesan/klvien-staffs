@@ -42,6 +42,10 @@ const Header = Styled.div`
      color: white;
      background-color: #0D7377;
      margin-right: 10px;
+     @media only screen and (max-width: 425px){
+       padding: 5px;
+       margin-right: 0;
+     }
    }
 `;
 

@@ -50,13 +50,20 @@ const Header = Styled.div`
 
 const Container = Styled.div`   
    border-radius: 30px;
-   padding: 20px 20px;
+   padding: 20px 0px;
    margin-top: 20px;
 `;
 
 const StudentsContainer = Styled.div`
    display: grid;
    grid-template-columns: repeat(3,minmax(0,1fr));
+   @media only screen and (max-width: 700px){
+    grid-template-columns: repeat(2, minmax(0,1fr));
+   }
+
+   @media only screen and (max-width: 450px){
+    grid-template-columns: repeat(1, minmax(0,1fr));
+   }
    grid-gap: 5px;
 `;
 
@@ -157,6 +164,13 @@ const FormGrid = Styled.div`
    display: grid;
    grid-gap: 5px;
    grid-template-columns: repeat(3, minmax(0,1fr));
+   @media only screen and (max-width: 600px){
+    grid-template-columns: repeat(2, minmax(0,1fr));
+   }
+
+   @media only screen and (max-width: 450px){
+    grid-template-columns: repeat(1, minmax(0,1fr));
+   }
    select{
     outline: none;
      border: 1px solid #EFEFEF;

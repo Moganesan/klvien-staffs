@@ -76,21 +76,7 @@ const Table = Styled.table`
 const Billings = () => {
   return (
     <Container>
-      <Content>
-        <Table>
-          <thead>
-            <tr>
-              <th>Bill No</th>
-              <th>Bill Item</th>
-              <th>Amount</th>
-              <th>Outstanding</th>
-              <th>Status</th>
-              <th>Method</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </Table>
-      </Content>
+      <Content>Coming Soon</Content>
     </Container>
   );
 };

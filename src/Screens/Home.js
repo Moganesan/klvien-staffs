@@ -3,8 +3,12 @@ import Styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAssignment,
+  GetAssignmentsList,
   getClasses,
+  GetClassList,
   getExams,
+  GetExamsList,
+  GetStudentsList,
   get_attendance,
   get_students,
   get_subjects,
@@ -44,6 +48,10 @@ const Header = Styled.div`
      color: white;
      background-color: #0D7377;
      margin-right: 10px;
+     @media only screen and (max-width: 425px){
+       padding: 5px;
+       margin-right: 0;
+     }
    }
 `;
 
@@ -84,7 +92,16 @@ const Announcement = Styled.div`
 const Dashboard = Styled.div`
    display: grid;
    grid-gap: 25px;
-   grid-template-columns: repeat(4, minmax(0,1fr));
+   grid-template-columns: repeat(4, minmax(0,1fr)); 
+   align-items: center;
+   justify-items: center;
+   @media only screen and (max-width: 768px){
+    grid-template-columns: repeat(3, minmax(0,1fr)); 
+  }
+  @media only screen and (max-width: 598px){
+    grid-template-columns: repeat(1, minmax(0,1fr)); 
+  }
+
    background: white;
    margin-top: 20px;
    margin-bottom: 20px;
@@ -122,12 +139,6 @@ const Table = Styled.table`
    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.07);
    border-top-right-radius: 30px;
    overflow: hidden;
-   @media only screen and (max-width: 768px){
-     width: 600px;
-   }
-   @media only screen and (max-width: 425px){
-     width: 200px;
-   }
 
    thead tr{
      background-color: #171717;
@@ -218,10 +229,10 @@ const Home = () => {
   useEffect(async () => {
     dispatch(ClearServer());
     dispatch(get_subjects(departments[0]._id, semesters[0]._id));
-    dispatch(get_students(departments[0]._id, semesters[0]._id));
-    dispatch(getAssignment(departments[0]._id, semesters[0]._id));
-    dispatch(getExams(departments[0]._id, semesters[0]._id));
-    dispatch(getClasses(departments[0]._id, semesters[0]._id));
+    dispatch(GetStudentsList(departments[0]._id, semesters[0]._id));
+    dispatch(GetAssignmentsList(departments[0]._id, semesters[0]._id));
+    dispatch(GetExamsList(departments[0]._id, semesters[0]._id));
+    dispatch(GetClassList(departments[0]._id, semesters[0]._id));
   }, []);
 
   return (

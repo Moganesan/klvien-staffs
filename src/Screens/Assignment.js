@@ -55,6 +55,10 @@ const Header = Styled.div`
    select{
      border: none;
      outline: none;
+     @media only screen and (max-width: 425px){
+       padding: 5px;
+       margin-right: 0;
+     }
      padding: 10px;
      border-radius: 5px;
      font-weight: bold;

@@ -87,10 +87,10 @@ const Notifications = () => {
             </Header>
             <hr style={{ background: "#E8F0F2" }} />
             <MessageContainer>
-              <Message>
+              {/* <Message>
                 <p>New schedule added</p>
                 <span>2 min ago</span>
-              </Message>
+              </Message> */}
             </MessageContainer>
           </Content>
         </Container>

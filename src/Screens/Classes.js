@@ -69,6 +69,10 @@ const Header = Styled.div`
      border: none;
      outline: none;
      padding: 10px;
+     @media only screen and (max-width: 425px){
+       padding: 5px;
+       margin-right: 0;
+     }
      border-radius: 5px;
      font-weight: bold;
      color: white;
@@ -262,7 +266,7 @@ const Classes = () => {
                   onChange={async (e) => {
                     dispatch(ClearServer());
                     dispatch(
-                      GetSubjects(
+                      get_subjects(
                         e.target.value,
                         document.getElementById("SemFilt").value
                       )
@@ -284,8 +288,8 @@ const Classes = () => {
                   onChange={async (e) => {
                     dispatch(ClearServer());
                     dispatch(
-                      GetSubjects(
-                        document.getElementById("DepFilt"),
+                      get_subjects(
+                        document.getElementById("DepFilt").value,
                         e.target.value
                       )
                     );

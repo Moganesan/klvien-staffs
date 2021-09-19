@@ -133,7 +133,7 @@ const LogoutButton = Styled(motion.button)`
 
 const ProfileModal = () => {
   const active = useSelector((state) => state.ProfileModal);
-  const profile = useSelector((state) => state.SetUser.user.student);
+  const profile = useSelector((state) => state.SetUser.user.staff);
   const dispatch = useDispatch();
   return (
     <>
@@ -164,20 +164,6 @@ const ProfileModal = () => {
               <input type="text" placeholder={profile.email} disabled />
               <label>Mobile</label>
               <input type="text" placeholder={profile.mobile1} disabled />
-              <label>Father Name</label>
-              <input
-                type="text"
-                style={{ textTransform: "capitalize" }}
-                placeholder={profile.fatname}
-                disabled
-              />
-              <label>Mother Name</label>
-              <input
-                type="text"
-                style={{ textTransform: "capitalize" }}
-                placeholder={profile.motname}
-                disabled
-              />
               <label>Blood Group</label>
               <input
                 type="text"
@@ -192,7 +178,7 @@ const ProfileModal = () => {
                   justifyContent: "space-between",
                 }}
               >
-                <GoogleButton
+                {/* <GoogleButton
                   onClick={() => {
                     dispatch(OpenGoogleConnectModal());
                   }}
@@ -200,7 +186,7 @@ const ProfileModal = () => {
                 >
                   <img style={{ width: 20 }} src={Google} />
                   <span>Link with google</span>
-                </GoogleButton>
+                </GoogleButton> */}
                 <LogoutButton
                   onClick={() => {
                     dispatch(Logout());

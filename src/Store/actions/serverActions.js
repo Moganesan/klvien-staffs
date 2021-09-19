@@ -5,6 +5,11 @@ const GetStudents = (payload) => ({
   payload: payload,
 });
 
+const getLatestLogins = (payload) => ({
+  type: ServerActionTypes.GET_LATEST_LOGINS,
+  payload: payload,
+});
+
 const GetSubjects = (payload) => ({
   type: ServerActionTypes.GET_SUBJECTS,
   payload: payload,
@@ -48,6 +53,7 @@ export {
   GetStudents,
   GetSubjects,
   GetAttendance,
+  getLatestLogins,
   GetAssignment,
   GetExams,
   GetHolidays,

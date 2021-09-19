@@ -11,6 +11,7 @@ import {
   GetBillings,
   GetSubjects,
   GetStudents,
+  getLatestLogins,
 } from "../actions/serverActions";
 import {
   SetLoadingFalse,
@@ -31,6 +32,91 @@ const database = {
   holidays: [],
   classes: [],
   billings: [],
+  latestLogins: [],
+};
+
+const GetStudentsList = (DepId, SemId) => async (dispatch, getstate) => {
+  const InId = getstate().SetUser.user.logindetails.InId;
+  await axios({
+    method: "POST",
+    url: `${API}/staff/students`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: DepId,
+      SemId: SemId,
+    },
+  })
+    .then((res) => {
+      return dispatch(GetStudents(res.data.data));
+    })
+    .catch((err) => dispatch(SetErrorMessage(err)));
+};
+
+const GetAssignmentsList = (DepId, SemId) => async (dispatch, getstate) => {
+  const InId = getstate().SetUser.user.logindetails.InId;
+  await axios({
+    method: "POST",
+    url: `${API}/staff/assignments`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: DepId,
+      SemId: SemId,
+    },
+  })
+    .then((res) => {
+      return dispatch(GetAssignment(res.data.data));
+    })
+    .catch((err) => dispatch(SetErrorMessage(err)));
+};
+
+const GetExamsList = (DepId, SemId) => async (dispatch, getstate) => {
+  const InId = getstate().SetUser.user.logindetails.InId;
+  await axios({
+    method: "POST",
+    url: `${API}/staff/exams`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: DepId,
+      SemId: SemId,
+    },
+  })
+    .then((res) => {
+      return dispatch(GetExams(res.data.data));
+    })
+    .catch((err) => dispatch(SetErrorMessage(err)));
+};
+
+const GetClassList = (DepId, SemId) => async (dispatch, getstate) => {
+  const InId = getstate().SetUser.user.logindetails.InId;
+  await axios({
+    method: "POST",
+    url: `${API}/staff/classes`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: DepId,
+      SemId: SemId,
+    },
+  })
+    .then((res) => {
+      return dispatch(GetClasses(res.data.data));
+    })
+    .catch((err) => dispatch(SetErrorMessage(err)));
 };
 
 const get_students = (DepId, SemId) => async (dispatch, getstate) => {
@@ -182,6 +268,37 @@ const CreateExam =
     })
       .then((res) => {
         dispatch(SetRocketLoadingFalse());
+        dispatch(SetSuccessMessage(res.data));
+      })
+      .catch((err) => {
+        dispatch(SetRocketLoadingFalse());
+        dispatch(SetErrorMessage(err));
+      });
+  };
+
+const CreateSubject =
+  (InId, DepId, SemId, StaffId, Data) => async (dispatch, getstate) => {
+    dispatch(SetRocketLoadingTrue());
+
+    await axios({
+      method: "POST",
+      url: `${API}/staff/subjects/create`,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: {
+        InId: InId,
+        DepId: DepId,
+        SemId: SemId,
+        StaffId: StaffId,
+        Data: Data,
+      },
+    })
+      .then((res) => {
+        dispatch(SetRocketLoadingFalse());
+        dispatch(ClearServer());
+        dispatch(get_subjects(DepId, SemId));
         dispatch(SetSuccessMessage(res.data));
       })
       .catch((err) => {
@@ -472,6 +589,74 @@ const AddAttendance = (data) => async (dispatch, getstate) => {
     });
 };
 
+const UpdateAssignmentStatus = (data) => async (dispatch, getstate) => {
+  dispatch(SetLoadinTrue());
+  const InId = getstate().SetUser.user.logindetails.InId;
+
+  await axios({
+    method: "POST",
+    url: `${API}/staff/students/assignments/updatestatus`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: data.DepId,
+      SemId: data.SemId,
+      StudId: data.StudId,
+      AssgId: data.AssgId,
+      Status: data.Status,
+    },
+  })
+    .then((res) => {
+      dispatch(SetLoadingFalse());
+      dispatch(
+        SetSuccessMessage({ code: 200, message: "Assignment Status Updated!" })
+      );
+      dispatch(ClearServer());
+      dispatch(getExams(data.DepId, data.SemId));
+    })
+    .catch((err) => {
+      dispatch(SetLoadingFalse());
+      dispatch(SetErrorMessage(err));
+    });
+};
+
+const UpdateExamStatus = (data) => async (dispatch, getstate) => {
+  dispatch(SetLoadinTrue());
+  const InId = getstate().SetUser.user.logindetails.InId;
+
+  await axios({
+    method: "POST",
+    url: `${API}/staff/students/exams/updatestatus`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+      DepId: data.DepId,
+      SemId: data.SemId,
+      StudId: data.StudId,
+      ExamId: data.ExamId,
+      Status: data.Status,
+    },
+  })
+    .then((res) => {
+      dispatch(SetLoadingFalse());
+      dispatch(
+        SetSuccessMessage({ code: 200, message: "Exams Status Updated!" })
+      );
+      dispatch(ClearServer());
+      dispatch(getExams(data.DepId, data.SemId));
+    })
+    .catch((err) => {
+      dispatch(SetLoadingFalse());
+      dispatch(SetErrorMessage(err));
+    });
+};
+
 const getBillings = () => async (dispatch, getstate) => {
   dispatch(SetLoadinTrue());
   const StudId = getstate().SetUser.user.logindetails.StudId;
@@ -510,29 +695,53 @@ const getBillings = () => async (dispatch, getstate) => {
   }
 };
 
+const GetLatestLogins = () => async (dispatch, getstate) => {
+  const InId = getstate().SetUser.user.logindetails.InId;
+
+  await axios({
+    method: "POST",
+    url: `${API}/staff/students/recentlogins`,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: {
+      InId: InId,
+    },
+  })
+    .then((res) => {
+      if (res.data.status === 404) {
+        dispatch(ClearServer());
+        dispatch(
+          SetInfoMessage({ code: "404", message: "No Payments found!" })
+        );
+      }
+      dispatch(getLatestLogins(res.data.data));
+    })
+    .catch((err) => {
+      dispatch(SetErrorMessage(err));
+    });
+};
+
 const addFeedback = (message) => async (dispatch, getstate) => {
   dispatch(SetRocketLoadingTrue());
-  const StudId = getstate().SetUser.user.logindetails.StudId;
+  const StaffId = getstate().SetUser.user.logindetails.StafId;
   const InId = getstate().SetUser.user.logindetails.InId;
-  const SemId = getstate().SetUser.user.logindetails.SemId;
-  const DepId = getstate().SetUser.user.logindetails.DepId;
-  const Name = getstate().SetUser.user.student.fname;
-  const Email = getstate().SetUser.user.student.email;
+  const Name = getstate().SetUser.user.staff.fname;
+  const Email = getstate().SetUser.user.staff.email;
   const Message = message;
 
-  if (StudId && InId && SemId && DepId && Name && Email && Message) {
+  if (StaffId && InId && Name && Email && Message) {
     await axios({
       method: "POST",
-      url: `${API}/student/feedback/add`,
+      url: `${API}/staff/feedback/add`,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       data: {
         InId: InId,
-        DepId: DepId,
-        SemId: SemId,
-        StudId: StudId,
+        StaffId: StaffId,
         Name: Name,
         Email: Email,
         Message: Message,
@@ -599,8 +808,14 @@ const serverReducer = (state = database, { type, payload }) => {
         ...state,
         billings: payload,
       };
+    case ServerActionTypes.GET_LATEST_LOGINS:
+      return {
+        ...state,
+        latestLogins: payload,
+      };
     case ServerActionTypes.CLEAR_SERVER:
       return {
+        ...state,
         students: [],
         subjects: [],
         attendance: [],
@@ -618,6 +833,10 @@ const serverReducer = (state = database, { type, payload }) => {
 };
 
 export {
+  GetStudentsList,
+  GetAssignmentsList,
+  GetExamsList,
+  GetClassList,
   get_students,
   CreateStudent,
   UpdateStudent,
@@ -629,8 +848,12 @@ export {
   CreateExam,
   CreateHoliday,
   getHolidays,
+  UpdateExamStatus,
+  GetLatestLogins,
   getClasses,
   CreateClass,
+  CreateSubject,
+  UpdateAssignmentStatus,
   UpdateClass,
   getBillings,
   AddAttendance,
