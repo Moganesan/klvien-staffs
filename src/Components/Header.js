@@ -88,7 +88,7 @@ const Header = () => {
         src={Menu}
       />
 
-      <h2>Hi {name}!</h2>
+      <h2> {name}!</h2>
       <Search>
         <img style={{ width: 20, height: 20 }} src={SearchIcon} />
         <SearchBox
