@@ -202,13 +202,13 @@ const Login = () => {
                   <span>Signup</span>
                 </Link>
               </p>
-              <SecondaryButton
+              {/* <SecondaryButton
                 onClick={() => dispatch(GoogleAuth())}
                 whileTap={{ scale: 0.9 }}
               >
                 <img style={{ width: 20 }} src={Google} />
                 <span>login with google</span>
-              </SecondaryButton>
+              </SecondaryButton> */}
             </div>
           </LoginForm>
         </Content>

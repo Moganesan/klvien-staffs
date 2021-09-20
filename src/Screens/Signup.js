@@ -199,10 +199,10 @@ const Login = () => {
                   <span>Login</span>
                 </Link>
               </p>
-              <SecondaryButton whileTap={{ scale: 0.9 }}>
+              {/* <SecondaryButton whileTap={{ scale: 0.9 }}>
                 <img style={{ width: 20 }} src={Google} />
                 <span>signup with google</span>
-              </SecondaryButton>
+              </SecondaryButton> */}
             </div>
           </LoginForm>
         </Content>
