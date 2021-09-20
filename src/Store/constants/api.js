@@ -1,4 +1,4 @@
-const API = "http://localhost:4000";
+const API = "https://klvien-backend.herokuapp.com";
 
 const GET_PROFILE = API + "/staff/student/getprofile/";
 
