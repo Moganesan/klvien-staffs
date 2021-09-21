@@ -2,6 +2,10 @@
   "name": "klvien",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
+  "engines": {
+    "node": "12.11.1"
+  },
   "dependencies": {
     "@nivo/bar": "^0.73.1",
     "@nivo/core": "^0.73.0",

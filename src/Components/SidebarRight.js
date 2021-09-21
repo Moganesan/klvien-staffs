@@ -41,6 +41,8 @@ const User = Styled.div`
 const Profile = Styled.div`
    width: 50px;
    height: 50px;
+   border-radius: 50%;
+   overflow: hidden;
    img{
      width: 100%;
      height: 100%;
