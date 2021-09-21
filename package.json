@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "homepage": ".",
-  "devDependencies": {
-    "@babel/core": "^7.15.5"
-  },
   "dependencies": {
     "@babel/core": "^7.15.5",
     "@nivo/bar": "^0.73.1",
