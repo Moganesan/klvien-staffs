@@ -79,6 +79,7 @@ const StudentContainer = Styled.div`
 const StudentProfile = Styled.div`
    width: 50px;
    height: 50px;
+   overflow: hidden;
    border-radius: 25px;
    img{
        width: 100%;
