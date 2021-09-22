@@ -339,9 +339,7 @@ const Subjects = () => {
                 </Table>
               </StudentsContainer>
             )}
-            {subjects.length ? (
-              <NewSubject DepData={departments} SemData={semesters} />
-            ) : null}
+            <NewSubject DepData={departments} SemData={semesters} />
           </Route>
           <Route exact path={`${path}/:studId`}>
             {students.length ? <StudentAssignmentDetails /> : null}
