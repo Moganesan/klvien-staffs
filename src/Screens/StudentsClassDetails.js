@@ -195,6 +195,8 @@ const StudentsClassDetails = () => {
     })
   );
 
+  console.log("Classes", classData);
+
   const [inputs, setInput] = useState([]);
 
   useEffect(() => {
@@ -279,43 +281,51 @@ const StudentsClassDetails = () => {
   };
   return (
     <>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Breadcrumbs pages={["students", "ClassDetails", classData.subject]} />
-        <Header></Header>
-      </div>
+      {classData.length && (
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Breadcrumbs
+            pages={["students", "ClassDetails", classData.subject]}
+          />
+          <Header></Header>
+        </div>
+      )}
       <Container>
         <StudentsContainer>
-          {classData.studentsData.map((data) => {
-            const status = data.attendanceLog.find(
-              (data) => data.ClsId.trim() == clsId.trim()
-            ).status;
-            return (
-              <StudentContainer>
-                <StudentProfile>
-                  <img src={GET_PROFILE + data.profile} />
-                </StudentProfile>
-                <StudentDetails>
-                  <h4>{data.firstName + " " + data.lastName}</h4>
-                  <span>{data.addmisNo}</span>
-                </StudentDetails>
-                {status === "ABSENT" ? (
-                  <Error
-                    onClick={() => Attendance(data.StudId, "PRECENT")}
-                    whileTap={true}
-                    text={status}
-                  />
-                ) : status === "PRECENT" ? (
-                  <Success
-                    onClick={() => Attendance(data.StudId, "ABSENT")}
-                    whileTap={true}
-                    text={status}
-                  />
-                ) : (
-                  <Error whileTap={true} text={status} />
-                )}
-              </StudentContainer>
-            );
-          })}
+          {classData.length && (
+            <>
+              {classData.studentsData.map((data) => {
+                const status = data.attendanceLog.find(
+                  (data) => data.ClsId.trim() == clsId.trim()
+                ).status;
+                return (
+                  <StudentContainer>
+                    <StudentProfile>
+                      <img src={GET_PROFILE + data.profile} />
+                    </StudentProfile>
+                    <StudentDetails>
+                      <h4>{data.firstName + " " + data.lastName}</h4>
+                      <span>{data.addmisNo}</span>
+                    </StudentDetails>
+                    {status === "ABSENT" ? (
+                      <Error
+                        onClick={() => Attendance(data.StudId, "PRECENT")}
+                        whileTap={true}
+                        text={status}
+                      />
+                    ) : status === "PRECENT" ? (
+                      <Success
+                        onClick={() => Attendance(data.StudId, "ABSENT")}
+                        whileTap={true}
+                        text={status}
+                      />
+                    ) : (
+                      <Error whileTap={true} text={status} />
+                    )}
+                  </StudentContainer>
+                );
+              })}
+            </>
+          )}
         </StudentsContainer>
 
         <EditClass>
